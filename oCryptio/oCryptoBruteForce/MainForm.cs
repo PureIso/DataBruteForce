@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using oCryptio;
@@ -13,10 +12,12 @@ namespace oCryptoBruteForce
 {
     public partial class MainForm : Form
     {
+        #region Fields
         private string _fileName;
         private byte[] _fileBuffer;
         private byte[] _possibleChecksumFileBuffer;
         private bool _stop;
+        #endregion
 
         public MainForm()
         {
@@ -27,14 +28,15 @@ namespace oCryptoBruteForce
         }
 
         #region Handlers
+
+        #region Open File and Load
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "File Names|*.*";
+            OpenFileDialog openFileDialog = new OpenFileDialog {Filter = "File Names|*.*"};
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
             _fileName = openFileDialog.FileNames[0];
             _fileBuffer = File.ReadAllBytes(_fileName);
-
+            //Thread Safe Functions to prevent illegal cross threads.
             oDelegateFunctions.SetControlText(fileLocationTextBox, _fileName);
             oDelegateFunctions.SetControlText(fileLengthTextBox, _fileBuffer.Length.ToString());
             oDelegateFunctions.SetControlText(stopAtPositionTextBox, _fileBuffer.Length.ToString());
@@ -44,14 +46,18 @@ namespace oCryptoBruteForce
 
         private void loadPossibleChecksumFileButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "File Names|*.*";
+            //In the case where the possible key / checksum might be in a different file
+            OpenFileDialog openFileDialog = new OpenFileDialog {Filter = "File Names|*.*"};
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
             oDelegateFunctions.SetControlText(possibleChecksumFileLocationTextBox, openFileDialog.FileNames[0]);
             oDelegateFunctions.CheckCheckBoxButton(usePCFCheckBox, true);
             _possibleChecksumFileBuffer = File.ReadAllBytes(openFileDialog.FileNames[0]);
         }
 
+        //TODO: Drag and Drop Files into the application via dragAndDropPanel
+        #endregion
+
+        #region Start and Stop
         private void startSearchButton_Click(object sender, EventArgs e)
         {
             _stop = false;
@@ -62,30 +68,38 @@ namespace oCryptoBruteForce
 
         private void stopButton_Click(object sender, EventArgs e)
         {
-            StopClearFunction();
+            StopBruteForceUserInterfaceFunction();
             _stop = true;
         }
+        #endregion
 
+        #region Configuration
         private void lazySearchComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lazySearchComboBox.Text == "OFF")
             {
+                //Using Lazy Search you can skip the specified amount of bytes
                 oDelegateFunctions.SetEnableControl(skipBytesNumericUpDown, true);
                 oDelegateFunctions.SetEnableControl(byteSkippingCheckBox, true);
             }
             else
             {
+                //This search is a lot slower since you are searching and comparing byte by byte
                 oDelegateFunctions.SetEnableControl(skipBytesNumericUpDown, false);
                 oDelegateFunctions.SetEnableControl(byteSkippingCheckBox, false);
             }
-
         }
+        #endregion
         #endregion
 
         #region Functions
+        #region Search Work
+        /// <summary>
+        /// Search initialization function that will determine what search protocol to use base on your configuration
+        /// </summary>
         private void SearchWorkThread()
         {
-            StartClearFunction();
+            StartBruteForceUserInterfaceFunction();
 
             int startSearch = int.Parse(oDelegateFunctions.GetControlText(startSearchTextBox));
             int stopSearchAt = int.Parse(oDelegateFunctions.GetControlText(stopAtPositionTextBox));
@@ -94,9 +108,9 @@ namespace oCryptoBruteForce
             bool isLazySearch = oDelegateFunctions.GetControlText(lazySearchComboBox) == "ON";
             bool isLazyGenerate = oDelegateFunctions.GetControlText(lazyGenerateComboBox) == "ON";
 
+            #region Get Checksum Length
             int byteCount = -1;
             string[] value = oDelegateFunctions.GetControlText(checksumComboBox).Split('{','}');
-
             switch (value[1].Replace("Bytes","").Replace("s",""))
             {
                 case "1":
@@ -124,7 +138,9 @@ namespace oCryptoBruteForce
                     byteCount = 64;
                     break;
             }
+            #endregion
 
+            #region Launch Bruteforce
             if (!isLazySearch && !isLazyGenerate)
             {
                 if (oDelegateFunctions.GetCheckBoxCheck(usePCFCheckBox))
@@ -160,10 +176,13 @@ namespace oCryptoBruteForce
                 else
                     SearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.NotLazyGenerateLazySearch);
             }
+            #endregion
         }
 
+        #region Main Search Functions
         private void SearchAndGenerateUsingPossibleChecksumFile(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
         {
+            //TODO Clean up
             bool skip = oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox);
             int skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
             int checksumFound = -1;
@@ -257,6 +276,7 @@ namespace oCryptoBruteForce
 
         private void SearchAndGenerate(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
         {
+            //TODO Clean Up
             bool skip = oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox);
             int skipBy = (int) oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
             int checksumFound = -1;
@@ -348,6 +368,7 @@ namespace oCryptoBruteForce
 
         private void ParallelSearchAndGenerate(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
         {
+            //TODO Clean Up
             bool skip = oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox);
             int skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
             Parallel.For(startGeneratedChecksumFrom, stopSearchAt, (checksumGenIndex, y) =>
@@ -417,9 +438,14 @@ namespace oCryptoBruteForce
                 });
             oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
         }
+        #endregion
+        #endregion
 
         #region Backup functions
-        private void StartClearFunction()
+        /// <summary>
+        /// Set the display for brute force
+        /// </summary>
+        private void StartBruteForceUserInterfaceFunction()
         {
             oDelegateFunctions.SetEnableControl(stopButton, true);
             oDelegateFunctions.SetControlText(stopTimeTextBox, "");
@@ -428,13 +454,23 @@ namespace oCryptoBruteForce
             oDelegateFunctions.SetControlText(startTimeTextBox, DateTime.Now.ToString());
         }
 
-        private void StopClearFunction()
+        /// <summary>
+        /// Clear the display
+        /// </summary>
+        private void StopBruteForceUserInterfaceFunction()
         {
             oDelegateFunctions.SetEnableControl(checksumComboBox, true);
             oDelegateFunctions.SetEnableControl(stopButton, false);
             oDelegateFunctions.SetEnableControl(startSearchButton, true);
+            //TODO Save a log before clearing
         }
 
+        /// <summary>
+        /// Function to generate checksum
+        /// </summary>
+        /// <param name="offset">The start of checksum generation</param>
+        /// <param name="buffer">The byte array of data</param>
+        /// <returns></returns>
         private byte[] GenerateChecksum(int offset, byte[] buffer)
         {
             byte[] returnValue = null;
@@ -474,37 +510,6 @@ namespace oCryptoBruteForce
             return returnValue;
         }
         #endregion
-
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            AES a = new AES();
-        }
-
-        
-
-        
     }
 }
