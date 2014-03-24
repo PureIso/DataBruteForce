@@ -182,23 +182,24 @@ namespace oCryptoBruteForce
         #region Main Search Functions
         private void SearchAndGenerateUsingPossibleChecksumFile(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
         {
-            //TODO Clean up
-            bool skip = oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox);
-            int skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
+            int skipBy = 1;
             int checksumFound = -1;
+            if(oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
+                skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
+            
             for (int checksumGenIndex = startGeneratedChecksumFrom; checksumGenIndex < stopSearchAt; )
             {
                 if (_stop) return;
                 byte[] checksum = GenerateChecksum(checksumGenIndex, _fileBuffer);
                 oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
 
-                for (int i = 0; i < _possibleChecksumFileBuffer.Length-1;)
+                #region Main Search
+                for (int i = startSearch; i < _possibleChecksumFileBuffer.Length - 1; )
                 {
                     if (_stop) return;
                     int added = 0;
-                    for (int index = 0; index < checksum.Length; index++)
+                    foreach (byte item in checksum)
                     {
-                        byte item = checksum[index];
                         if (i == _possibleChecksumFileBuffer.Length) break;
                         if (_possibleChecksumFileBuffer[i] == item)
                         {
@@ -237,23 +238,30 @@ namespace oCryptoBruteForce
                     #endregion
 
                     if (checksumFound != -1) break;
+
+                    #region Search Type to determing next index
                     switch (searchType)
                     {
                         case SearchTypeEnum.LazyGenerateLazySearch:
                             i += checksum.Length;
                             break;
                         case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            i += 1;
+                            i += skipBy;
                             break;
                         case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            i += 1;
+                            i += skipBy;
                             break;
                         case SearchTypeEnum.NotLazyGenerateLazySearch:
                             i += checksum.Length;
                             break;
                     }
+                    #endregion
                 }
+                #endregion
+
                 if (checksumFound != -1) break;
+
+                #region Checksum Generation
                 switch (searchType)
                 {
                     case SearchTypeEnum.LazyGenerateLazySearch:
@@ -270,16 +278,18 @@ namespace oCryptoBruteForce
                         break;
                 }
                 oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
+                #endregion
             }
             oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
         }
 
         private void SearchAndGenerate(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
         {
-            //TODO Clean Up
-            bool skip = oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox);
-            int skipBy = (int) oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
+            int skipBy = 1;
             int checksumFound = -1;
+            if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
+                skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
+
             for (int checksumGenIndex = startGeneratedChecksumFrom; checksumGenIndex < stopSearchAt;)
             {
                 if (_stop) return;
@@ -329,21 +339,23 @@ namespace oCryptoBruteForce
                     //#endregion
 
                     if (checksumFound != -1) break;
+                    #region Search Type to determing next index
                     switch (searchType)
                     {
                         case SearchTypeEnum.LazyGenerateLazySearch:
                             i += checksum.Length;
                             break;
                         case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            i += 1;
+                            i += skipBy;
                             break;
                         case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            i += 1;
+                            i += skipBy;
                             break;
                         case SearchTypeEnum.NotLazyGenerateLazySearch:
                             i += checksum.Length;
                             break;
                     }
+                    #endregion
                 }
                 if (checksumFound != -1) break;
                 switch (searchType)
@@ -368,9 +380,10 @@ namespace oCryptoBruteForce
 
         private void ParallelSearchAndGenerate(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
         {
-            //TODO Clean Up
-            bool skip = oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox);
-            int skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
+            int skipBy = 1;
+            if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
+                skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
+
             Parallel.For(startGeneratedChecksumFrom, stopSearchAt, (checksumGenIndex, y) =>
             {
                 if (_stop) return;
@@ -403,21 +416,24 @@ namespace oCryptoBruteForce
                             oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
                             break;
                         }
+
+                        #region Search Type to determing next index
                         switch (searchType)
                         {
                             case SearchTypeEnum.LazyGenerateLazySearch:
                                 i += checksum.Length;
                                 break;
                             case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                                i += 1;
+                                i += skipBy;
                                 break;
                             case SearchTypeEnum.LazyGenerateNotLazySearch:
-                                i += 1;
+                                i += skipBy;
                                 break;
                             case SearchTypeEnum.NotLazyGenerateLazySearch:
                                 i += checksum.Length;
                                 break;
                         }
+                        #endregion
                     }
                     switch (searchType)
                     {
