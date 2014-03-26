@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using oCryptio;
 using oCryptio.Checksum;
 using System.Windows.Forms;
-using oCryptio.Encryption;
 using PortableLib;
 
 namespace oCryptoBruteForce
 {
     public partial class MainForm : Form
     {
+        public event DelegateObject OnDelegateObject;
+
         #region Fields
         private string _fileName;
         private byte[] _fileBuffer;
