@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -15,7 +16,17 @@ namespace oCryptoBruteForce
     /// </summary>
     public static class AsynchronousSocketListener
     {
+        #region Fields
         private static readonly ManualResetEvent AllDone = new ManualResetEvent(false);
+        #endregion
+
+        #region Event
+
+        public static event DelegateObject OnSearchAndGenerateUsingPossibleChecksumFileEvent;
+        public static event DelegateObject OnSearchAndGenerate;
+        public static event DelegateObject OnParallelSearchAndGenerate;
+        #endregion
+
         #region Public Methods and Operators
         public static void StartListening(int port)
         {
@@ -45,7 +56,6 @@ namespace oCryptoBruteForce
         #endregion
 
         #region Methods
-
         private static void AcceptCallback(IAsyncResult ar)
         {
             // Signal the main thread to continue.
@@ -79,14 +89,36 @@ namespace oCryptoBruteForce
             int bytesRead = handler.EndReceive(ar);
             if (bytesRead > 0)
             {
-                state.StringBuilder.Append(Encoding.ASCII.GetString(state.Buffer, 0, bytesRead));
+                state.StringBuilder.Append(Encoding.UTF8.GetString(state.Buffer, 0, bytesRead));
                 String content = state.StringBuilder.ToString();
                 if (content.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
                 {
                     content = content.Replace("<EOF>", "");
                     byte[] currentData;
-                    if (content.StartsWith("Images"))
+                    if (content.StartsWith("SearchAndGenerateUsingPossibleChecksumFile"))
                     {
+                        string[] dataArray = content.Split(new[] { "**" }, StringSplitOptions.RemoveEmptyEntries);
+                    }
+                    else if (content.StartsWith("SearchAndGenerate"))
+                    {
+                        string[] dataArray = content.Split(new[] { "**" }, StringSplitOptions.RemoveEmptyEntries);
+                    }
+                    else if (content.StartsWith("ParallelSearchAndGenerate"))
+                    {
+                        string[] dataArray = content.Split(new[] {"**"}, StringSplitOptions.RemoveEmptyEntries);
+                    }
+                    else
+                    {
+                        currentData = Encoding.UTF8.GetBytes("Result**Invalid function.");
+                        using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
+                        {
+                            byte[] size = BitConverter.GetBytes(currentData.Length);
+                            ms.Write(size, 0, 4);
+                            ms.Write(currentData, 0, currentData.Length);
+                            state.SendBuffer = ms.ToArray();
+                            Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
+                            ms.Close();
+                        }
                     }
                 }
                 else
@@ -100,12 +132,11 @@ namespace oCryptoBruteForce
         private static void Send(Socket handler, String data)
         {
             // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
+            byte[] byteData = Encoding.UTF8.GetBytes(data);
 
             // Begin sending the data to the remote device.
             handler.BeginSend(byteData, 0, byteData.Length, 0, SendCallback, handler);
         }
-
         #endregion
     }
 }

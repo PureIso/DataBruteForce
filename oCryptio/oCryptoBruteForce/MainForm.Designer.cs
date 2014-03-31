@@ -66,18 +66,23 @@
             this.checksumValueTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.searchTabPage = new System.Windows.Forms.TabPage();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.serverModeTabPage = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.usePCFCheckBox = new System.Windows.Forms.CheckBox();
-            this.loadPCFButton = new System.Windows.Forms.Button();
-            this.label16 = new System.Windows.Forms.Label();
-            this.searchReverseValueCheckBox = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
+            this.loadPCFButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.clearPCFButton = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.dragAndDropPanel = new System.Windows.Forms.Panel();
             this.possibleChecksumFileLocationTextBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.listeningTextBox = new System.Windows.Forms.TextBox();
+            this.startListeningButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -85,9 +90,11 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.serverModeTabPage.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -97,7 +104,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(806, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(853, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -140,7 +147,7 @@
             // 
             // fileLocationTextBox
             // 
-            this.fileLocationTextBox.Location = new System.Drawing.Point(199, 3);
+            this.fileLocationTextBox.Location = new System.Drawing.Point(200, 59);
             this.fileLocationTextBox.Name = "fileLocationTextBox";
             this.fileLocationTextBox.ReadOnly = true;
             this.fileLocationTextBox.Size = new System.Drawing.Size(385, 23);
@@ -148,10 +155,9 @@
             // 
             // parallelComputingCheckBox
             // 
-            this.parallelComputingCheckBox.AutoSize = true;
-            this.parallelComputingCheckBox.Location = new System.Drawing.Point(24, 80);
+            this.parallelComputingCheckBox.Location = new System.Drawing.Point(187, 22);
             this.parallelComputingCheckBox.Name = "parallelComputingCheckBox";
-            this.parallelComputingCheckBox.Size = new System.Drawing.Size(158, 19);
+            this.parallelComputingCheckBox.Size = new System.Drawing.Size(108, 77);
             this.parallelComputingCheckBox.TabIndex = 34;
             this.parallelComputingCheckBox.Text = "Use Parallel Computing ?";
             this.parallelComputingCheckBox.UseVisualStyleBackColor = true;
@@ -159,23 +165,25 @@
             // byteSkippingCheckBox
             // 
             this.byteSkippingCheckBox.AutoSize = true;
-            this.byteSkippingCheckBox.Location = new System.Drawing.Point(23, 22);
+            this.byteSkippingCheckBox.Location = new System.Drawing.Point(11, 22);
             this.byteSkippingCheckBox.Name = "byteSkippingCheckBox";
             this.byteSkippingCheckBox.Size = new System.Drawing.Size(136, 19);
             this.byteSkippingCheckBox.TabIndex = 33;
             this.byteSkippingCheckBox.Text = "Enable Byte Skipping";
             this.byteSkippingCheckBox.UseVisualStyleBackColor = true;
+            this.byteSkippingCheckBox.CheckedChanged += new System.EventHandler(this.byteSkippingCheckBox_CheckedChanged);
             // 
             // skipBytesNumericUpDown
             // 
-            this.skipBytesNumericUpDown.Location = new System.Drawing.Point(89, 47);
+            this.skipBytesNumericUpDown.Enabled = false;
+            this.skipBytesNumericUpDown.Location = new System.Drawing.Point(77, 47);
             this.skipBytesNumericUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.skipBytesNumericUpDown.Name = "skipBytesNumericUpDown";
-            this.skipBytesNumericUpDown.Size = new System.Drawing.Size(84, 23);
+            this.skipBytesNumericUpDown.Size = new System.Drawing.Size(70, 23);
             this.skipBytesNumericUpDown.TabIndex = 32;
             this.skipBytesNumericUpDown.Value = new decimal(new int[] {
             1,
@@ -186,7 +194,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(20, 50);
+            this.label14.Location = new System.Drawing.Point(8, 50);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(63, 15);
             this.label14.TabIndex = 31;
@@ -231,7 +239,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(316, 50);
+            this.label10.Location = new System.Drawing.Point(312, 54);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(83, 15);
             this.label10.TabIndex = 23;
@@ -244,7 +252,7 @@
             this.lazyGenerateComboBox.Items.AddRange(new object[] {
             "OFF",
             "ON"});
-            this.lazyGenerateComboBox.Location = new System.Drawing.Point(414, 47);
+            this.lazyGenerateComboBox.Location = new System.Drawing.Point(410, 51);
             this.lazyGenerateComboBox.Name = "lazyGenerateComboBox";
             this.lazyGenerateComboBox.Size = new System.Drawing.Size(149, 23);
             this.lazyGenerateComboBox.TabIndex = 22;
@@ -252,7 +260,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(328, 26);
+            this.label9.Location = new System.Drawing.Point(324, 30);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 15);
             this.label9.TabIndex = 21;
@@ -265,7 +273,7 @@
             this.lazySearchComboBox.Items.AddRange(new object[] {
             "OFF",
             "ON"});
-            this.lazySearchComboBox.Location = new System.Drawing.Point(414, 18);
+            this.lazySearchComboBox.Location = new System.Drawing.Point(410, 22);
             this.lazySearchComboBox.Name = "lazySearchComboBox";
             this.lazySearchComboBox.Size = new System.Drawing.Size(149, 23);
             this.lazySearchComboBox.TabIndex = 20;
@@ -392,7 +400,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(116, 6);
+            this.label4.Location = new System.Drawing.Point(117, 62);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(77, 15);
             this.label4.TabIndex = 8;
@@ -402,12 +410,12 @@
             // 
             this.tabControl1.Controls.Add(this.bruteforceTabPage);
             this.tabControl1.Controls.Add(this.searchTabPage);
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.serverModeTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl1.Location = new System.Drawing.Point(0, 225);
+            this.tabControl1.Location = new System.Drawing.Point(0, 264);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(806, 277);
+            this.tabControl1.Size = new System.Drawing.Size(853, 277);
             this.tabControl1.TabIndex = 9;
             // 
             // bruteforceTabPage
@@ -423,7 +431,7 @@
             this.bruteforceTabPage.Location = new System.Drawing.Point(4, 24);
             this.bruteforceTabPage.Name = "bruteforceTabPage";
             this.bruteforceTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.bruteforceTabPage.Size = new System.Drawing.Size(798, 249);
+            this.bruteforceTabPage.Size = new System.Drawing.Size(845, 249);
             this.bruteforceTabPage.TabIndex = 0;
             this.bruteforceTabPage.Text = "Bruteforce For Checksums";
             this.bruteforceTabPage.UseVisualStyleBackColor = true;
@@ -494,85 +502,57 @@
             this.searchTabPage.Location = new System.Drawing.Point(4, 24);
             this.searchTabPage.Name = "searchTabPage";
             this.searchTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.searchTabPage.Size = new System.Drawing.Size(798, 249);
+            this.searchTabPage.Size = new System.Drawing.Size(845, 249);
             this.searchTabPage.TabIndex = 1;
             this.searchTabPage.Text = "Search";
             this.searchTabPage.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // serverModeTabPage
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(798, 249);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.serverModeTabPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.serverModeTabPage.Controls.Add(this.startListeningButton);
+            this.serverModeTabPage.Controls.Add(this.listeningTextBox);
+            this.serverModeTabPage.Controls.Add(this.label16);
+            this.serverModeTabPage.Location = new System.Drawing.Point(4, 24);
+            this.serverModeTabPage.Name = "serverModeTabPage";
+            this.serverModeTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.serverModeTabPage.Size = new System.Drawing.Size(845, 249);
+            this.serverModeTabPage.TabIndex = 2;
+            this.serverModeTabPage.Text = "Server Mode";
+            this.serverModeTabPage.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.usePCFCheckBox);
-            this.groupBox4.Controls.Add(this.loadPCFButton);
-            this.groupBox4.Controls.Add(this.label16);
-            this.groupBox4.Controls.Add(this.searchReverseValueCheckBox);
+            this.groupBox4.Controls.Add(this.groupBox5);
             this.groupBox4.Controls.Add(this.button1);
             this.groupBox4.Controls.Add(this.label15);
-            this.groupBox4.Controls.Add(this.skipBytesNumericUpDown);
-            this.groupBox4.Controls.Add(this.byteSkippingCheckBox);
             this.groupBox4.Controls.Add(this.parallelComputingCheckBox);
             this.groupBox4.Controls.Add(this.lazySearchComboBox);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.lazyGenerateComboBox);
-            this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Controls.Add(this.label10);
-            this.groupBox4.Location = new System.Drawing.Point(14, 63);
+            this.groupBox4.Location = new System.Drawing.Point(14, 119);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(570, 131);
+            this.groupBox4.Size = new System.Drawing.Size(571, 114);
             this.groupBox4.TabIndex = 38;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Miscellaneous";
             // 
-            // usePCFCheckBox
+            // groupBox5
             // 
-            this.usePCFCheckBox.AutoSize = true;
-            this.usePCFCheckBox.Location = new System.Drawing.Point(548, 108);
-            this.usePCFCheckBox.Name = "usePCFCheckBox";
-            this.usePCFCheckBox.Size = new System.Drawing.Size(15, 14);
-            this.usePCFCheckBox.TabIndex = 40;
-            this.usePCFCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // loadPCFButton
-            // 
-            this.loadPCFButton.Location = new System.Drawing.Point(414, 105);
-            this.loadPCFButton.Name = "loadPCFButton";
-            this.loadPCFButton.Size = new System.Drawing.Size(125, 23);
-            this.loadPCFButton.TabIndex = 39;
-            this.loadPCFButton.Text = "Load";
-            this.loadPCFButton.UseVisualStyleBackColor = true;
-            this.loadPCFButton.Click += new System.EventHandler(this.loadPossibleChecksumFileButton_Click);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(237, 108);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(162, 15);
-            this.label16.TabIndex = 38;
-            this.label16.Text = "Load Possible Checksum File:";
-            // 
-            // searchReverseValueCheckBox
-            // 
-            this.searchReverseValueCheckBox.AutoSize = true;
-            this.searchReverseValueCheckBox.Location = new System.Drawing.Point(23, 106);
-            this.searchReverseValueCheckBox.Name = "searchReverseValueCheckBox";
-            this.searchReverseValueCheckBox.Size = new System.Drawing.Size(149, 19);
-            this.searchReverseValueCheckBox.TabIndex = 37;
-            this.searchReverseValueCheckBox.Text = "Search Reverse Values ?";
-            this.searchReverseValueCheckBox.UseVisualStyleBackColor = true;
+            this.groupBox5.Controls.Add(this.byteSkippingCheckBox);
+            this.groupBox5.Controls.Add(this.label14);
+            this.groupBox5.Controls.Add(this.skipBytesNumericUpDown);
+            this.groupBox5.Location = new System.Drawing.Point(6, 18);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(175, 81);
+            this.groupBox5.TabIndex = 41;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Search Byte Skipping";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(414, 76);
+            this.button1.Location = new System.Drawing.Point(410, 80);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(149, 23);
             this.button1.TabIndex = 36;
@@ -582,16 +562,29 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(305, 80);
+            this.label15.Location = new System.Drawing.Point(301, 84);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(94, 15);
             this.label15.TabIndex = 35;
             this.label15.Text = "Save / Continue:";
             // 
+            // loadPCFButton
+            // 
+            this.loadPCFButton.Location = new System.Drawing.Point(591, 90);
+            this.loadPCFButton.Name = "loadPCFButton";
+            this.loadPCFButton.Size = new System.Drawing.Size(125, 23);
+            this.loadPCFButton.TabIndex = 39;
+            this.loadPCFButton.Text = "Load";
+            this.loadPCFButton.UseVisualStyleBackColor = true;
+            this.loadPCFButton.Click += new System.EventHandler(this.loadPossibleChecksumFileButton_Click);
+            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.clearPCFButton);
+            this.panel1.Controls.Add(this.groupBox6);
             this.panel1.Controls.Add(this.dragAndDropPanel);
+            this.panel1.Controls.Add(this.loadPCFButton);
             this.panel1.Controls.Add(this.possibleChecksumFileLocationTextBox);
             this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.groupBox4);
@@ -600,8 +593,50 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(806, 201);
+            this.panel1.Size = new System.Drawing.Size(853, 240);
             this.panel1.TabIndex = 10;
+            // 
+            // clearPCFButton
+            // 
+            this.clearPCFButton.Location = new System.Drawing.Point(722, 90);
+            this.clearPCFButton.Name = "clearPCFButton";
+            this.clearPCFButton.Size = new System.Drawing.Size(125, 23);
+            this.clearPCFButton.TabIndex = 42;
+            this.clearPCFButton.Text = "Clear";
+            this.clearPCFButton.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.radioButton2);
+            this.groupBox6.Controls.Add(this.radioButton1);
+            this.groupBox6.Location = new System.Drawing.Point(318, 3);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(142, 50);
+            this.groupBox6.TabIndex = 41;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Application Mode";
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(78, 22);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(57, 19);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.Text = "Server";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
+            this.radioButton1.Location = new System.Drawing.Point(7, 22);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(56, 19);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Client";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // dragAndDropPanel
             // 
@@ -609,14 +644,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dragAndDropPanel.BackColor = System.Drawing.Color.DimGray;
-            this.dragAndDropPanel.Location = new System.Drawing.Point(590, 3);
+            this.dragAndDropPanel.Location = new System.Drawing.Point(591, 119);
             this.dragAndDropPanel.Name = "dragAndDropPanel";
-            this.dragAndDropPanel.Size = new System.Drawing.Size(211, 191);
+            this.dragAndDropPanel.Size = new System.Drawing.Size(257, 114);
             this.dragAndDropPanel.TabIndex = 11;
             // 
             // possibleChecksumFileLocationTextBox
             // 
-            this.possibleChecksumFileLocationTextBox.Location = new System.Drawing.Point(199, 32);
+            this.possibleChecksumFileLocationTextBox.Location = new System.Drawing.Point(200, 90);
             this.possibleChecksumFileLocationTextBox.Name = "possibleChecksumFileLocationTextBox";
             this.possibleChecksumFileLocationTextBox.ReadOnly = true;
             this.possibleChecksumFileLocationTextBox.Size = new System.Drawing.Size(385, 23);
@@ -625,18 +660,44 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(11, 35);
+            this.label11.Location = new System.Drawing.Point(12, 93);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(182, 15);
             this.label11.TabIndex = 40;
             this.label11.Text = "Possible Checksum File Location:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 10);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(83, 15);
+            this.label16.TabIndex = 32;
+            this.label16.Text = "Listening Port:";
+            // 
+            // listeningTextBox
+            // 
+            this.listeningTextBox.Location = new System.Drawing.Point(96, 7);
+            this.listeningTextBox.Name = "listeningTextBox";
+            this.listeningTextBox.Size = new System.Drawing.Size(100, 23);
+            this.listeningTextBox.TabIndex = 33;
+            // 
+            // startListeningButton
+            // 
+            this.startListeningButton.Location = new System.Drawing.Point(202, 7);
+            this.startListeningButton.Name = "startListeningButton";
+            this.startListeningButton.Size = new System.Drawing.Size(149, 23);
+            this.startListeningButton.TabIndex = 37;
+            this.startListeningButton.Text = "Start Listening";
+            this.startListeningButton.UseVisualStyleBackColor = true;
+            this.startListeningButton.Click += new System.EventHandler(this.startListeningButton_Click);
             // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(806, 504);
+            this.ClientSize = new System.Drawing.Size(853, 541);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
@@ -655,11 +716,16 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
+            this.serverModeTabPage.ResumeLayout(false);
+            this.serverModeTabPage.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -708,15 +774,20 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage serverModeTabPage;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox checksumValueTextBox;
-        private System.Windows.Forms.CheckBox searchReverseValueCheckBox;
         private System.Windows.Forms.Button loadPCFButton;
-        private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox possibleChecksumFileLocationTextBox;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.CheckBox usePCFCheckBox;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button clearPCFButton;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.Button startListeningButton;
+        private System.Windows.Forms.TextBox listeningTextBox;
+        private System.Windows.Forms.Label label16;
     }
 }
 

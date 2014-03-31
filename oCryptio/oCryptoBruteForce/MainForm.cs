@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using oCryptio;
@@ -51,7 +52,6 @@ namespace oCryptoBruteForce
             OpenFileDialog openFileDialog = new OpenFileDialog {Filter = "File Names|*.*"};
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
             oDelegateFunctions.SetControlText(possibleChecksumFileLocationTextBox, openFileDialog.FileNames[0]);
-            oDelegateFunctions.CheckCheckBoxButton(usePCFCheckBox, true);
             _possibleChecksumFileBuffer = File.ReadAllBytes(openFileDialog.FileNames[0]);
         }
 
@@ -105,38 +105,42 @@ namespace oCryptoBruteForce
             int startSearch = int.Parse(oDelegateFunctions.GetControlText(startSearchTextBox));
             int stopSearchAt = int.Parse(oDelegateFunctions.GetControlText(stopAtPositionTextBox));
             int startGeneratedChecksumFrom = int.Parse(oDelegateFunctions.GetControlText(startChecksumPositionTextBox));
-
+            string checksum = oDelegateFunctions.GetControlText(checksumComboBox);
             bool isLazySearch = oDelegateFunctions.GetControlText(lazySearchComboBox) == "ON";
             bool isLazyGenerate = oDelegateFunctions.GetControlText(lazyGenerateComboBox) == "ON";
 
+            int skipSearchBytesBy = 1;
+            if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
+                skipSearchBytesBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
+
             #region Get Checksum Length
-            int byteCount = -1;
-            string[] value = oDelegateFunctions.GetControlText(checksumComboBox).Split('{','}');
+            int checksumLength = -1;
+            string[] value = checksum.Split('{', '}');
             switch (value[1].Replace("Bytes","").Replace("s",""))
             {
                 case "1":
-                    byteCount = 1;
+                    checksumLength = 1;
                     break;
                 case "2":
-                    byteCount = 2;
+                    checksumLength = 2;
                     break;
                 case "4":
-                    byteCount = 4;
+                    checksumLength = 4;
                     break;
                 case "8":
-                    byteCount = 8;
+                    checksumLength = 8;
                     break;
                 case "16":
-                    byteCount = 16;
+                    checksumLength = 16;
                     break;
                 case "32":
-                    byteCount = 32;
+                    checksumLength = 32;
                     break;
                 case "48":
-                    byteCount = 48;
+                    checksumLength = 48;
                     break;
                 case "64":
-                    byteCount = 64;
+                    checksumLength = 64;
                     break;
             }
             #endregion
@@ -144,69 +148,63 @@ namespace oCryptoBruteForce
             #region Launch Bruteforce
             if (!isLazySearch && !isLazyGenerate)
             {
-                if (oDelegateFunctions.GetCheckBoxCheck(usePCFCheckBox))
+                if (_possibleChecksumFileBuffer != null)
                 {
-                    SearchAndGenerateUsingPossibleChecksumFile(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.NotLazyGenerateNotLazySearch);
+                    SearchAndGenerateUsingPossibleChecksumFile(checksum, skipSearchBytesBy,startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateNotLazySearch);
                 }
                 else
                 {
                     if (oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox))
-                        ParallelSearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.NotLazyGenerateNotLazySearch);
+                        ParallelSearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateNotLazySearch);
                     else
-                        SearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.NotLazyGenerateNotLazySearch);
+                        SearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateNotLazySearch);
                 }
             }
             else if (isLazySearch && isLazyGenerate)
             {
                 if (oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox))
-                    ParallelSearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.LazyGenerateLazySearch);
+                    ParallelSearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.LazyGenerateLazySearch);
                 else
-                    SearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.LazyGenerateLazySearch);
+                    SearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.LazyGenerateLazySearch);
             }
             else if (!isLazySearch)
             {
                 if (oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox))
-                    ParallelSearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.LazyGenerateNotLazySearch);
+                    ParallelSearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.LazyGenerateNotLazySearch);
                 else
-                    SearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.LazyGenerateNotLazySearch);
+                    SearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.LazyGenerateNotLazySearch);
             }
             else
             {
                 if (oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox))
-                    ParallelSearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.NotLazyGenerateLazySearch);
+                    ParallelSearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateLazySearch);
                 else
-                    SearchAndGenerate(startSearch, stopSearchAt, startGeneratedChecksumFrom, byteCount, SearchTypeEnum.NotLazyGenerateLazySearch);
+                    SearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateLazySearch);
             }
             #endregion
         }
 
         #region Main Search Functions
-        private void SearchAndGenerateUsingPossibleChecksumFile(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
+        private void SearchAndGenerateUsingPossibleChecksumFile(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
         {
-            int skipBy = 1;
             int checksumFound = -1;
-            if(oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
-                skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
-            
             for (int checksumGenIndex = startGeneratedChecksumFrom; checksumGenIndex < stopSearchAt; )
             {
                 if (_stop) return;
-                byte[] checksum = GenerateChecksum(checksumGenIndex, _fileBuffer);
-                oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
-
+                byte[] checksum = GenerateChecksum(theChecksum,checksumGenIndex, _fileBuffer);
+                //oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
                 #region Main Search
                 for (int i = startSearch; i < _possibleChecksumFileBuffer.Length - 1; )
                 {
                     if (_stop) return;
-                    int added = 0;
                     foreach (byte item in checksum)
                     {
                         if (i == _possibleChecksumFileBuffer.Length) break;
+
                         if (_possibleChecksumFileBuffer[i] == item)
                         {
                             checksumFound = i;
                             i++;
-                            added++;
                         }
                         else
                         {
@@ -214,29 +212,6 @@ namespace oCryptoBruteForce
                             break;
                         }
                     }
-
-                    #region Reverse Search
-                    if (oDelegateFunctions.GetCheckBoxCheck(searchReverseValueCheckBox))
-                    {
-                        if (checksumFound != -1) break;
-                        i -= added;
-                        Array.Reverse(checksum, 0, checksum.Length);
-                        for (int j = 0; j < checksum.Length; j++)
-                        {
-                            if (_possibleChecksumFileBuffer[i] == checksum[j])
-                            {
-                                checksumFound = i;
-                                i++;
-                                added++;
-                            }
-                            else
-                            {
-                                checksumFound = -1;
-                                break;
-                            }
-                        }
-                    }
-                    #endregion
 
                     if (checksumFound != -1) break;
 
@@ -247,10 +222,10 @@ namespace oCryptoBruteForce
                             i += checksum.Length;
                             break;
                         case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            i += skipBy;
+                            i += skipSearchBytesBy;
                             break;
                         case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            i += skipBy;
+                            i += skipSearchBytesBy;
                             break;
                         case SearchTypeEnum.NotLazyGenerateLazySearch:
                             i += checksum.Length;
@@ -266,13 +241,13 @@ namespace oCryptoBruteForce
                 switch (searchType)
                 {
                     case SearchTypeEnum.LazyGenerateLazySearch:
-                        checksumGenIndex += byteCount;
+                        checksumGenIndex += checksumLength;
                         break;
                     case SearchTypeEnum.NotLazyGenerateNotLazySearch:
                         checksumGenIndex += 1;
                         break;
                     case SearchTypeEnum.LazyGenerateNotLazySearch:
-                        checksumGenIndex += byteCount;
+                        checksumGenIndex += checksumLength;
                         break;
                     case SearchTypeEnum.NotLazyGenerateLazySearch:
                         checksumGenIndex += 1;
@@ -281,33 +256,26 @@ namespace oCryptoBruteForce
                 oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
                 #endregion
             }
-            oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
+            //oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
         }
 
-        private void SearchAndGenerate(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
+        private void SearchAndGenerate(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
         {
-            int skipBy = 1;
             int checksumFound = -1;
-            if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
-                skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
-
-            for (int checksumGenIndex = startGeneratedChecksumFrom; checksumGenIndex < stopSearchAt;)
+            for (int checksumGenerationIndex = startGeneratedChecksumFrom; checksumGenerationIndex < stopSearchAt;)
             {
                 if (_stop) return;
-                byte[] checksum = GenerateChecksum(checksumGenIndex, _fileBuffer);
-                oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
-                for (int i = startSearch; i < stopSearchAt - byteCount;)
+                byte[] checksum = GenerateChecksum(theChecksum,checksumGenerationIndex, _fileBuffer);
+                //oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
+                for (int i = startSearch; i < stopSearchAt - checksumLength;)
                 {
                     if (_stop) return;
-                    int added = 0;
-                    //==================Forward Search============//
                     foreach (byte item in checksum)
                     {
                         if (_fileBuffer[i] == item )
                         {
                             checksumFound = i;
                             i++;
-                            added++;
                         }
                         else
                         {
@@ -315,29 +283,6 @@ namespace oCryptoBruteForce
                             break;
                         }
                     }
-
-                    //#region Reverse Search
-                    //if (oDelegateFunctions.GetCheckBoxCheck(searchReverseValueCheckBox))
-                    //{
-                    //    if (checksumFound != -1) break;
-                    //    i -= added;
-                    //    Array.Reverse(checksum, 0, checksum.Length);
-                    //    for (int j = 0; j < checksum.Length; j++)
-                    //    {
-                    //        if (_buffer[i] == checksum[j])
-                    //        {
-                    //            checksumFound = i;
-                    //            i++;
-                    //            added++;
-                    //        }
-                    //        else
-                    //        {
-                    //            checksumFound = -1;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
-                    //#endregion
 
                     if (checksumFound != -1) break;
                     #region Search Type to determing next index
@@ -347,10 +292,10 @@ namespace oCryptoBruteForce
                             i += checksum.Length;
                             break;
                         case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            i += skipBy;
+                            i += skipSearchBytesBy;
                             break;
                         case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            i += skipBy;
+                            i += skipSearchBytesBy;
                             break;
                         case SearchTypeEnum.NotLazyGenerateLazySearch:
                             i += checksum.Length;
@@ -362,98 +307,123 @@ namespace oCryptoBruteForce
                 switch (searchType)
                 {
                     case SearchTypeEnum.LazyGenerateLazySearch:
-                        checksumGenIndex += byteCount;
+                        checksumGenerationIndex += checksumLength;
                         break;
                     case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                        checksumGenIndex += 1;
+                        checksumGenerationIndex += 1;
                         break;
                     case SearchTypeEnum.LazyGenerateNotLazySearch:
-                        checksumGenIndex += byteCount;
+                        checksumGenerationIndex += checksumLength;
                         break;
                     case SearchTypeEnum.NotLazyGenerateLazySearch:
-                        checksumGenIndex += 1;
+                        checksumGenerationIndex += 1;
                         break;
                 }
-                oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
+                //oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
             }
-            oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
+            //oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
         }
 
-        private void ParallelSearchAndGenerate(int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int byteCount, SearchTypeEnum searchType)
+        private void ParallelSearchAndGenerate(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
         {
-            int skipBy = 1;
-            if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
-                skipBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
 
-            Parallel.For(startGeneratedChecksumFrom, stopSearchAt, (checksumGenIndex, y) =>
+            Parallel.For(startGeneratedChecksumFrom, stopSearchAt, checksumGenerationIndex =>
             {
                 if (_stop) return;
-                byte[] checksum = GenerateChecksum(checksumGenIndex, _fileBuffer);
-                for (int i = startSearch; i < stopSearchAt - byteCount; )
+                byte[] checksum = GenerateChecksum(theChecksum, checksumGenerationIndex, _fileBuffer);
+                for (int i = startSearch; i < stopSearchAt - checksumLength;)
                 {
                     int checksumFound = -1;
                     if (_stop) return;
-                    int added = 0;
-                        //==================Forward Search============//
-                        foreach (byte item in checksum)
+                    foreach (byte item in checksum)
+                    {
+                        if (_fileBuffer[i] == item)
                         {
-                            if (_fileBuffer[i] == item)
-                            {
-                                checksumFound = i;
-                                i++;
-                                added++;
-                            }
-                            else
-                            {
-                                checksumFound = -1;
-                                break;
-                            }
+                            checksumFound = i;
+                            i++;
                         }
-
-                        if (checksumFound != -1)
+                        else
                         {
-                            oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
-                            oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
-                            oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
+                            checksumFound = -1;
                             break;
                         }
-
-                        #region Search Type to determing next index
-                        switch (searchType)
-                        {
-                            case SearchTypeEnum.LazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                                i += skipBy;
-                                break;
-                            case SearchTypeEnum.LazyGenerateNotLazySearch:
-                                i += skipBy;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                        }
-                        #endregion
                     }
+
+                    if (checksumFound != -1)
+                    {
+                        //oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
+                        //oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
+                        //oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
+                        break;
+                    }
+
+                    #region Search Type to determing next index
+
                     switch (searchType)
                     {
                         case SearchTypeEnum.LazyGenerateLazySearch:
-                            checksumGenIndex += byteCount;
+                            i += checksum.Length;
                             break;
                         case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            checksumGenIndex += 1;
+                            i += skipSearchBytesBy;
                             break;
                         case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            checksumGenIndex += byteCount;
+                            i += skipSearchBytesBy;
                             break;
                         case SearchTypeEnum.NotLazyGenerateLazySearch:
-                            checksumGenIndex += 1;
+                            i += checksum.Length;
                             break;
                     }
-                    
-                });
-            oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
+
+                    #endregion
+                }
+            });
+            //oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
+        }
+        #endregion
+
+        #region Remote Functions
+        private void OnSearchAndGenerateUsingPossibleChecksumFile(DelegateObjects searchInformationObject)
+        {
+            _fileBuffer = searchInformationObject.DataArray;
+            _possibleChecksumFileBuffer = searchInformationObject.PossibleChecksumsArray;
+
+            SearchAndGenerateUsingPossibleChecksumFile(
+                searchInformationObject.Checksum,
+                searchInformationObject.SkipSearchBytesBy,
+                searchInformationObject.StartSearch,
+                searchInformationObject.StopSearchAt,
+                searchInformationObject.StartGeneratedChecksumFrom,
+                searchInformationObject.ChecksumLength,
+                searchInformationObject.searchType);
+        }
+
+        private void OnSearchAndGenerate(DelegateObjects searchInformationObject)
+        {
+            _fileBuffer = searchInformationObject.DataArray;
+
+            SearchAndGenerate(
+                searchInformationObject.Checksum,
+                searchInformationObject.SkipSearchBytesBy,
+                searchInformationObject.StartSearch,
+                searchInformationObject.StopSearchAt,
+                searchInformationObject.StartGeneratedChecksumFrom,
+                searchInformationObject.ChecksumLength,
+                searchInformationObject.searchType);
+        }
+
+        private void OnParallelSearchAndGenerate(DelegateObjects searchInformationObject)
+        {
+            _fileBuffer = searchInformationObject.DataArray;
+
+            ParallelSearchAndGenerate(
+                searchInformationObject.Checksum,
+                searchInformationObject.SkipSearchBytesBy,
+                searchInformationObject.StartSearch,
+                searchInformationObject.StopSearchAt,
+                searchInformationObject.StartGeneratedChecksumFrom,
+                searchInformationObject.ChecksumLength,
+                searchInformationObject.searchType);
         }
         #endregion
         #endregion
@@ -485,13 +455,14 @@ namespace oCryptoBruteForce
         /// <summary>
         /// Function to generate checksum
         /// </summary>
+        /// <param name="checksum">The checksum name</param>
         /// <param name="offset">The start of checksum generation</param>
         /// <param name="buffer">The byte array of data</param>
         /// <returns></returns>
-        private byte[] GenerateChecksum(int offset, byte[] buffer)
+        private static byte[] GenerateChecksum(string checksum, int offset, byte[] buffer)
         {
             byte[] returnValue = null;
-            switch (oDelegateFunctions.GetControlText(checksumComboBox))
+            switch (checksum)
             {
                 case "Adler8 - {1Byte}":
                     returnValue = Adler8.Compute(offset, buffer);
@@ -527,6 +498,41 @@ namespace oCryptoBruteForce
             return returnValue;
         }
         #endregion
+
+        private void byteSkippingCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            oDelegateFunctions.SetEnableControl(skipBytesNumericUpDown,
+                oDelegateFunctions.GetEnableControl(byteSkippingCheckBox));
+        }
         #endregion
+
+        private bool _isListening;
+        private int _listeningPort;
+        private void startListeningButton_Click(object sender, EventArgs e)
+        {
+            if (_isListening) return;
+            try
+            {
+                Thread oThread = new Thread(ListeningThread) { IsBackground = true };
+                oThread.Start();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
+
+        private void ListeningThread()
+        {
+            _isListening = true;
+            AsynchronousSocketListener.OnSearchAndGenerateUsingPossibleChecksumFileEvent
+                += OnSearchAndGenerateUsingPossibleChecksumFile;
+            AsynchronousSocketListener.OnSearchAndGenerate
+                += OnSearchAndGenerate;
+            AsynchronousSocketListener.OnParallelSearchAndGenerate
+                += OnParallelSearchAndGenerate;
+            AsynchronousSocketListener.StartListening(_listeningPort);
+        }
     }
 }

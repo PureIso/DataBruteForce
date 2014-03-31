@@ -289,6 +289,18 @@ namespace PortableLib
             }
             return returnValue;
         }
+
+        public static bool GetEnableControl(Control control)
+        {
+            bool returnValue = false;
+            if (control.InvokeRequired)
+                control.Invoke((MethodInvoker)delegate { returnValue = GetEnableControl(control); });
+            else
+            {
+                return control.Enabled;
+            }
+            return returnValue;
+        }
         #endregion
 
         #region Reset
