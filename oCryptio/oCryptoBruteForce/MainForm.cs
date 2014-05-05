@@ -513,13 +513,14 @@ namespace oCryptoBruteForce
             if (_isListening) return;
             try
             {
+                _listeningPort = int.Parse(listeningTextBox.Text);
                 Thread oThread = new Thread(ListeningThread) { IsBackground = true };
                 oThread.Start();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                oDelegateFunctions.MessageBoxShow(this, ex.Message, "Crypto BruteForce", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -532,7 +533,20 @@ namespace oCryptoBruteForce
                 += OnSearchAndGenerate;
             AsynchronousSocketListener.OnParallelSearchAndGenerate
                 += OnParallelSearchAndGenerate;
+            AsynchronousSocketListener.OnSetTextToInfo
+                += SetInformationText;
             AsynchronousSocketListener.StartListening(_listeningPort);
+        }
+
+        private void stopListeningButton_Click(object sender, EventArgs e)
+        {
+            if (!_isListening) return;
+            AsynchronousSocketListener.Listening = false;
+        }
+
+        private void SetInformationText(string text)
+        {
+            oDelegateFunctions.SetInformationText(infoTextBox, text);
         }
     }
 }

@@ -1,9 +1,12 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 
@@ -21,10 +24,10 @@ namespace oCryptoBruteForce
         #endregion
 
         #region Event
-
         public static event DelegateObject OnSearchAndGenerateUsingPossibleChecksumFileEvent;
         public static event DelegateObject OnSearchAndGenerate;
         public static event DelegateObject OnParallelSearchAndGenerate;
+        public static event SetInfoText OnSetTextToInfo;
         #endregion
 
         #region Public Methods and Operators
@@ -45,7 +48,8 @@ namespace oCryptoBruteForce
                 // Bind the socket to the local endpoint and listen for incoming connections.
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
-                while (true)
+                Listening = true;
+                while (Listening)
                 {
                     AllDone.Reset();    // Set the event to non signaled state.
                     listener.BeginAccept(AcceptCallback, listener);
@@ -56,6 +60,18 @@ namespace oCryptoBruteForce
         #endregion
 
         #region Methods
+
+        private static byte[] StringToByteArray(string content)
+        {
+            if ((content.Length%2) != 0) content = 0 + content;
+            byte[] output = new byte[content.Length / 2];
+            for (int i = 0; i < content.Length; i++)
+            {
+                output[i] = Convert.ToByte(content.Substring((i*2), 2), 16);
+            }
+            return output;
+        }
+
         private static void AcceptCallback(IAsyncResult ar)
         {
             // Signal the main thread to continue.
@@ -87,29 +103,33 @@ namespace oCryptoBruteForce
             Socket handler = state.WorkSocket;
             // Read data from the client socket. 
             int bytesRead = handler.EndReceive(ar);
-            if (bytesRead > 0)
+            if (bytesRead <= 0) return;
+            state.StringBuilder.Append(Encoding.UTF8.GetString(state.Buffer, 0, bytesRead));
+            String content = state.StringBuilder.ToString();
+            if (content.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
             {
-                state.StringBuilder.Append(Encoding.UTF8.GetString(state.Buffer, 0, bytesRead));
-                String content = state.StringBuilder.ToString();
-                if (content.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
+                content = content.Replace("<EOF>", "");
+                byte[] currentData;
+                if (content.StartsWith("<OnSearchAndGenerateUsingPossibleChecksumFileEvent>"))
                 {
-                    content = content.Replace("<EOF>", "");
-                    byte[] currentData;
-                    if (content.StartsWith("SearchAndGenerateUsingPossibleChecksumFile"))
+                    #region OnSearchAndGenerateUsingPossibleChecksumFileEvent
+                    try
                     {
-                        string[] dataArray = content.Split(new[] { "**" }, StringSplitOptions.RemoveEmptyEntries);
-                    }
-                    else if (content.StartsWith("SearchAndGenerate"))
-                    {
-                        string[] dataArray = content.Split(new[] { "**" }, StringSplitOptions.RemoveEmptyEntries);
-                    }
-                    else if (content.StartsWith("ParallelSearchAndGenerate"))
-                    {
-                        string[] dataArray = content.Split(new[] {"**"}, StringSplitOptions.RemoveEmptyEntries);
-                    }
-                    else
-                    {
-                        currentData = Encoding.UTF8.GetBytes("Result**Invalid function.");
+                        content = content.Replace("<OnSearchAndGenerateUsingPossibleChecksumFileEvent>", "");
+                        DelegateObjects serializedDelegateObject;
+                        byte[] contentBytes = StringToByteArray(content);
+                        //De-serializing serialized object
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            BinaryFormatter binaryFormatter = new BinaryFormatter();
+                            memoryStream.Write(contentBytes, 0, contentBytes.Length);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            serializedDelegateObject = (DelegateObjects) binaryFormatter.Deserialize(memoryStream);
+                        }
+                        //Call function with object
+                        OnSearchAndGenerateUsingPossibleChecksumFileEvent(serializedDelegateObject);
+                        //Reply true
+                        currentData = Encoding.UTF8.GetBytes("TRUE");
                         using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
                         {
                             byte[] size = BitConverter.GetBytes(currentData.Length);
@@ -120,12 +140,129 @@ namespace oCryptoBruteForce
                             ms.Close();
                         }
                     }
+                    catch
+                    {
+                        currentData = Encoding.UTF8.GetBytes("FALSE");
+                        using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
+                        {
+                            byte[] size = BitConverter.GetBytes(currentData.Length);
+                            ms.Write(size, 0, 4);
+                            ms.Write(currentData, 0, currentData.Length);
+                            state.SendBuffer = ms.ToArray();
+                            Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
+                            ms.Close();
+                        }
+                    }
+                    #endregion
+                }
+                else if (content.StartsWith("<OnSearchAndGenerate>"))
+                {
+                    #region OnSearchAndGenerate
+                    try
+                    {
+                        content = content.Replace("<OnSearchAndGenerate>", "");
+                        DelegateObjects serializedDelegateObject;
+                        byte[] contentBytes = StringToByteArray(content);
+                        //De-serializing serialized object
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            BinaryFormatter binaryFormatter = new BinaryFormatter();
+                            memoryStream.Write(contentBytes, 0, contentBytes.Length);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            serializedDelegateObject = (DelegateObjects)binaryFormatter.Deserialize(memoryStream);
+                        }
+                        //Call function with object
+                        OnSearchAndGenerate(serializedDelegateObject);
+                        //Reply true
+                        currentData = Encoding.UTF8.GetBytes("TRUE");
+                        using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
+                        {
+                            byte[] size = BitConverter.GetBytes(currentData.Length);
+                            ms.Write(size, 0, 4);
+                            ms.Write(currentData, 0, currentData.Length);
+                            state.SendBuffer = ms.ToArray();
+                            Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
+                            ms.Close();
+                        }
+                    }
+                    catch
+                    {
+                        currentData = Encoding.UTF8.GetBytes("FALSE");
+                        using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
+                        {
+                            byte[] size = BitConverter.GetBytes(currentData.Length);
+                            ms.Write(size, 0, 4);
+                            ms.Write(currentData, 0, currentData.Length);
+                            state.SendBuffer = ms.ToArray();
+                            Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
+                            ms.Close();
+                        }
+                    }
+                    #endregion
+                }
+                else if (content.StartsWith("<OnParallelSearchAndGenerate>"))
+                {
+                    #region OnParallelSearchAndGenerate
+                    try
+                    {
+                        content = content.Replace("<OnParallelSearchAndGenerate>", "");
+                        DelegateObjects serializedDelegateObject;
+                        byte[] contentBytes = StringToByteArray(content);
+                        //De-serializing serialized object
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            BinaryFormatter binaryFormatter = new BinaryFormatter();
+                            memoryStream.Write(contentBytes, 0, contentBytes.Length);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            serializedDelegateObject = (DelegateObjects)binaryFormatter.Deserialize(memoryStream);
+                        }
+                        //Call function with object
+                        OnParallelSearchAndGenerate(serializedDelegateObject);
+                        //Reply true
+                        currentData = Encoding.UTF8.GetBytes("TRUE");
+                        using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
+                        {
+                            byte[] size = BitConverter.GetBytes(currentData.Length);
+                            ms.Write(size, 0, 4);
+                            ms.Write(currentData, 0, currentData.Length);
+                            state.SendBuffer = ms.ToArray();
+                            Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
+                            ms.Close();
+                        }
+                    }
+                    catch
+                    {
+                        currentData = Encoding.UTF8.GetBytes("FALSE");
+                        using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
+                        {
+                            byte[] size = BitConverter.GetBytes(currentData.Length);
+                            ms.Write(size, 0, 4);
+                            ms.Write(currentData, 0, currentData.Length);
+                            state.SendBuffer = ms.ToArray();
+                            Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
+                            ms.Close();
+                        }
+                    }
+                    #endregion
                 }
                 else
                 {
-                    // Not all data received. Get more.
-                    handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, ReadCallback, state);
+                    currentData = Encoding.UTF8.GetBytes("Result**Invalid function.");
+                    using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
+                    {
+                        byte[] size = BitConverter.GetBytes(currentData.Length);
+                        ms.Write(size, 0, 4);
+                        ms.Write(currentData, 0, currentData.Length);
+                        state.SendBuffer = ms.ToArray();
+                        Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
+                        ms.Close();
+                    }
                 }
+            }
+            else
+            {
+                // Not all data received. Get more.
+                handler.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, ReadCallback, state);
             }
         }
 
@@ -138,5 +275,12 @@ namespace oCryptoBruteForce
             handler.BeginSend(byteData, 0, byteData.Length, 0, SendCallback, handler);
         }
         #endregion
+
+        #region Properties
+        public static bool Listening { get; set; }
+        public static List<string> Connections { get; set; } 
+        #endregion
     }
+
+    public delegate void SetInfoText(string text);
 }

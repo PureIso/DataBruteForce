@@ -67,6 +67,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.searchTabPage = new System.Windows.Forms.TabPage();
             this.serverModeTabPage = new System.Windows.Forms.TabPage();
+            this.stopListeningButton = new System.Windows.Forms.Button();
+            this.startListeningButton = new System.Windows.Forms.Button();
+            this.listeningTextBox = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -80,9 +84,16 @@
             this.dragAndDropPanel = new System.Windows.Forms.Panel();
             this.possibleChecksumFileLocationTextBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.listeningTextBox = new System.Windows.Forms.TextBox();
-            this.startListeningButton = new System.Windows.Forms.Button();
+            this.infoTextBox = new System.Windows.Forms.TextBox();
+            this.clientModeTabPage = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.listView1 = new System.Windows.Forms.ListView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -95,6 +106,7 @@
             this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.clientModeTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -411,6 +423,7 @@
             this.tabControl1.Controls.Add(this.bruteforceTabPage);
             this.tabControl1.Controls.Add(this.searchTabPage);
             this.tabControl1.Controls.Add(this.serverModeTabPage);
+            this.tabControl1.Controls.Add(this.clientModeTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabControl1.Location = new System.Drawing.Point(0, 264);
             this.tabControl1.Name = "tabControl1";
@@ -510,6 +523,8 @@
             // serverModeTabPage
             // 
             this.serverModeTabPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.serverModeTabPage.Controls.Add(this.infoTextBox);
+            this.serverModeTabPage.Controls.Add(this.stopListeningButton);
             this.serverModeTabPage.Controls.Add(this.startListeningButton);
             this.serverModeTabPage.Controls.Add(this.listeningTextBox);
             this.serverModeTabPage.Controls.Add(this.label16);
@@ -520,6 +535,42 @@
             this.serverModeTabPage.TabIndex = 2;
             this.serverModeTabPage.Text = "Server Mode";
             this.serverModeTabPage.UseVisualStyleBackColor = true;
+            // 
+            // stopListeningButton
+            // 
+            this.stopListeningButton.Location = new System.Drawing.Point(357, 7);
+            this.stopListeningButton.Name = "stopListeningButton";
+            this.stopListeningButton.Size = new System.Drawing.Size(149, 23);
+            this.stopListeningButton.TabIndex = 38;
+            this.stopListeningButton.Text = "Stop Listening";
+            this.stopListeningButton.UseVisualStyleBackColor = true;
+            this.stopListeningButton.Click += new System.EventHandler(this.stopListeningButton_Click);
+            // 
+            // startListeningButton
+            // 
+            this.startListeningButton.Location = new System.Drawing.Point(202, 7);
+            this.startListeningButton.Name = "startListeningButton";
+            this.startListeningButton.Size = new System.Drawing.Size(149, 23);
+            this.startListeningButton.TabIndex = 37;
+            this.startListeningButton.Text = "Start Listening";
+            this.startListeningButton.UseVisualStyleBackColor = true;
+            this.startListeningButton.Click += new System.EventHandler(this.startListeningButton_Click);
+            // 
+            // listeningTextBox
+            // 
+            this.listeningTextBox.Location = new System.Drawing.Point(96, 7);
+            this.listeningTextBox.Name = "listeningTextBox";
+            this.listeningTextBox.Size = new System.Drawing.Size(100, 23);
+            this.listeningTextBox.TabIndex = 33;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 10);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(83, 15);
+            this.label16.TabIndex = 32;
+            this.label16.Text = "Listening Port:";
             // 
             // groupBox4
             // 
@@ -666,31 +717,103 @@
             this.label11.TabIndex = 40;
             this.label11.Text = "Possible Checksum File Location:";
             // 
-            // label16
+            // infoTextBox
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 10);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(83, 15);
-            this.label16.TabIndex = 32;
-            this.label16.Text = "Listening Port:";
+            this.infoTextBox.BackColor = System.Drawing.SystemColors.InfoText;
+            this.infoTextBox.ForeColor = System.Drawing.SystemColors.Info;
+            this.infoTextBox.Location = new System.Drawing.Point(9, 37);
+            this.infoTextBox.Multiline = true;
+            this.infoTextBox.Name = "infoTextBox";
+            this.infoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.infoTextBox.Size = new System.Drawing.Size(497, 203);
+            this.infoTextBox.TabIndex = 39;
             // 
-            // listeningTextBox
+            // clientModeTabPage
             // 
-            this.listeningTextBox.Location = new System.Drawing.Point(96, 7);
-            this.listeningTextBox.Name = "listeningTextBox";
-            this.listeningTextBox.Size = new System.Drawing.Size(100, 23);
-            this.listeningTextBox.TabIndex = 33;
+            this.clientModeTabPage.Controls.Add(this.listView1);
+            this.clientModeTabPage.Controls.Add(this.textBox3);
+            this.clientModeTabPage.Controls.Add(this.label18);
+            this.clientModeTabPage.Controls.Add(this.textBox1);
+            this.clientModeTabPage.Controls.Add(this.button2);
+            this.clientModeTabPage.Controls.Add(this.button3);
+            this.clientModeTabPage.Controls.Add(this.textBox2);
+            this.clientModeTabPage.Controls.Add(this.label17);
+            this.clientModeTabPage.Location = new System.Drawing.Point(4, 24);
+            this.clientModeTabPage.Name = "clientModeTabPage";
+            this.clientModeTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.clientModeTabPage.Size = new System.Drawing.Size(845, 249);
+            this.clientModeTabPage.TabIndex = 3;
+            this.clientModeTabPage.Text = "Client Mode";
+            this.clientModeTabPage.UseVisualStyleBackColor = true;
             // 
-            // startListeningButton
+            // textBox1
             // 
-            this.startListeningButton.Location = new System.Drawing.Point(202, 7);
-            this.startListeningButton.Name = "startListeningButton";
-            this.startListeningButton.Size = new System.Drawing.Size(149, 23);
-            this.startListeningButton.TabIndex = 37;
-            this.startListeningButton.Text = "Start Listening";
-            this.startListeningButton.UseVisualStyleBackColor = true;
-            this.startListeningButton.Click += new System.EventHandler(this.startListeningButton_Click);
+            this.textBox1.BackColor = System.Drawing.SystemColors.InfoText;
+            this.textBox1.ForeColor = System.Drawing.SystemColors.Info;
+            this.textBox1.Location = new System.Drawing.Point(5, 36);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(625, 203);
+            this.textBox1.TabIndex = 44;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(326, 6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(149, 23);
+            this.button2.TabIndex = 43;
+            this.button2.Text = "Connect";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(481, 5);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(149, 23);
+            this.button3.TabIndex = 42;
+            this.button3.Text = "Disconnect";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(73, 6);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 23);
+            this.textBox2.TabIndex = 41;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(2, 9);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 15);
+            this.label17.TabIndex = 40;
+            this.label17.Text = "IP Address:";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(218, 6);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 23);
+            this.textBox3.TabIndex = 46;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(180, 9);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(32, 15);
+            this.label18.TabIndex = 45;
+            this.label18.Text = "Port:";
+            // 
+            // listView1
+            // 
+            this.listView1.Location = new System.Drawing.Point(637, 5);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(200, 234);
+            this.listView1.TabIndex = 47;
+            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // MainForm
             // 
@@ -726,6 +849,8 @@
             this.panel1.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.clientModeTabPage.ResumeLayout(false);
+            this.clientModeTabPage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -788,6 +913,17 @@
         private System.Windows.Forms.Button startListeningButton;
         private System.Windows.Forms.TextBox listeningTextBox;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button stopListeningButton;
+        private System.Windows.Forms.TextBox infoTextBox;
+        private System.Windows.Forms.TabPage clientModeTabPage;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label17;
     }
 }
 

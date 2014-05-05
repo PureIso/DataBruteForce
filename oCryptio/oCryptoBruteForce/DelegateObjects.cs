@@ -1,5 +1,8 @@
-﻿namespace oCryptoBruteForce
+﻿using System;
+
+namespace oCryptoBruteForce
 {
+    [Serializable]
     public class DelegateObjects
     {
         public byte[] DataArray { get; set; }

@@ -202,7 +202,7 @@ namespace PortableLib
                 control.Invoke((MethodInvoker)delegate { SetInformationText(control, text); });
             else
             {
-                control.AppendText(Environment.NewLine + text);
+                control.AppendText(Environment.NewLine + "[ " + DateTime.Now + " ]   " + text);
             }
         }
 
