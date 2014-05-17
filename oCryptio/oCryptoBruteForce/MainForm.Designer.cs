@@ -67,10 +67,20 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.searchTabPage = new System.Windows.Forms.TabPage();
             this.serverModeTabPage = new System.Windows.Forms.TabPage();
+            this.infoTextBox = new System.Windows.Forms.TextBox();
             this.stopListeningButton = new System.Windows.Forms.Button();
             this.startListeningButton = new System.Windows.Forms.Button();
             this.listeningTextBox = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.clientModeTabPage = new System.Windows.Forms.TabPage();
+            this.connectedServerListView = new System.Windows.Forms.ListView();
+            this.serverPortTextBox = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.clientInformationTextBox = new System.Windows.Forms.TextBox();
+            this.connectButton = new System.Windows.Forms.Button();
+            this.disconnectButton = new System.Windows.Forms.Button();
+            this.serverIPTextBox = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -78,22 +88,9 @@
             this.loadPCFButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.clearPCFButton = new System.Windows.Forms.Button();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.dragAndDropPanel = new System.Windows.Forms.Panel();
             this.possibleChecksumFileLocationTextBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.infoTextBox = new System.Windows.Forms.TextBox();
-            this.clientModeTabPage = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -102,11 +99,10 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.serverModeTabPage.SuspendLayout();
+            this.clientModeTabPage.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.clientModeTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -159,7 +155,7 @@
             // 
             // fileLocationTextBox
             // 
-            this.fileLocationTextBox.Location = new System.Drawing.Point(200, 59);
+            this.fileLocationTextBox.Location = new System.Drawing.Point(201, 3);
             this.fileLocationTextBox.Name = "fileLocationTextBox";
             this.fileLocationTextBox.ReadOnly = true;
             this.fileLocationTextBox.Size = new System.Drawing.Size(385, 23);
@@ -313,7 +309,7 @@
             this.stopButton.Enabled = false;
             this.stopButton.Location = new System.Drawing.Point(585, 61);
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(196, 56);
+            this.stopButton.Size = new System.Drawing.Size(251, 56);
             this.stopButton.TabIndex = 17;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
@@ -359,7 +355,7 @@
             this.startSearchButton.Enabled = false;
             this.startSearchButton.Location = new System.Drawing.Point(585, 6);
             this.startSearchButton.Name = "startSearchButton";
-            this.startSearchButton.Size = new System.Drawing.Size(196, 55);
+            this.startSearchButton.Size = new System.Drawing.Size(251, 55);
             this.startSearchButton.TabIndex = 10;
             this.startSearchButton.Text = "Start";
             this.startSearchButton.UseVisualStyleBackColor = true;
@@ -412,7 +408,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(117, 62);
+            this.label4.Location = new System.Drawing.Point(118, 6);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(77, 15);
             this.label4.TabIndex = 8;
@@ -425,7 +421,7 @@
             this.tabControl1.Controls.Add(this.serverModeTabPage);
             this.tabControl1.Controls.Add(this.clientModeTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl1.Location = new System.Drawing.Point(0, 264);
+            this.tabControl1.Location = new System.Drawing.Point(0, 212);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(853, 277);
@@ -536,6 +532,17 @@
             this.serverModeTabPage.Text = "Server Mode";
             this.serverModeTabPage.UseVisualStyleBackColor = true;
             // 
+            // infoTextBox
+            // 
+            this.infoTextBox.BackColor = System.Drawing.SystemColors.InfoText;
+            this.infoTextBox.ForeColor = System.Drawing.SystemColors.Info;
+            this.infoTextBox.Location = new System.Drawing.Point(9, 37);
+            this.infoTextBox.Multiline = true;
+            this.infoTextBox.Name = "infoTextBox";
+            this.infoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.infoTextBox.Size = new System.Drawing.Size(828, 203);
+            this.infoTextBox.TabIndex = 39;
+            // 
             // stopListeningButton
             // 
             this.stopListeningButton.Location = new System.Drawing.Point(357, 7);
@@ -572,6 +579,93 @@
             this.label16.TabIndex = 32;
             this.label16.Text = "Listening Port:";
             // 
+            // clientModeTabPage
+            // 
+            this.clientModeTabPage.Controls.Add(this.connectedServerListView);
+            this.clientModeTabPage.Controls.Add(this.serverPortTextBox);
+            this.clientModeTabPage.Controls.Add(this.label18);
+            this.clientModeTabPage.Controls.Add(this.clientInformationTextBox);
+            this.clientModeTabPage.Controls.Add(this.connectButton);
+            this.clientModeTabPage.Controls.Add(this.disconnectButton);
+            this.clientModeTabPage.Controls.Add(this.serverIPTextBox);
+            this.clientModeTabPage.Controls.Add(this.label17);
+            this.clientModeTabPage.Location = new System.Drawing.Point(4, 24);
+            this.clientModeTabPage.Name = "clientModeTabPage";
+            this.clientModeTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.clientModeTabPage.Size = new System.Drawing.Size(845, 249);
+            this.clientModeTabPage.TabIndex = 3;
+            this.clientModeTabPage.Text = "Client Mode";
+            this.clientModeTabPage.UseVisualStyleBackColor = true;
+            // 
+            // connectedServerListView
+            // 
+            this.connectedServerListView.Location = new System.Drawing.Point(637, 5);
+            this.connectedServerListView.Name = "connectedServerListView";
+            this.connectedServerListView.Size = new System.Drawing.Size(200, 234);
+            this.connectedServerListView.TabIndex = 47;
+            this.connectedServerListView.UseCompatibleStateImageBehavior = false;
+            // 
+            // serverPortTextBox
+            // 
+            this.serverPortTextBox.Location = new System.Drawing.Point(218, 6);
+            this.serverPortTextBox.Name = "serverPortTextBox";
+            this.serverPortTextBox.Size = new System.Drawing.Size(100, 23);
+            this.serverPortTextBox.TabIndex = 46;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(180, 9);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(32, 15);
+            this.label18.TabIndex = 45;
+            this.label18.Text = "Port:";
+            // 
+            // clientInformationTextBox
+            // 
+            this.clientInformationTextBox.BackColor = System.Drawing.SystemColors.InfoText;
+            this.clientInformationTextBox.ForeColor = System.Drawing.SystemColors.Info;
+            this.clientInformationTextBox.Location = new System.Drawing.Point(5, 36);
+            this.clientInformationTextBox.Multiline = true;
+            this.clientInformationTextBox.Name = "clientInformationTextBox";
+            this.clientInformationTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.clientInformationTextBox.Size = new System.Drawing.Size(625, 203);
+            this.clientInformationTextBox.TabIndex = 44;
+            // 
+            // connectButton
+            // 
+            this.connectButton.Location = new System.Drawing.Point(326, 6);
+            this.connectButton.Name = "connectButton";
+            this.connectButton.Size = new System.Drawing.Size(149, 23);
+            this.connectButton.TabIndex = 43;
+            this.connectButton.Text = "Connect";
+            this.connectButton.UseVisualStyleBackColor = true;
+            // 
+            // disconnectButton
+            // 
+            this.disconnectButton.Location = new System.Drawing.Point(481, 5);
+            this.disconnectButton.Name = "disconnectButton";
+            this.disconnectButton.Size = new System.Drawing.Size(149, 23);
+            this.disconnectButton.TabIndex = 42;
+            this.disconnectButton.Text = "Disconnect";
+            this.disconnectButton.UseVisualStyleBackColor = true;
+            // 
+            // serverIPTextBox
+            // 
+            this.serverIPTextBox.Location = new System.Drawing.Point(73, 6);
+            this.serverIPTextBox.Name = "serverIPTextBox";
+            this.serverIPTextBox.Size = new System.Drawing.Size(100, 23);
+            this.serverIPTextBox.TabIndex = 41;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(2, 9);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 15);
+            this.label17.TabIndex = 40;
+            this.label17.Text = "IP Address:";
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.groupBox5);
@@ -582,7 +676,7 @@
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.lazyGenerateComboBox);
             this.groupBox4.Controls.Add(this.label10);
-            this.groupBox4.Location = new System.Drawing.Point(14, 119);
+            this.groupBox4.Location = new System.Drawing.Point(15, 63);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(571, 114);
             this.groupBox4.TabIndex = 38;
@@ -621,9 +715,9 @@
             // 
             // loadPCFButton
             // 
-            this.loadPCFButton.Location = new System.Drawing.Point(591, 90);
+            this.loadPCFButton.Location = new System.Drawing.Point(592, 3);
             this.loadPCFButton.Name = "loadPCFButton";
-            this.loadPCFButton.Size = new System.Drawing.Size(125, 23);
+            this.loadPCFButton.Size = new System.Drawing.Size(257, 23);
             this.loadPCFButton.TabIndex = 39;
             this.loadPCFButton.Text = "Load";
             this.loadPCFButton.UseVisualStyleBackColor = true;
@@ -633,7 +727,6 @@
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.clearPCFButton);
-            this.panel1.Controls.Add(this.groupBox6);
             this.panel1.Controls.Add(this.dragAndDropPanel);
             this.panel1.Controls.Add(this.loadPCFButton);
             this.panel1.Controls.Add(this.possibleChecksumFileLocationTextBox);
@@ -644,50 +737,17 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(853, 240);
+            this.panel1.Size = new System.Drawing.Size(853, 188);
             this.panel1.TabIndex = 10;
             // 
             // clearPCFButton
             // 
-            this.clearPCFButton.Location = new System.Drawing.Point(722, 90);
+            this.clearPCFButton.Location = new System.Drawing.Point(592, 34);
             this.clearPCFButton.Name = "clearPCFButton";
-            this.clearPCFButton.Size = new System.Drawing.Size(125, 23);
+            this.clearPCFButton.Size = new System.Drawing.Size(257, 23);
             this.clearPCFButton.TabIndex = 42;
             this.clearPCFButton.Text = "Clear";
             this.clearPCFButton.UseVisualStyleBackColor = true;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.radioButton2);
-            this.groupBox6.Controls.Add(this.radioButton1);
-            this.groupBox6.Location = new System.Drawing.Point(318, 3);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(142, 50);
-            this.groupBox6.TabIndex = 41;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Application Mode";
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(78, 22);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(57, 19);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "Server";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(7, 22);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(56, 19);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Client";
-            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // dragAndDropPanel
             // 
@@ -695,14 +755,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dragAndDropPanel.BackColor = System.Drawing.Color.DimGray;
-            this.dragAndDropPanel.Location = new System.Drawing.Point(591, 119);
+            this.dragAndDropPanel.Location = new System.Drawing.Point(592, 63);
             this.dragAndDropPanel.Name = "dragAndDropPanel";
             this.dragAndDropPanel.Size = new System.Drawing.Size(257, 114);
             this.dragAndDropPanel.TabIndex = 11;
             // 
             // possibleChecksumFileLocationTextBox
             // 
-            this.possibleChecksumFileLocationTextBox.Location = new System.Drawing.Point(200, 90);
+            this.possibleChecksumFileLocationTextBox.Location = new System.Drawing.Point(201, 34);
             this.possibleChecksumFileLocationTextBox.Name = "possibleChecksumFileLocationTextBox";
             this.possibleChecksumFileLocationTextBox.ReadOnly = true;
             this.possibleChecksumFileLocationTextBox.Size = new System.Drawing.Size(385, 23);
@@ -711,109 +771,11 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 93);
+            this.label11.Location = new System.Drawing.Point(13, 37);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(182, 15);
             this.label11.TabIndex = 40;
             this.label11.Text = "Possible Checksum File Location:";
-            // 
-            // infoTextBox
-            // 
-            this.infoTextBox.BackColor = System.Drawing.SystemColors.InfoText;
-            this.infoTextBox.ForeColor = System.Drawing.SystemColors.Info;
-            this.infoTextBox.Location = new System.Drawing.Point(9, 37);
-            this.infoTextBox.Multiline = true;
-            this.infoTextBox.Name = "infoTextBox";
-            this.infoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.infoTextBox.Size = new System.Drawing.Size(497, 203);
-            this.infoTextBox.TabIndex = 39;
-            // 
-            // clientModeTabPage
-            // 
-            this.clientModeTabPage.Controls.Add(this.listView1);
-            this.clientModeTabPage.Controls.Add(this.textBox3);
-            this.clientModeTabPage.Controls.Add(this.label18);
-            this.clientModeTabPage.Controls.Add(this.textBox1);
-            this.clientModeTabPage.Controls.Add(this.button2);
-            this.clientModeTabPage.Controls.Add(this.button3);
-            this.clientModeTabPage.Controls.Add(this.textBox2);
-            this.clientModeTabPage.Controls.Add(this.label17);
-            this.clientModeTabPage.Location = new System.Drawing.Point(4, 24);
-            this.clientModeTabPage.Name = "clientModeTabPage";
-            this.clientModeTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.clientModeTabPage.Size = new System.Drawing.Size(845, 249);
-            this.clientModeTabPage.TabIndex = 3;
-            this.clientModeTabPage.Text = "Client Mode";
-            this.clientModeTabPage.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.InfoText;
-            this.textBox1.ForeColor = System.Drawing.SystemColors.Info;
-            this.textBox1.Location = new System.Drawing.Point(5, 36);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(625, 203);
-            this.textBox1.TabIndex = 44;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(326, 6);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(149, 23);
-            this.button2.TabIndex = 43;
-            this.button2.Text = "Connect";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(481, 5);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(149, 23);
-            this.button3.TabIndex = 42;
-            this.button3.Text = "Disconnect";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(73, 6);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 23);
-            this.textBox2.TabIndex = 41;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(2, 9);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(65, 15);
-            this.label17.TabIndex = 40;
-            this.label17.Text = "IP Address:";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(218, 6);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 23);
-            this.textBox3.TabIndex = 46;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(180, 9);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(32, 15);
-            this.label18.TabIndex = 45;
-            this.label18.Text = "Port:";
-            // 
-            // listView1
-            // 
-            this.listView1.Location = new System.Drawing.Point(637, 5);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(200, 234);
-            this.listView1.TabIndex = 47;
-            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // MainForm
             // 
@@ -841,16 +803,14 @@
             this.groupBox1.PerformLayout();
             this.serverModeTabPage.ResumeLayout(false);
             this.serverModeTabPage.PerformLayout();
+            this.clientModeTabPage.ResumeLayout(false);
+            this.clientModeTabPage.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            this.clientModeTabPage.ResumeLayout(false);
-            this.clientModeTabPage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -907,22 +867,19 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button clearPCFButton;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Button startListeningButton;
         private System.Windows.Forms.TextBox listeningTextBox;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button stopListeningButton;
         private System.Windows.Forms.TextBox infoTextBox;
         private System.Windows.Forms.TabPage clientModeTabPage;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.ListView connectedServerListView;
+        private System.Windows.Forms.TextBox serverPortTextBox;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox clientInformationTextBox;
+        private System.Windows.Forms.Button connectButton;
+        private System.Windows.Forms.Button disconnectButton;
+        private System.Windows.Forms.TextBox serverIPTextBox;
         private System.Windows.Forms.Label label17;
     }
 }

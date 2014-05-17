@@ -21,6 +21,7 @@ namespace oCryptoBruteForce
     {
         #region Fields
         private static readonly ManualResetEvent AllDone = new ManualResetEvent(false);
+        private static Socket _listener;
         #endregion
 
         #region Event
@@ -34,6 +35,7 @@ namespace oCryptoBruteForce
         public static void StartListening(int port)
         {
             //This function will block a thread
+            if (_listener != null && _listener.IsBound) return;
             IPAddress ipAddress = null;
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             foreach (IPAddress ip in ipHostInfo.AddressList)
@@ -44,17 +46,18 @@ namespace oCryptoBruteForce
             if (ipAddress != null)
             {
                 IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
-                Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 // Bind the socket to the local endpoint and listen for incoming connections.
-                listener.Bind(localEndPoint);
-                listener.Listen(100);
+                _listener.Bind(localEndPoint);
+                _listener.Listen(100);
                 Listening = true;
                 while (Listening)
                 {
                     AllDone.Reset();    // Set the event to non signaled state.
-                    listener.BeginAccept(AcceptCallback, listener);
+                    _listener.BeginAccept(AcceptCallback, _listener);
                     AllDone.WaitOne();  // Wait until a connection is made before continuing.
                 }
+                _listener = null;
             }
         }
         #endregion
@@ -76,6 +79,7 @@ namespace oCryptoBruteForce
         {
             // Signal the main thread to continue.
             AllDone.Set();
+            if (!_listening) return;
             // Get the socket that handles the client request.
             Socket listener = (Socket) ar.AsyncState;
             Socket handler = listener.EndAccept(ar);
@@ -277,7 +281,18 @@ namespace oCryptoBruteForce
         #endregion
 
         #region Properties
-        public static bool Listening { get; set; }
+
+        private static bool _listening;
+        public static bool Listening
+        {
+            get { return _listening; }
+            set
+            {
+                if(!value)_listener.Close();
+                _listening = value;
+            }
+        }
+
         public static List<string> Connections { get; set; } 
         #endregion
     }

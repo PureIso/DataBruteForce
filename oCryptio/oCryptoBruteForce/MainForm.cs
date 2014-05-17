@@ -527,6 +527,7 @@ namespace oCryptoBruteForce
         private void ListeningThread()
         {
             _isListening = true;
+            SetInformationTextListening("Started listening on port: " + _listeningPort);
             AsynchronousSocketListener.OnSearchAndGenerateUsingPossibleChecksumFileEvent
                 += OnSearchAndGenerateUsingPossibleChecksumFile;
             AsynchronousSocketListener.OnSearchAndGenerate
@@ -534,8 +535,10 @@ namespace oCryptoBruteForce
             AsynchronousSocketListener.OnParallelSearchAndGenerate
                 += OnParallelSearchAndGenerate;
             AsynchronousSocketListener.OnSetTextToInfo
-                += SetInformationText;
+                += SetInformationTextListening;
             AsynchronousSocketListener.StartListening(_listeningPort);
+            SetInformationTextListening("Stopped listening on port: " + _listeningPort);
+            _isListening = false;
         }
 
         private void stopListeningButton_Click(object sender, EventArgs e)
@@ -544,7 +547,7 @@ namespace oCryptoBruteForce
             AsynchronousSocketListener.Listening = false;
         }
 
-        private void SetInformationText(string text)
+        private void SetInformationTextListening(string text)
         {
             oDelegateFunctions.SetInformationText(infoTextBox, text);
         }
