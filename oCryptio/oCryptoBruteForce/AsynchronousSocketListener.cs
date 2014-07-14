@@ -25,9 +25,9 @@ namespace oCryptoBruteForce
         #endregion
 
         #region Event
-        public static event DelegateObject OnSearchAndGenerateUsingPossibleChecksumFileEvent;
-        public static event DelegateObject OnSearchAndGenerate;
-        public static event DelegateObject OnParallelSearchAndGenerate;
+        public static event DelegateObjectDelegate OnSearchAndGenerateUsingPossibleChecksumFileEvent;
+        public static event DelegateObjectDelegate OnSearchAndGenerate;
+        public static event DelegateObjectDelegate OnParallelSearchAndGenerate;
         public static event SetInfoText OnSetTextToInfo;
         #endregion
 
@@ -120,7 +120,7 @@ namespace oCryptoBruteForce
                     try
                     {
                         content = content.Replace("<OnSearchAndGenerateUsingPossibleChecksumFileEvent>", "");
-                        DelegateObjects serializedDelegateObject;
+                        DelegateObject serializedDelegateObject;
                         byte[] contentBytes = StringToByteArray(content);
                         //De-serializing serialized object
                         using (MemoryStream memoryStream = new MemoryStream())
@@ -128,7 +128,7 @@ namespace oCryptoBruteForce
                             BinaryFormatter binaryFormatter = new BinaryFormatter();
                             memoryStream.Write(contentBytes, 0, contentBytes.Length);
                             memoryStream.Seek(0, SeekOrigin.Begin);
-                            serializedDelegateObject = (DelegateObjects) binaryFormatter.Deserialize(memoryStream);
+                            serializedDelegateObject = (DelegateObject) binaryFormatter.Deserialize(memoryStream);
                         }
                         //Call function with object
                         OnSearchAndGenerateUsingPossibleChecksumFileEvent(serializedDelegateObject);
@@ -165,7 +165,7 @@ namespace oCryptoBruteForce
                     try
                     {
                         content = content.Replace("<OnSearchAndGenerate>", "");
-                        DelegateObjects serializedDelegateObject;
+                        DelegateObject serializedDelegateObject;
                         byte[] contentBytes = StringToByteArray(content);
                         //De-serializing serialized object
                         using (MemoryStream memoryStream = new MemoryStream())
@@ -173,7 +173,7 @@ namespace oCryptoBruteForce
                             BinaryFormatter binaryFormatter = new BinaryFormatter();
                             memoryStream.Write(contentBytes, 0, contentBytes.Length);
                             memoryStream.Seek(0, SeekOrigin.Begin);
-                            serializedDelegateObject = (DelegateObjects)binaryFormatter.Deserialize(memoryStream);
+                            serializedDelegateObject = (DelegateObject)binaryFormatter.Deserialize(memoryStream);
                         }
                         //Call function with object
                         OnSearchAndGenerate(serializedDelegateObject);
@@ -210,7 +210,7 @@ namespace oCryptoBruteForce
                     try
                     {
                         content = content.Replace("<OnParallelSearchAndGenerate>", "");
-                        DelegateObjects serializedDelegateObject;
+                        DelegateObject serializedDelegateObject;
                         byte[] contentBytes = StringToByteArray(content);
                         //De-serializing serialized object
                         using (MemoryStream memoryStream = new MemoryStream())
@@ -218,7 +218,7 @@ namespace oCryptoBruteForce
                             BinaryFormatter binaryFormatter = new BinaryFormatter();
                             memoryStream.Write(contentBytes, 0, contentBytes.Length);
                             memoryStream.Seek(0, SeekOrigin.Begin);
-                            serializedDelegateObject = (DelegateObjects)binaryFormatter.Deserialize(memoryStream);
+                            serializedDelegateObject = (DelegateObject)binaryFormatter.Deserialize(memoryStream);
                         }
                         //Call function with object
                         OnParallelSearchAndGenerate(serializedDelegateObject);

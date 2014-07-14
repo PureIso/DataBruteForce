@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
-using System.Net.Configuration;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using oCryptio;
 using oCryptio.Checksum;
 using System.Windows.Forms;
 using PortableLib;
+using System.Net.Sockets;
+using System.Net;
 
 namespace oCryptoBruteForce
 {
     public partial class MainForm : Form
     {
-        public event DelegateObject OnDelegateObject;
+        public event DelegateObjectDelegate OnDelegateObject;
 
         #region Fields
         private string _fileName;
@@ -29,7 +33,6 @@ namespace oCryptoBruteForce
             oDelegateFunctions.SetComboBoxSelectedIndex(checksumComboBox, 0);
         }
 
-        #region Handlers
 
         #region Open File and Load
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -42,7 +45,6 @@ namespace oCryptoBruteForce
             oDelegateFunctions.SetControlText(fileLocationTextBox, _fileName);
             oDelegateFunctions.SetControlText(fileLengthTextBox, _fileBuffer.Length.ToString());
             oDelegateFunctions.SetControlText(stopAtPositionTextBox, _fileBuffer.Length.ToString());
-            oDelegateFunctions.SetEnableControl(startSearchButton,true);
             oDelegateFunctions.SetNumericUpDownValues(skipBytesNumericUpDown, 1, _fileBuffer.Length,1);
         }
 
@@ -53,24 +55,6 @@ namespace oCryptoBruteForce
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
             oDelegateFunctions.SetControlText(possibleChecksumFileLocationTextBox, openFileDialog.FileNames[0]);
             _possibleChecksumFileBuffer = File.ReadAllBytes(openFileDialog.FileNames[0]);
-        }
-
-        //TODO: Drag and Drop Files into the application via dragAndDropPanel
-        #endregion
-
-        #region Start and Stop
-        private void startSearchButton_Click(object sender, EventArgs e)
-        {
-            _stop = false;
-            Thread oThread = new Thread(SearchWorkThread) {IsBackground = true};
-            oThread.IsBackground = true;
-            oThread.Start();
-        }
-
-        private void stopButton_Click(object sender, EventArgs e)
-        {
-            StopBruteForceUserInterfaceFunction();
-            _stop = true;
         }
         #endregion
 
@@ -90,99 +74,163 @@ namespace oCryptoBruteForce
                 oDelegateFunctions.SetEnableControl(byteSkippingCheckBox, false);
             }
         }
-        #endregion
-        #endregion
 
-        #region Functions
-        #region Search Work
-        /// <summary>
-        /// Search initialization function that will determine what search protocol to use base on your configuration
-        /// </summary>
-        private void SearchWorkThread()
+        private void byteSkippingCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            StartBruteForceUserInterfaceFunction();
-
-            int startSearch = int.Parse(oDelegateFunctions.GetControlText(startSearchTextBox));
-            int stopSearchAt = int.Parse(oDelegateFunctions.GetControlText(stopAtPositionTextBox));
-            int startGeneratedChecksumFrom = int.Parse(oDelegateFunctions.GetControlText(startChecksumPositionTextBox));
-            string checksum = oDelegateFunctions.GetControlText(checksumComboBox);
-            bool isLazySearch = oDelegateFunctions.GetControlText(lazySearchComboBox) == "ON";
-            bool isLazyGenerate = oDelegateFunctions.GetControlText(lazyGenerateComboBox) == "ON";
-
-            int skipSearchBytesBy = 1;
-            if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
-                skipSearchBytesBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
-
-            #region Get Checksum Length
-            int checksumLength = -1;
-            string[] value = checksum.Split('{', '}');
-            switch (value[1].Replace("Bytes","").Replace("s",""))
-            {
-                case "1":
-                    checksumLength = 1;
-                    break;
-                case "2":
-                    checksumLength = 2;
-                    break;
-                case "4":
-                    checksumLength = 4;
-                    break;
-                case "8":
-                    checksumLength = 8;
-                    break;
-                case "16":
-                    checksumLength = 16;
-                    break;
-                case "32":
-                    checksumLength = 32;
-                    break;
-                case "48":
-                    checksumLength = 48;
-                    break;
-                case "64":
-                    checksumLength = 64;
-                    break;
-            }
-            #endregion
-
-            #region Launch Bruteforce
-            if (!isLazySearch && !isLazyGenerate)
-            {
-                if (_possibleChecksumFileBuffer != null)
-                {
-                    SearchAndGenerateUsingPossibleChecksumFile(checksum, skipSearchBytesBy,startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateNotLazySearch);
-                }
-                else
-                {
-                    if (oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox))
-                        ParallelSearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateNotLazySearch);
-                    else
-                        SearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateNotLazySearch);
-                }
-            }
-            else if (isLazySearch && isLazyGenerate)
-            {
-                if (oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox))
-                    ParallelSearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.LazyGenerateLazySearch);
-                else
-                    SearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.LazyGenerateLazySearch);
-            }
-            else if (!isLazySearch)
-            {
-                if (oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox))
-                    ParallelSearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.LazyGenerateNotLazySearch);
-                else
-                    SearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.LazyGenerateNotLazySearch);
-            }
-            else
-            {
-                if (oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox))
-                    ParallelSearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateLazySearch);
-                else
-                    SearchAndGenerate(checksum, skipSearchBytesBy, startSearch, stopSearchAt, startGeneratedChecksumFrom, checksumLength, SearchTypeEnum.NotLazyGenerateLazySearch);
-            }
-            #endregion
+            oDelegateFunctions.SetEnableControl(skipBytesNumericUpDown,
+                oDelegateFunctions.GetEnableControl(byteSkippingCheckBox));
         }
+
+        #endregion
+       
+        #region Functions
+
+        #region Helper Functions
+        private DelegateObject GetSearchTypeEnum(DelegateObject workObject)
+        {
+            try
+            {
+                bool isLazySearch = oDelegateFunctions.GetControlText(lazySearchComboBox) == "ON";
+                bool isLazyGenerate = oDelegateFunctions.GetControlText(lazyGenerateComboBox) == "ON";
+
+                if (!isLazySearch && !isLazyGenerate)
+                {
+                    if (_possibleChecksumFileBuffer != null)
+                    {
+                        workObject.searchType = SearchTypeEnum.NotLazyGenerateNotLazySearch;
+                        workObject.PossibleChecksumsArray = _possibleChecksumFileBuffer;
+                    }
+                    else
+                    {
+                        workObject.searchType = SearchTypeEnum.NotLazyGenerateNotLazySearch;
+                    }
+                }
+                else if (isLazySearch && isLazyGenerate)
+                {
+                    workObject.searchType = SearchTypeEnum.LazyGenerateLazySearch;
+                }
+                else if (!isLazySearch)
+                {
+                    workObject.searchType = SearchTypeEnum.LazyGenerateNotLazySearch;
+                }
+                else
+                {
+                    workObject.searchType = SearchTypeEnum.NotLazyGenerateLazySearch;
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return workObject;
+        }
+
+        private static byte[] GenerateChecksum(string checksum, int offset, byte[] buffer)
+        {
+            byte[] returnValue = null;
+            switch (checksum)
+            {
+                case "Adler8 - {1Bytes}":
+                    returnValue = Adler8.Compute(offset, buffer);
+                    break;
+                case "Adler16 - {2Bytes}":
+                    returnValue = Adler16.Compute(offset, buffer);
+                    break;
+                case "Adler32 - {4Bytes}":
+                    returnValue = Adler32.Compute(offset, buffer);
+                    break;
+                case "CRC32 - {4Bytes}":
+                    returnValue = Crc32.Compute(offset, buffer);
+                    break;
+                case "HMAC SHA 1 (128)  - {16Bytes}":
+                    returnValue = HmacSha1.Compute(offset, buffer);
+                    break;
+                case "HMAC SHA 256 - {32Bytes}":
+                    returnValue = HmacSha256.Compute(offset, buffer);
+                    break;
+                case "HMAC SHA 384 - {48Bytes}":
+                    returnValue = HmacSha384.Compute(offset, buffer);
+                    break;
+                case "HMAC SHA 512 - {64Bytes}":
+                    returnValue = HmacSha512.Compute(offset, buffer);
+                    break;
+                case "MD5 - {16Bytes}":
+                    returnValue = Md5.Compute(offset, buffer);
+                    break;
+                case "MD5 CNG - {16Bytes}":
+                    returnValue = Md5Cng.Compute(offset, buffer);
+                    break;
+            }
+            return returnValue;
+        }
+
+        private static int GetChecksumLength(string checksum)
+        {
+            int checksumLength = -1;
+            try
+            {
+                string[] value = checksum.Split('{', '}');
+                switch (value[1].Replace("Bytes", "").Replace("s", ""))
+                {
+                    case "1":
+                        checksumLength = 1;
+                        break;
+                    case "2":
+                        checksumLength = 2;
+                        break;
+                    case "4":
+                        checksumLength = 4;
+                        break;
+                    case "8":
+                        checksumLength = 8;
+                        break;
+                    case "16":
+                        checksumLength = 16;
+                        break;
+                    case "32":
+                        checksumLength = 32;
+                        break;
+                    case "48":
+                        checksumLength = 48;
+                        break;
+                    case "64":
+                        checksumLength = 64;
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return checksumLength;
+        }
+
+        private DelegateObject CreateDelegateObject()
+        {
+            DelegateObject workObject = new DelegateObject();
+            try
+            {
+                workObject.StartSearch = int.Parse(oDelegateFunctions.GetControlText(startSearchTextBox));
+                workObject.StopSearchAt = int.Parse(oDelegateFunctions.GetControlText(stopAtPositionTextBox));
+                workObject.StartGeneratedChecksumFrom = int.Parse(oDelegateFunctions.GetControlText(startChecksumPositionTextBox));
+                workObject.Checksum = oDelegateFunctions.GetControlText(checksumComboBox);
+                workObject = GetSearchTypeEnum(workObject);
+                workObject.ChecksumLength = GetChecksumLength(workObject.Checksum);
+                workObject.UseParallelComputation = oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox);
+                if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
+                    workObject.SkipSearchBytesBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
+                else workObject.SkipSearchBytesBy = 1;
+            }
+            catch (Exception ex)
+            {
+                oDelegateFunctions.MessageBoxShow(this, ex.Message, "Crypto BruteForce",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return workObject;
+        }
+        #endregion
 
         #region Main Search Functions
         private void SearchAndGenerateUsingPossibleChecksumFile(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
@@ -192,7 +240,6 @@ namespace oCryptoBruteForce
             {
                 if (_stop) return;
                 byte[] checksum = GenerateChecksum(theChecksum,checksumGenIndex, _fileBuffer);
-                //oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
                 #region Main Search
                 for (int i = startSearch; i < _possibleChecksumFileBuffer.Length - 1; )
                 {
@@ -256,7 +303,6 @@ namespace oCryptoBruteForce
                 oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
                 #endregion
             }
-            //oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
         }
 
         private void SearchAndGenerate(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
@@ -266,7 +312,6 @@ namespace oCryptoBruteForce
             {
                 if (_stop) return;
                 byte[] checksum = GenerateChecksum(theChecksum,checksumGenerationIndex, _fileBuffer);
-                //oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
                 for (int i = startSearch; i < stopSearchAt - checksumLength;)
                 {
                     if (_stop) return;
@@ -319,9 +364,7 @@ namespace oCryptoBruteForce
                         checksumGenerationIndex += 1;
                         break;
                 }
-                //oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
             }
-            //oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
         }
 
         private void ParallelSearchAndGenerate(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
@@ -349,13 +392,7 @@ namespace oCryptoBruteForce
                         }
                     }
 
-                    if (checksumFound != -1)
-                    {
-                        //oDelegateFunctions.SetControlText(checksumValueTextBox, BitConverter.ToString(checksum));
-                        //oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
-                        //oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
-                        break;
-                    }
+                    if (checksumFound != -1) break;
 
                     #region Search Type to determing next index
 
@@ -378,12 +415,24 @@ namespace oCryptoBruteForce
                     #endregion
                 }
             });
-            //oDelegateFunctions.SetControlText(stopTimeTextBox, DateTime.Now.ToString());
         }
         #endregion
 
         #region Remote Functions
-        private void OnSearchAndGenerateUsingPossibleChecksumFile(DelegateObjects searchInformationObject)
+        private void OnStartWork(DelegateObject searchInformationObject)
+        {
+            if (searchInformationObject.PossibleChecksumsArray != null)
+            {
+                OnSearchAndGenerateUsingPossibleChecksumFile(searchInformationObject);
+            }
+            else
+            {
+                if (searchInformationObject.UseParallelComputation) OnParallelSearchAndGenerate(searchInformationObject);
+                else OnSearchAndGenerate(searchInformationObject);
+            }
+        }
+
+        private void OnSearchAndGenerateUsingPossibleChecksumFile(DelegateObject searchInformationObject)
         {
             _fileBuffer = searchInformationObject.DataArray;
             _possibleChecksumFileBuffer = searchInformationObject.PossibleChecksumsArray;
@@ -398,7 +447,7 @@ namespace oCryptoBruteForce
                 searchInformationObject.searchType);
         }
 
-        private void OnSearchAndGenerate(DelegateObjects searchInformationObject)
+        private void OnSearchAndGenerate(DelegateObject searchInformationObject)
         {
             _fileBuffer = searchInformationObject.DataArray;
 
@@ -412,7 +461,7 @@ namespace oCryptoBruteForce
                 searchInformationObject.searchType);
         }
 
-        private void OnParallelSearchAndGenerate(DelegateObjects searchInformationObject)
+        private void OnParallelSearchAndGenerate(DelegateObject searchInformationObject)
         {
             _fileBuffer = searchInformationObject.DataArray;
 
@@ -426,86 +475,10 @@ namespace oCryptoBruteForce
                 searchInformationObject.searchType);
         }
         #endregion
+
         #endregion
 
-        #region Backup functions
-        /// <summary>
-        /// Set the display for brute force
-        /// </summary>
-        private void StartBruteForceUserInterfaceFunction()
-        {
-            oDelegateFunctions.SetEnableControl(stopButton, true);
-            oDelegateFunctions.SetControlText(stopTimeTextBox, "");
-            oDelegateFunctions.SetEnableControl(startSearchButton, false);
-            oDelegateFunctions.SetEnableControl(checksumComboBox, false);
-            oDelegateFunctions.SetControlText(startTimeTextBox, DateTime.Now.ToString());
-        }
-
-        /// <summary>
-        /// Clear the display
-        /// </summary>
-        private void StopBruteForceUserInterfaceFunction()
-        {
-            oDelegateFunctions.SetEnableControl(checksumComboBox, true);
-            oDelegateFunctions.SetEnableControl(stopButton, false);
-            oDelegateFunctions.SetEnableControl(startSearchButton, true);
-            //TODO Save a log before clearing
-        }
-
-        /// <summary>
-        /// Function to generate checksum
-        /// </summary>
-        /// <param name="checksum">The checksum name</param>
-        /// <param name="offset">The start of checksum generation</param>
-        /// <param name="buffer">The byte array of data</param>
-        /// <returns></returns>
-        private static byte[] GenerateChecksum(string checksum, int offset, byte[] buffer)
-        {
-            byte[] returnValue = null;
-            switch (checksum)
-            {
-                case "Adler8 - {1Byte}":
-                    returnValue = Adler8.Compute(offset, buffer);
-                    break;
-                case "Adler16 - {2Bytes}":
-                    returnValue = Adler16.Compute(offset, buffer);
-                    break;
-                case "Adler32 - {4Bytes}":
-                    returnValue = Adler32.Compute(offset, buffer);
-                    break;
-                case "CRC32 - {4Bytes}":
-                    returnValue = Crc32.Compute(offset,buffer);
-                    break;
-                case "HMAC SHA 1 (128)  - {16Bytes}":
-                    returnValue = HmacSha1.Compute(offset, buffer);
-                    break;
-                case "HMAC SHA 256 - {32Bytes}":
-                    returnValue = HmacSha256.Compute(offset, buffer);
-                    break;
-                case "HMAC SHA 384 - {48Byte}":
-                    returnValue = HmacSha384.Compute(offset, buffer);
-                    break;
-                case "HMAC SHA 512 - {64Byte}":
-                    returnValue = HmacSha512.Compute(offset, buffer);
-                    break;
-                case "MD5 - {16Byte}":
-                    returnValue = Md5.Compute(offset, buffer);
-                    break;
-                case "MD5 CNG - {16Byte}":
-                    returnValue = Md5Cng.Compute(offset, buffer);
-                    break;
-            }
-            return returnValue;
-        }
-        #endregion
-
-        private void byteSkippingCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            oDelegateFunctions.SetEnableControl(skipBytesNumericUpDown,
-                oDelegateFunctions.GetEnableControl(byteSkippingCheckBox));
-        }
-        #endregion
-
+        #region Server Mode
         private bool _isListening;
         private int _listeningPort;
         private void startListeningButton_Click(object sender, EventArgs e)
@@ -550,6 +523,187 @@ namespace oCryptoBruteForce
         private void SetInformationTextListening(string text)
         {
             oDelegateFunctions.SetInformationText(infoTextBox, text);
+        }
+        #endregion
+
+        #region Client
+        //Connect to a server and get the server to do some calculations for you
+        //The server should be listening 
+        private TcpClient _server;
+        private void addServerButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(serverIPTextBox.Text)) throw new Exception("Server IP Address is null.");
+                if (String.IsNullOrEmpty(serverPortTextBox.Text)) throw new Exception("Server Port is null.");
+                int port = int.Parse(serverPortTextBox.Text);   //redundant port variable, just to validate
+                ListViewItem item = new ListViewItem(new[]
+                {
+                    "Offline",                          //Status
+                    "",                                 //Worker ID
+                    serverIPTextBox.Text,               //Server IP Address
+                    serverPortTextBox.Text              //Server Port
+                });
+                SetClientInformationText("Server Added: " + item.SubItems[2] + " - " + item.SubItems[3]);
+                serverMonitorListView.Items.Add(item);
+            }
+            catch (Exception ex)
+            {
+                oDelegateFunctions.MessageBoxShow(this, ex.Message, "Crypto BruteForce", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        //private void connectToServerButton_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (!Connect(serverIPTextBox.Text, port)) throw new Exception("Could not connect to Server.");
+        //        oDelegateFunctions.SetEnableControl(serverIPTextBox, false);
+        //        oDelegateFunctions.SetEnableControl(serverPortTextBox, false);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        oDelegateFunctions.MessageBoxShow(this, ex.Message, "Crypto BruteForce", MessageBoxButtons.OK,
+        //            MessageBoxIcon.Error);
+        //    }
+        //}
+
+        //private void disconnectFromServerButton_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (String.IsNullOrEmpty(serverIPTextBox.Text)) throw new Exception("Server IP Address is null.");
+        //        if (String.IsNullOrEmpty(serverPortTextBox.Text)) throw new Exception("Server Port is null.");
+        //        int port = int.Parse(serverPortTextBox.Text);
+        //        if (!Connect(serverIPTextBox.Text, port)) throw new Exception("Could not connect to Server.");
+        //        oDelegateFunctions.SetEnableControl(serverIPTextBox, false);
+        //        oDelegateFunctions.SetEnableControl(serverPortTextBox, false);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        oDelegateFunctions.MessageBoxShow(this, ex.Message, "Crypto BruteForce", MessageBoxButtons.OK,
+        //            MessageBoxIcon.Error);
+        //    }
+        //}
+
+        private bool Connect(string ip, int port)
+        {
+            try
+            {
+                _server = new TcpClient();
+                _server.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SetClientInformationText("Server Connection Exception: " + ex);
+                return false;
+            }
+        }
+
+        private void SetClientInformationText(string text)
+        {
+            oDelegateFunctions.SetInformationText(clientInformationTextBox, text);
+        }
+        #endregion
+
+        #region Mouse Down Events
+        private int _selectedWorkMonitorItemIndex;
+        private int _selectedServerMonitorItemIndex;
+        private void workMonitorListView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right) return;
+            ListViewItem selectedItem = workMonitorListView.GetItemAt(e.X, e.Y);
+            if( selectedItem == null)return;
+            _selectedWorkMonitorItemIndex = selectedItem.Index;
+            Point screenPoint = workMonitorListView.PointToScreen(e.Location);
+            workContextMenuStrip.Show(screenPoint);
+        }
+
+        private void serverMonitorListView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right) return;
+            ListViewItem selectedItem = serverMonitorListView.GetItemAt(e.X, e.Y);
+            if (selectedItem == null) return;
+            _selectedServerMonitorItemIndex = selectedItem.Index;
+            Point screenPoint = serverMonitorListView.PointToScreen(e.Location);
+            clientModeContextMenuStrip.Show(screenPoint);
+        }
+        #endregion
+
+        #region Work Monitor
+        private const string Characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        private readonly List<DelegateObject> _listOfWorkObjects = new List<DelegateObject>(); 
+        private void addWorkButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Random random = new Random();
+                string workId = "";
+                DelegateObject delegateObject = CreateDelegateObject();
+                List<string> workIdList = _listOfWorkObjects
+                    .Select(worker => worker.WorkerId).ToList();
+
+                while (workIdList.Contains(workId) || workId == "")
+                {
+                    workId = new string(Enumerable.Repeat(Characters, 5)
+                        .Select(s => s[random.Next(s.Length)]).ToArray());
+                }
+                delegateObject.WorkerId = workId;
+
+                ListViewItem item = new ListViewItem(new[]
+                {
+                    "Idle",                          //Status
+                    workId                           //Worker ID
+                });
+
+                _listOfWorkObjects.Add(delegateObject);
+                workMonitorListView.Items.Add(item);
+            }
+            catch (Exception ex)
+            {
+                oDelegateFunctions.MessageBoxShow(this, ex.Message, "Crypto BruteForce", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _listOfWorkObjects[_selectedWorkMonitorItemIndex].Status = true;
+            ThreadPool.QueueUserWorkItem(
+                x => OnStartWork(_listOfWorkObjects[_selectedWorkMonitorItemIndex]));
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _listOfWorkObjects[_selectedWorkMonitorItemIndex].Status = false;
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _listOfWorkObjects.RemoveAt(_selectedWorkMonitorItemIndex);
+        }
+        #endregion
+
+        private void dragAndDropPanel_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[]) e.Data.GetData((DataFormats.FileDrop));
+            _fileName = files[0];
+            _fileBuffer = File.ReadAllBytes(_fileName);
+            //Thread Safe Functions to prevent illegal cross threads.
+            oDelegateFunctions.SetControlText(fileLocationTextBox, _fileName);
+            oDelegateFunctions.SetControlText(fileLengthTextBox, _fileBuffer.Length.ToString());
+            oDelegateFunctions.SetControlText(stopAtPositionTextBox, _fileBuffer.Length.ToString());
+            oDelegateFunctions.SetNumericUpDownValues(skipBytesNumericUpDown, 1, _fileBuffer.Length, 1);
+        }
+
+        private void dragAndDropPanel_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
         }
     }
 }

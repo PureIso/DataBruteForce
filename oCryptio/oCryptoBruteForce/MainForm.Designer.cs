@@ -28,8 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.components = new System.ComponentModel.Container();
             this.checksumComboBox = new System.Windows.Forms.ComboBox();
             this.fileLocationTextBox = new System.Windows.Forms.TextBox();
             this.parallelComputingCheckBox = new System.Windows.Forms.CheckBox();
@@ -46,12 +45,10 @@
             this.lazySearchComboBox = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.stopAtPositionTextBox = new System.Windows.Forms.TextBox();
-            this.stopButton = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.startChecksumPositionTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.currentChecksumPositionTextBox = new System.Windows.Forms.TextBox();
-            this.startSearchButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.fileLengthTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -60,27 +57,47 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.bruteforceTabPage = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.checksumValueTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.searchTabPage = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.addWorkButton = new System.Windows.Forms.Button();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.workMonitorListView = new System.Windows.Forms.ListView();
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.serverModeTabPage = new System.Windows.Forms.TabPage();
-            this.infoTextBox = new System.Windows.Forms.TextBox();
-            this.stopListeningButton = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.startListeningButton = new System.Windows.Forms.Button();
-            this.listeningTextBox = new System.Windows.Forms.TextBox();
+            this.stopListeningButton = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
+            this.listeningTextBox = new System.Windows.Forms.TextBox();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label20 = new System.Windows.Forms.Label();
+            this.clientMonitorListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.infoTextBox = new System.Windows.Forms.TextBox();
             this.clientModeTabPage = new System.Windows.Forms.TabPage();
-            this.connectedServerListView = new System.Windows.Forms.ListView();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.addServerButton = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.serverIPTextBox = new System.Windows.Forms.TextBox();
             this.serverPortTextBox = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label19 = new System.Windows.Forms.Label();
+            this.serverMonitorListView = new System.Windows.Forms.ListView();
+            this.statusColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workerIdColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.serverIpColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.serverPortColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.clientInformationTextBox = new System.Windows.Forms.TextBox();
-            this.connectButton = new System.Windows.Forms.Button();
-            this.disconnectButton = new System.Windows.Forms.Button();
-            this.serverIPTextBox = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -91,66 +108,69 @@
             this.dragAndDropPanel = new System.Windows.Forms.Panel();
             this.possibleChecksumFileLocationTextBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.menuStrip1.SuspendLayout();
+            this.clientModeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.workContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.removeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.bruteforceTabPage.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.panel8.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.serverModeTabPage.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.clientModeTabPage.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.clientModeContextMenuStrip.SuspendLayout();
+            this.mainMenuStrip.SuspendLayout();
+            this.workContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(853, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // checksumComboBox
             // 
             this.checksumComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.checksumComboBox.FormattingEnabled = true;
             this.checksumComboBox.Items.AddRange(new object[] {
-            "Adler8 - {1Byte}",
+            "Adler8 - {1Bytes}",
             "Adler16 - {2Bytes}",
             "Adler32 - {4Bytes}",
-            "Checksum8 -",
-            "Checksum16 -",
-            "Checksum24 -",
-            "Checksum32 -",
-            "Checksum40 -",
-            "Checksum48 -",
-            "Checksum56 -",
-            "Checksum64 -",
-            "CRC16 -",
-            "CRC16 CCITT -",
+            "Checksum8 - {1Bytes}",
+            "Checksum16 - {2Bytes}",
+            "Checksum24 - {3Bytes}",
+            "Checksum32 - {4Bytes}",
+            "Checksum40 - {5Bytes}",
+            "Checksum48 - {6Bytes}",
+            "Checksum56 - {7Bytes}",
+            "Checksum64 - {8Bytes}",
+            "CRC16 - {2Bytes}",
+            "CRC16 CCITT - {2Bytes}",
             "CRC32 - {4Bytes}",
             "HMAC SHA 1 (128)  - {16Bytes}",
             "HMAC SHA 256 - {32Bytes}",
-            "HMAC SHA 384 - {48Byte}",
-            "HMAC SHA 512 - {64Byte}",
-            "MD5 - {16Byte}",
-            "MD5 CNG - {16Byte}"});
-            this.checksumComboBox.Location = new System.Drawing.Point(110, 6);
+            "HMAC SHA 384 - {48Bytes}",
+            "HMAC SHA 512 - {64Bytes}",
+            "MD5 - {16Bytes}",
+            "MD5 CNG - {16Bytes}"});
+            this.checksumComboBox.Location = new System.Drawing.Point(111, 8);
             this.checksumComboBox.Name = "checksumComboBox";
-            this.checksumComboBox.Size = new System.Drawing.Size(465, 23);
+            this.checksumComboBox.Size = new System.Drawing.Size(450, 23);
             this.checksumComboBox.TabIndex = 2;
             // 
             // fileLocationTextBox
@@ -222,7 +242,7 @@
             this.stopTimeTextBox.Location = new System.Drawing.Point(78, 52);
             this.stopTimeTextBox.Name = "stopTimeTextBox";
             this.stopTimeTextBox.ReadOnly = true;
-            this.stopTimeTextBox.Size = new System.Drawing.Size(143, 23);
+            this.stopTimeTextBox.Size = new System.Drawing.Size(139, 23);
             this.stopTimeTextBox.TabIndex = 28;
             this.stopTimeTextBox.Text = "void";
             // 
@@ -240,7 +260,7 @@
             this.startTimeTextBox.Location = new System.Drawing.Point(78, 23);
             this.startTimeTextBox.Name = "startTimeTextBox";
             this.startTimeTextBox.ReadOnly = true;
-            this.startTimeTextBox.Size = new System.Drawing.Size(143, 23);
+            this.startTimeTextBox.Size = new System.Drawing.Size(139, 23);
             this.startTimeTextBox.TabIndex = 26;
             this.startTimeTextBox.Text = "void";
             // 
@@ -290,7 +310,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(33, 52);
+            this.label8.Location = new System.Drawing.Point(201, 24);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(95, 15);
             this.label8.TabIndex = 19;
@@ -298,22 +318,11 @@
             // 
             // stopAtPositionTextBox
             // 
-            this.stopAtPositionTextBox.Location = new System.Drawing.Point(134, 51);
+            this.stopAtPositionTextBox.Location = new System.Drawing.Point(302, 23);
             this.stopAtPositionTextBox.Name = "stopAtPositionTextBox";
-            this.stopAtPositionTextBox.Size = new System.Drawing.Size(116, 23);
+            this.stopAtPositionTextBox.Size = new System.Drawing.Size(80, 23);
             this.stopAtPositionTextBox.TabIndex = 18;
             this.stopAtPositionTextBox.Text = "0";
-            // 
-            // stopButton
-            // 
-            this.stopButton.Enabled = false;
-            this.stopButton.Location = new System.Drawing.Point(585, 61);
-            this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(251, 56);
-            this.stopButton.TabIndex = 17;
-            this.stopButton.Text = "Stop";
-            this.stopButton.UseVisualStyleBackColor = true;
-            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
             // label7
             // 
@@ -350,21 +359,10 @@
             this.currentChecksumPositionTextBox.TabIndex = 11;
             this.currentChecksumPositionTextBox.Text = "0";
             // 
-            // startSearchButton
-            // 
-            this.startSearchButton.Enabled = false;
-            this.startSearchButton.Location = new System.Drawing.Point(585, 6);
-            this.startSearchButton.Name = "startSearchButton";
-            this.startSearchButton.Size = new System.Drawing.Size(251, 55);
-            this.startSearchButton.TabIndex = 10;
-            this.startSearchButton.Text = "Start";
-            this.startSearchButton.UseVisualStyleBackColor = true;
-            this.startSearchButton.Click += new System.EventHandler(this.startSearchButton_Click);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(375, 26);
+            this.label3.Location = new System.Drawing.Point(388, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(68, 15);
             this.label3.TabIndex = 9;
@@ -372,10 +370,10 @@
             // 
             // fileLengthTextBox
             // 
-            this.fileLengthTextBox.Location = new System.Drawing.Point(449, 22);
+            this.fileLengthTextBox.Location = new System.Drawing.Point(462, 21);
             this.fileLengthTextBox.Name = "fileLengthTextBox";
             this.fileLengthTextBox.ReadOnly = true;
-            this.fileLengthTextBox.Size = new System.Drawing.Size(116, 23);
+            this.fileLengthTextBox.Size = new System.Drawing.Size(84, 23);
             this.fileLengthTextBox.TabIndex = 8;
             this.fileLengthTextBox.Text = "0";
             // 
@@ -392,14 +390,14 @@
             // 
             this.startSearchTextBox.Location = new System.Drawing.Point(134, 22);
             this.startSearchTextBox.Name = "startSearchTextBox";
-            this.startSearchTextBox.Size = new System.Drawing.Size(116, 23);
+            this.startSearchTextBox.Size = new System.Drawing.Size(61, 23);
             this.startSearchTextBox.TabIndex = 6;
             this.startSearchTextBox.Text = "0";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 9);
+            this.label1.Location = new System.Drawing.Point(5, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 15);
             this.label1.TabIndex = 3;
@@ -417,48 +415,55 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.bruteforceTabPage);
-            this.tabControl1.Controls.Add(this.searchTabPage);
             this.tabControl1.Controls.Add(this.serverModeTabPage);
             this.tabControl1.Controls.Add(this.clientModeTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabControl1.Location = new System.Drawing.Point(0, 212);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(853, 277);
+            this.tabControl1.Size = new System.Drawing.Size(853, 326);
             this.tabControl1.TabIndex = 9;
             // 
             // bruteforceTabPage
             // 
             this.bruteforceTabPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.bruteforceTabPage.Controls.Add(this.groupBox3);
-            this.bruteforceTabPage.Controls.Add(this.groupBox2);
-            this.bruteforceTabPage.Controls.Add(this.groupBox1);
-            this.bruteforceTabPage.Controls.Add(this.label1);
-            this.bruteforceTabPage.Controls.Add(this.checksumComboBox);
-            this.bruteforceTabPage.Controls.Add(this.startSearchButton);
-            this.bruteforceTabPage.Controls.Add(this.stopButton);
+            this.bruteforceTabPage.Controls.Add(this.panel8);
+            this.bruteforceTabPage.Controls.Add(this.panel7);
+            this.bruteforceTabPage.Controls.Add(this.panel6);
+            this.bruteforceTabPage.Controls.Add(this.workMonitorListView);
             this.bruteforceTabPage.Location = new System.Drawing.Point(4, 24);
             this.bruteforceTabPage.Name = "bruteforceTabPage";
             this.bruteforceTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.bruteforceTabPage.Size = new System.Drawing.Size(845, 249);
+            this.bruteforceTabPage.Size = new System.Drawing.Size(845, 298);
             this.bruteforceTabPage.TabIndex = 0;
             this.bruteforceTabPage.Text = "Bruteforce For Checksums";
             this.bruteforceTabPage.UseVisualStyleBackColor = true;
             // 
-            // groupBox3
+            // panel8
             // 
-            this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.stopAtPositionTextBox);
-            this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.startSearchTextBox);
-            this.groupBox3.Controls.Add(this.fileLengthTextBox);
-            this.groupBox3.Location = new System.Drawing.Point(8, 35);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(571, 82);
-            this.groupBox3.TabIndex = 37;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Search Information";
+            this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel8.Controls.Add(this.label1);
+            this.panel8.Controls.Add(this.checksumComboBox);
+            this.panel8.Controls.Add(this.groupBox1);
+            this.panel8.Controls.Add(this.groupBox2);
+            this.panel8.Controls.Add(this.groupBox3);
+            this.panel8.Location = new System.Drawing.Point(8, 50);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(574, 238);
+            this.panel8.TabIndex = 54;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.startTimeTextBox);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.stopTimeTextBox);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Location = new System.Drawing.Point(338, 101);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(223, 115);
+            this.groupBox1.TabIndex = 35;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Timer";
             // 
             // groupBox2
             // 
@@ -468,7 +473,7 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.currentChecksumPositionTextBox);
-            this.groupBox2.Location = new System.Drawing.Point(8, 123);
+            this.groupBox2.Location = new System.Drawing.Point(9, 101);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(323, 115);
             this.groupBox2.TabIndex = 36;
@@ -493,121 +498,263 @@
             this.checksumValueTextBox.TabIndex = 17;
             this.checksumValueTextBox.Text = "0";
             // 
-            // groupBox1
+            // groupBox3
             // 
-            this.groupBox1.Controls.Add(this.startTimeTextBox);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.stopTimeTextBox);
-            this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Location = new System.Drawing.Point(337, 123);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(242, 115);
-            this.groupBox1.TabIndex = 35;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Timer";
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.stopAtPositionTextBox);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.startSearchTextBox);
+            this.groupBox3.Controls.Add(this.fileLengthTextBox);
+            this.groupBox3.Location = new System.Drawing.Point(9, 37);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(552, 58);
+            this.groupBox3.TabIndex = 37;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Search Information";
             // 
-            // searchTabPage
+            // panel7
             // 
-            this.searchTabPage.Location = new System.Drawing.Point(4, 24);
-            this.searchTabPage.Name = "searchTabPage";
-            this.searchTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.searchTabPage.Size = new System.Drawing.Size(845, 249);
-            this.searchTabPage.TabIndex = 1;
-            this.searchTabPage.Text = "Search";
-            this.searchTabPage.UseVisualStyleBackColor = true;
+            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel7.Controls.Add(this.addWorkButton);
+            this.panel7.Location = new System.Drawing.Point(8, 6);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(574, 38);
+            this.panel7.TabIndex = 53;
+            // 
+            // addWorkButton
+            // 
+            this.addWorkButton.Location = new System.Drawing.Point(8, 7);
+            this.addWorkButton.Name = "addWorkButton";
+            this.addWorkButton.Size = new System.Drawing.Size(553, 23);
+            this.addWorkButton.TabIndex = 44;
+            this.addWorkButton.Text = "Add Work";
+            this.addWorkButton.UseVisualStyleBackColor = true;
+            this.addWorkButton.Click += new System.EventHandler(this.addWorkButton_Click);
+            // 
+            // panel6
+            // 
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.label21);
+            this.panel6.Location = new System.Drawing.Point(585, 6);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(251, 38);
+            this.panel6.TabIndex = 52;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(67, 6);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(117, 21);
+            this.label21.TabIndex = 0;
+            this.label21.Text = "Work Monitor";
+            // 
+            // workMonitorListView
+            // 
+            this.workMonitorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader4,
+            this.columnHeader5});
+            this.workMonitorListView.FullRowSelect = true;
+            this.workMonitorListView.GridLines = true;
+            this.workMonitorListView.Location = new System.Drawing.Point(585, 50);
+            this.workMonitorListView.Name = "workMonitorListView";
+            this.workMonitorListView.Size = new System.Drawing.Size(251, 238);
+            this.workMonitorListView.TabIndex = 51;
+            this.workMonitorListView.UseCompatibleStateImageBehavior = false;
+            this.workMonitorListView.View = System.Windows.Forms.View.Details;
+            this.workMonitorListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.workMonitorListView_MouseDown);
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Status";
+            this.columnHeader4.Width = 95;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Worker ID";
+            this.columnHeader5.Width = 99;
             // 
             // serverModeTabPage
             // 
             this.serverModeTabPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.serverModeTabPage.Controls.Add(this.panel5);
+            this.serverModeTabPage.Controls.Add(this.panel4);
+            this.serverModeTabPage.Controls.Add(this.clientMonitorListView);
             this.serverModeTabPage.Controls.Add(this.infoTextBox);
-            this.serverModeTabPage.Controls.Add(this.stopListeningButton);
-            this.serverModeTabPage.Controls.Add(this.startListeningButton);
-            this.serverModeTabPage.Controls.Add(this.listeningTextBox);
-            this.serverModeTabPage.Controls.Add(this.label16);
             this.serverModeTabPage.Location = new System.Drawing.Point(4, 24);
             this.serverModeTabPage.Name = "serverModeTabPage";
             this.serverModeTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.serverModeTabPage.Size = new System.Drawing.Size(845, 249);
+            this.serverModeTabPage.Size = new System.Drawing.Size(845, 298);
             this.serverModeTabPage.TabIndex = 2;
             this.serverModeTabPage.Text = "Server Mode";
             this.serverModeTabPage.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Controls.Add(this.startListeningButton);
+            this.panel5.Controls.Add(this.stopListeningButton);
+            this.panel5.Controls.Add(this.label16);
+            this.panel5.Controls.Add(this.listeningTextBox);
+            this.panel5.Location = new System.Drawing.Point(9, 6);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(514, 38);
+            this.panel5.TabIndex = 51;
+            // 
+            // startListeningButton
+            // 
+            this.startListeningButton.Location = new System.Drawing.Point(207, 8);
+            this.startListeningButton.Name = "startListeningButton";
+            this.startListeningButton.Size = new System.Drawing.Size(138, 23);
+            this.startListeningButton.TabIndex = 44;
+            this.startListeningButton.Text = "Start";
+            this.startListeningButton.UseVisualStyleBackColor = true;
+            this.startListeningButton.Click += new System.EventHandler(this.startListeningButton_Click);
+            // 
+            // stopListeningButton
+            // 
+            this.stopListeningButton.Location = new System.Drawing.Point(351, 8);
+            this.stopListeningButton.Name = "stopListeningButton";
+            this.stopListeningButton.Size = new System.Drawing.Size(138, 23);
+            this.stopListeningButton.TabIndex = 43;
+            this.stopListeningButton.Text = "Stop";
+            this.stopListeningButton.UseVisualStyleBackColor = true;
+            this.stopListeningButton.Click += new System.EventHandler(this.stopListeningButton_Click);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(12, 11);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(83, 15);
+            this.label16.TabIndex = 40;
+            this.label16.Text = "Listening Port:";
+            // 
+            // listeningTextBox
+            // 
+            this.listeningTextBox.Location = new System.Drawing.Point(101, 8);
+            this.listeningTextBox.Name = "listeningTextBox";
+            this.listeningTextBox.Size = new System.Drawing.Size(100, 23);
+            this.listeningTextBox.TabIndex = 41;
+            // 
+            // panel4
+            // 
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.label20);
+            this.panel4.Location = new System.Drawing.Point(529, 6);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(308, 38);
+            this.panel4.TabIndex = 50;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(91, 8);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(121, 21);
+            this.label20.TabIndex = 0;
+            this.label20.Text = "Client Monitor";
+            // 
+            // clientMonitorListView
+            // 
+            this.clientMonitorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.clientMonitorListView.FullRowSelect = true;
+            this.clientMonitorListView.GridLines = true;
+            this.clientMonitorListView.Location = new System.Drawing.Point(529, 50);
+            this.clientMonitorListView.Name = "clientMonitorListView";
+            this.clientMonitorListView.Size = new System.Drawing.Size(308, 242);
+            this.clientMonitorListView.TabIndex = 49;
+            this.clientMonitorListView.UseCompatibleStateImageBehavior = false;
+            this.clientMonitorListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Status";
+            this.columnHeader1.Width = 95;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Worker ID";
+            this.columnHeader2.Width = 99;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "IP Address";
+            this.columnHeader3.Width = 103;
             // 
             // infoTextBox
             // 
             this.infoTextBox.BackColor = System.Drawing.SystemColors.InfoText;
             this.infoTextBox.ForeColor = System.Drawing.SystemColors.Info;
-            this.infoTextBox.Location = new System.Drawing.Point(9, 37);
+            this.infoTextBox.Location = new System.Drawing.Point(9, 50);
             this.infoTextBox.Multiline = true;
             this.infoTextBox.Name = "infoTextBox";
             this.infoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.infoTextBox.Size = new System.Drawing.Size(828, 203);
+            this.infoTextBox.Size = new System.Drawing.Size(514, 240);
             this.infoTextBox.TabIndex = 39;
-            // 
-            // stopListeningButton
-            // 
-            this.stopListeningButton.Location = new System.Drawing.Point(357, 7);
-            this.stopListeningButton.Name = "stopListeningButton";
-            this.stopListeningButton.Size = new System.Drawing.Size(149, 23);
-            this.stopListeningButton.TabIndex = 38;
-            this.stopListeningButton.Text = "Stop Listening";
-            this.stopListeningButton.UseVisualStyleBackColor = true;
-            this.stopListeningButton.Click += new System.EventHandler(this.stopListeningButton_Click);
-            // 
-            // startListeningButton
-            // 
-            this.startListeningButton.Location = new System.Drawing.Point(202, 7);
-            this.startListeningButton.Name = "startListeningButton";
-            this.startListeningButton.Size = new System.Drawing.Size(149, 23);
-            this.startListeningButton.TabIndex = 37;
-            this.startListeningButton.Text = "Start Listening";
-            this.startListeningButton.UseVisualStyleBackColor = true;
-            this.startListeningButton.Click += new System.EventHandler(this.startListeningButton_Click);
-            // 
-            // listeningTextBox
-            // 
-            this.listeningTextBox.Location = new System.Drawing.Point(96, 7);
-            this.listeningTextBox.Name = "listeningTextBox";
-            this.listeningTextBox.Size = new System.Drawing.Size(100, 23);
-            this.listeningTextBox.TabIndex = 33;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 10);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(83, 15);
-            this.label16.TabIndex = 32;
-            this.label16.Text = "Listening Port:";
             // 
             // clientModeTabPage
             // 
-            this.clientModeTabPage.Controls.Add(this.connectedServerListView);
-            this.clientModeTabPage.Controls.Add(this.serverPortTextBox);
-            this.clientModeTabPage.Controls.Add(this.label18);
+            this.clientModeTabPage.Controls.Add(this.panel3);
+            this.clientModeTabPage.Controls.Add(this.panel2);
+            this.clientModeTabPage.Controls.Add(this.serverMonitorListView);
             this.clientModeTabPage.Controls.Add(this.clientInformationTextBox);
-            this.clientModeTabPage.Controls.Add(this.connectButton);
-            this.clientModeTabPage.Controls.Add(this.disconnectButton);
-            this.clientModeTabPage.Controls.Add(this.serverIPTextBox);
-            this.clientModeTabPage.Controls.Add(this.label17);
             this.clientModeTabPage.Location = new System.Drawing.Point(4, 24);
             this.clientModeTabPage.Name = "clientModeTabPage";
             this.clientModeTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.clientModeTabPage.Size = new System.Drawing.Size(845, 249);
+            this.clientModeTabPage.Size = new System.Drawing.Size(845, 298);
             this.clientModeTabPage.TabIndex = 3;
             this.clientModeTabPage.Text = "Client Mode";
             this.clientModeTabPage.UseVisualStyleBackColor = true;
             // 
-            // connectedServerListView
+            // panel3
             // 
-            this.connectedServerListView.Location = new System.Drawing.Point(637, 5);
-            this.connectedServerListView.Name = "connectedServerListView";
-            this.connectedServerListView.Size = new System.Drawing.Size(200, 234);
-            this.connectedServerListView.TabIndex = 47;
-            this.connectedServerListView.UseCompatibleStateImageBehavior = false;
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.addServerButton);
+            this.panel3.Controls.Add(this.label17);
+            this.panel3.Controls.Add(this.serverIPTextBox);
+            this.panel3.Controls.Add(this.serverPortTextBox);
+            this.panel3.Controls.Add(this.label18);
+            this.panel3.Location = new System.Drawing.Point(8, 6);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(515, 38);
+            this.panel3.TabIndex = 49;
+            // 
+            // addServerButton
+            // 
+            this.addServerButton.Location = new System.Drawing.Point(336, 8);
+            this.addServerButton.Name = "addServerButton";
+            this.addServerButton.Size = new System.Drawing.Size(149, 23);
+            this.addServerButton.TabIndex = 43;
+            this.addServerButton.Text = "Add";
+            this.addServerButton.UseVisualStyleBackColor = true;
+            this.addServerButton.Click += new System.EventHandler(this.addServerButton_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(12, 11);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 15);
+            this.label17.TabIndex = 40;
+            this.label17.Text = "IP Address:";
+            // 
+            // serverIPTextBox
+            // 
+            this.serverIPTextBox.Location = new System.Drawing.Point(83, 8);
+            this.serverIPTextBox.Name = "serverIPTextBox";
+            this.serverIPTextBox.Size = new System.Drawing.Size(100, 23);
+            this.serverIPTextBox.TabIndex = 41;
             // 
             // serverPortTextBox
             // 
-            this.serverPortTextBox.Location = new System.Drawing.Point(218, 6);
+            this.serverPortTextBox.Location = new System.Drawing.Point(228, 8);
             this.serverPortTextBox.Name = "serverPortTextBox";
             this.serverPortTextBox.Size = new System.Drawing.Size(100, 23);
             this.serverPortTextBox.TabIndex = 46;
@@ -615,56 +762,76 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(180, 9);
+            this.label18.Location = new System.Drawing.Point(190, 11);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(32, 15);
             this.label18.TabIndex = 45;
             this.label18.Text = "Port:";
             // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label19);
+            this.panel2.Location = new System.Drawing.Point(529, 6);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(308, 38);
+            this.panel2.TabIndex = 48;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(91, 8);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(124, 21);
+            this.label19.TabIndex = 0;
+            this.label19.Text = "Server Monitor";
+            // 
+            // serverMonitorListView
+            // 
+            this.serverMonitorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.statusColumnHeader,
+            this.workerIdColumnHeader,
+            this.serverIpColumnHeader,
+            this.serverPortColumnHeader});
+            this.serverMonitorListView.FullRowSelect = true;
+            this.serverMonitorListView.GridLines = true;
+            this.serverMonitorListView.Location = new System.Drawing.Point(529, 50);
+            this.serverMonitorListView.Name = "serverMonitorListView";
+            this.serverMonitorListView.Size = new System.Drawing.Size(308, 242);
+            this.serverMonitorListView.TabIndex = 47;
+            this.serverMonitorListView.UseCompatibleStateImageBehavior = false;
+            this.serverMonitorListView.View = System.Windows.Forms.View.Details;
+            this.serverMonitorListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.serverMonitorListView_MouseDown);
+            // 
+            // statusColumnHeader
+            // 
+            this.statusColumnHeader.Text = "Status";
+            // 
+            // workerIdColumnHeader
+            // 
+            this.workerIdColumnHeader.Text = "Worker ID";
+            this.workerIdColumnHeader.Width = 84;
+            // 
+            // serverIpColumnHeader
+            // 
+            this.serverIpColumnHeader.Text = "IP Address";
+            this.serverIpColumnHeader.Width = 83;
+            // 
+            // serverPortColumnHeader
+            // 
+            this.serverPortColumnHeader.Text = "Port";
+            // 
             // clientInformationTextBox
             // 
             this.clientInformationTextBox.BackColor = System.Drawing.SystemColors.InfoText;
             this.clientInformationTextBox.ForeColor = System.Drawing.SystemColors.Info;
-            this.clientInformationTextBox.Location = new System.Drawing.Point(5, 36);
+            this.clientInformationTextBox.Location = new System.Drawing.Point(8, 50);
             this.clientInformationTextBox.Multiline = true;
             this.clientInformationTextBox.Name = "clientInformationTextBox";
             this.clientInformationTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.clientInformationTextBox.Size = new System.Drawing.Size(625, 203);
+            this.clientInformationTextBox.Size = new System.Drawing.Size(515, 242);
             this.clientInformationTextBox.TabIndex = 44;
-            // 
-            // connectButton
-            // 
-            this.connectButton.Location = new System.Drawing.Point(326, 6);
-            this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(149, 23);
-            this.connectButton.TabIndex = 43;
-            this.connectButton.Text = "Connect";
-            this.connectButton.UseVisualStyleBackColor = true;
-            // 
-            // disconnectButton
-            // 
-            this.disconnectButton.Location = new System.Drawing.Point(481, 5);
-            this.disconnectButton.Name = "disconnectButton";
-            this.disconnectButton.Size = new System.Drawing.Size(149, 23);
-            this.disconnectButton.TabIndex = 42;
-            this.disconnectButton.Text = "Disconnect";
-            this.disconnectButton.UseVisualStyleBackColor = true;
-            // 
-            // serverIPTextBox
-            // 
-            this.serverIPTextBox.Location = new System.Drawing.Point(73, 6);
-            this.serverIPTextBox.Name = "serverIPTextBox";
-            this.serverIPTextBox.Size = new System.Drawing.Size(100, 23);
-            this.serverIPTextBox.TabIndex = 41;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(2, 9);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(65, 15);
-            this.label17.TabIndex = 40;
-            this.label17.Text = "IP Address:";
             // 
             // groupBox4
             // 
@@ -751,6 +918,7 @@
             // 
             // dragAndDropPanel
             // 
+            this.dragAndDropPanel.AllowDrop = true;
             this.dragAndDropPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -759,6 +927,8 @@
             this.dragAndDropPanel.Name = "dragAndDropPanel";
             this.dragAndDropPanel.Size = new System.Drawing.Size(257, 114);
             this.dragAndDropPanel.TabIndex = 11;
+            this.dragAndDropPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragDrop);
+            this.dragAndDropPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragEnter);
             // 
             // possibleChecksumFileLocationTextBox
             // 
@@ -777,40 +947,141 @@
             this.label11.TabIndex = 40;
             this.label11.Text = "Possible Checksum File Location:";
             // 
+            // clientModeContextMenuStrip
+            // 
+            this.clientModeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectToolStripMenuItem,
+            this.disconnectToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.removeToolStripMenuItem});
+            this.clientModeContextMenuStrip.Name = "contextMenuStrip1";
+            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(134, 76);
+            // 
+            // connectToolStripMenuItem
+            // 
+            this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.connectToolStripMenuItem.Text = "Connect";
+            // 
+            // disconnectToolStripMenuItem
+            // 
+            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.disconnectToolStripMenuItem.Text = "Disconnect";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(130, 6);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // mainMenuStrip
+            // 
+            this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem});
+            this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.mainMenuStrip.Name = "mainMenuStrip";
+            this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.mainMenuStrip.Size = new System.Drawing.Size(853, 24);
+            this.mainMenuStrip.TabIndex = 1;
+            this.mainMenuStrip.Text = "menuStrip1";
+            // 
+            // workContextMenuStrip
+            // 
+            this.workContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startToolStripMenuItem,
+            this.stopToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.removeToolStripMenuItem1});
+            this.workContextMenuStrip.Name = "workContextMenuStrip";
+            this.workContextMenuStrip.Size = new System.Drawing.Size(118, 76);
+            // 
+            // startToolStripMenuItem
+            // 
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            // 
+            // stopToolStripMenuItem
+            // 
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.stopToolStripMenuItem.Text = "Stop";
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(114, 6);
+            // 
+            // removeToolStripMenuItem1
+            // 
+            this.removeToolStripMenuItem1.Name = "removeToolStripMenuItem1";
+            this.removeToolStripMenuItem1.Size = new System.Drawing.Size(117, 22);
+            this.removeToolStripMenuItem1.Text = "Remove";
+            this.removeToolStripMenuItem1.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 541);
+            this.ClientSize = new System.Drawing.Size(853, 630);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.mainMenuStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MainForm";
             this.Text = "Crypto File Brute Force";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.bruteforceTabPage.ResumeLayout(false);
-            this.bruteforceTabPage.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.serverModeTabPage.ResumeLayout(false);
             this.serverModeTabPage.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.clientModeTabPage.ResumeLayout(false);
             this.clientModeTabPage.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.clientModeContextMenuStrip.ResumeLayout(false);
+            this.mainMenuStrip.ResumeLayout(false);
+            this.mainMenuStrip.PerformLayout();
+            this.workContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -818,11 +1089,8 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ComboBox checksumComboBox;
         private System.Windows.Forms.TextBox fileLocationTextBox;
-        private System.Windows.Forms.Button startSearchButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox fileLengthTextBox;
         private System.Windows.Forms.Label label2;
@@ -833,7 +1101,6 @@
         private System.Windows.Forms.TextBox startChecksumPositionTextBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox currentChecksumPositionTextBox;
-        private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox stopAtPositionTextBox;
         private System.Windows.Forms.Label label10;
@@ -850,7 +1117,6 @@
         private System.Windows.Forms.CheckBox parallelComputingCheckBox;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage bruteforceTabPage;
-        private System.Windows.Forms.TabPage searchTabPage;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel dragAndDropPanel;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -867,20 +1133,53 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button clearPCFButton;
-        private System.Windows.Forms.Button startListeningButton;
-        private System.Windows.Forms.TextBox listeningTextBox;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Button stopListeningButton;
         private System.Windows.Forms.TextBox infoTextBox;
         private System.Windows.Forms.TabPage clientModeTabPage;
-        private System.Windows.Forms.ListView connectedServerListView;
+        private System.Windows.Forms.ListView serverMonitorListView;
         private System.Windows.Forms.TextBox serverPortTextBox;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox clientInformationTextBox;
-        private System.Windows.Forms.Button connectButton;
-        private System.Windows.Forms.Button disconnectButton;
+        private System.Windows.Forms.Button addServerButton;
         private System.Windows.Forms.TextBox serverIPTextBox;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ColumnHeader statusColumnHeader;
+        private System.Windows.Forms.ColumnHeader workerIdColumnHeader;
+        private System.Windows.Forms.ColumnHeader serverIpColumnHeader;
+        private System.Windows.Forms.ColumnHeader serverPortColumnHeader;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ListView workMonitorListView;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button startListeningButton;
+        private System.Windows.Forms.Button stopListeningButton;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox listeningTextBox;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ListView clientMonitorListView;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ContextMenuStrip clientModeContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip mainMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip workContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem1;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Button addWorkButton;
     }
 }
 
