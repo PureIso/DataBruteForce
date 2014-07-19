@@ -58,6 +58,21 @@ namespace oCryptio.Checksum
             Array.Reverse(bytes);
             return bytes;
         }
+
+        public byte[] Compute(int offset, byte[] bytes)
+        {
+            ushort num = this.CRC_InitialValue;
+            for (int i = offset; i < bytes.Length; i++)
+            {
+                byte num2 = bytes[i];
+                ushort num4 = (ushort) (0xff & num2);
+                ushort index = (ushort) (((ushort) (num >> 8)) ^ num4);
+                num = (ushort) (((ushort) (num << 8)) ^ this.CRC_Table[index]);
+            }
+            bytes = BitConverter.GetBytes(num);
+            Array.Reverse(bytes);
+            return bytes;
+        }
     }
 
 

@@ -140,6 +140,38 @@ namespace oCryptoBruteForce
                 case "Adler32 - {4Bytes}":
                     returnValue = Adler32.Compute(offset, buffer);
                     break;
+                case "Checksum8 - {1Bytes}":
+                    returnValue = Checksum8.Compute(offset, buffer);
+                    break;
+                case "Checksum16 - {2Bytes}":
+                    returnValue = Checksum16.Compute(offset, buffer);
+                    break;
+                case "Checksum24 - {3Bytes}":
+                    returnValue = Checksum24.Compute(offset, buffer);
+                    break;
+                case "Checksum32 - {4Bytes}":
+                    returnValue = Checksum32.Compute(offset, buffer);
+                    break;
+                case "Checksum40 - {5Bytes}":
+                    returnValue = Checksum40.Compute(offset, buffer);
+                    break;
+                case "Checksum48 - {6Bytes}":
+                    returnValue = Checksum48.Compute(offset, buffer);
+                    break;
+                case "Checksum56 - {7Bytes}":
+                    returnValue = Checksum56.Compute(offset, buffer);
+                    break;
+                case "Checksum64 - {8Bytes}":
+                    returnValue = Checksum64.Compute(offset, buffer);
+                    break;
+                case "CRC16 - {2Bytes}":
+                    Crc16 crc16 = new Crc16();
+                    returnValue = crc16.Compute(offset, buffer);
+                    break;
+                case "CRC16 CCITT - {2Bytes}":
+                    Crc16ccitt crc16Ccitt = new Crc16ccitt();
+                    returnValue = crc16Ccitt.Compute(offset, buffer);
+                    break;
                 case "CRC32 - {4Bytes}":
                     returnValue = Crc32.Compute(offset, buffer);
                     break;

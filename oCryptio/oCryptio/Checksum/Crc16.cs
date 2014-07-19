@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace oCryptio.Checksum
 {
@@ -53,6 +50,21 @@ namespace oCryptio.Checksum
                 ushort num3 = (ushort)(0xff & num4);
                 ushort num2 = (ushort)(num ^ num3);
                 num = (ushort)(((ushort)(num >> 8)) ^ CRC_Table[num2 & 0xff]);
+            }
+            bytes = BitConverter.GetBytes(num);
+            Array.Reverse(bytes);
+            return bytes;
+        }
+
+        public byte[] Compute(int offset, byte[] bytes)
+        {
+            ushort num = CRC_InitialValue;
+            for (int index = offset; index < bytes.Length; index++)
+            {
+                byte num4 = bytes[index];
+                ushort num3 = (ushort) (0xff & num4);
+                ushort num2 = (ushort) (num ^ num3);
+                num = (ushort) (((ushort) (num >> 8)) ^ CRC_Table[num2 & 0xff]);
             }
             bytes = BitConverter.GetBytes(num);
             Array.Reverse(bytes);
