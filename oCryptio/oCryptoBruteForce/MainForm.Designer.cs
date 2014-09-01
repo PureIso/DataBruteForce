@@ -35,10 +35,6 @@
             this.byteSkippingCheckBox = new System.Windows.Forms.CheckBox();
             this.skipBytesNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.stopTimeTextBox = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.startTimeTextBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.lazyGenerateComboBox = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -47,29 +43,26 @@
             this.stopAtPositionTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.startChecksumPositionTextBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.currentChecksumPositionTextBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.fileLengthTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.startSearchTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.bruteforceTabPage = new System.Windows.Forms.TabPage();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.checksumValueTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.addWorkButton = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label21 = new System.Windows.Forms.Label();
             this.workMonitorListView = new System.Windows.Forms.ListView();
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workMonitorStatusHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workMonitorWorkIdHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workMonitorSecurityHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workMonitorChecksumHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workMonitorChecksumOffsetHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workMonitorLengthHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workMonitorStartTimeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.workMonitorEndTimeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.addWorkButton = new System.Windows.Forms.Button();
             this.serverModeTabPage = new System.Windows.Forms.TabPage();
             this.panel5 = new System.Windows.Forms.Panel();
             this.startListeningButton = new System.Windows.Forms.Button();
@@ -118,17 +111,17 @@
             this.workContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.viewDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.removeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertFromBase64StringCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.bruteforceTabPage.SuspendLayout();
-            this.panel8.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.serverModeTabPage.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -168,9 +161,9 @@
             "HMAC SHA 512 - {64Bytes}",
             "MD5 - {16Bytes}",
             "MD5 CNG - {16Bytes}"});
-            this.checksumComboBox.Location = new System.Drawing.Point(111, 8);
+            this.checksumComboBox.Location = new System.Drawing.Point(174, 16);
             this.checksumComboBox.Name = "checksumComboBox";
-            this.checksumComboBox.Size = new System.Drawing.Size(450, 23);
+            this.checksumComboBox.Size = new System.Drawing.Size(576, 23);
             this.checksumComboBox.TabIndex = 2;
             // 
             // fileLocationTextBox
@@ -185,7 +178,7 @@
             // 
             this.parallelComputingCheckBox.Location = new System.Drawing.Point(187, 22);
             this.parallelComputingCheckBox.Name = "parallelComputingCheckBox";
-            this.parallelComputingCheckBox.Size = new System.Drawing.Size(108, 77);
+            this.parallelComputingCheckBox.Size = new System.Drawing.Size(160, 37);
             this.parallelComputingCheckBox.TabIndex = 34;
             this.parallelComputingCheckBox.Text = "Use Parallel Computing ?";
             this.parallelComputingCheckBox.UseVisualStyleBackColor = true;
@@ -228,46 +221,10 @@
             this.label14.TabIndex = 31;
             this.label14.Text = "Skip bytes:";
             // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(8, 55);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(64, 15);
-            this.label13.TabIndex = 29;
-            this.label13.Text = "Stop Time:";
-            // 
-            // stopTimeTextBox
-            // 
-            this.stopTimeTextBox.Location = new System.Drawing.Point(78, 52);
-            this.stopTimeTextBox.Name = "stopTimeTextBox";
-            this.stopTimeTextBox.ReadOnly = true;
-            this.stopTimeTextBox.Size = new System.Drawing.Size(139, 23);
-            this.stopTimeTextBox.TabIndex = 28;
-            this.stopTimeTextBox.Text = "void";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 26);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(64, 15);
-            this.label12.TabIndex = 27;
-            this.label12.Text = "Start Time:";
-            // 
-            // startTimeTextBox
-            // 
-            this.startTimeTextBox.Location = new System.Drawing.Point(78, 23);
-            this.startTimeTextBox.Name = "startTimeTextBox";
-            this.startTimeTextBox.ReadOnly = true;
-            this.startTimeTextBox.Size = new System.Drawing.Size(139, 23);
-            this.startTimeTextBox.TabIndex = 26;
-            this.startTimeTextBox.Text = "void";
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(312, 54);
+            this.label10.Location = new System.Drawing.Point(373, 54);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(83, 15);
             this.label10.TabIndex = 23;
@@ -280,7 +237,7 @@
             this.lazyGenerateComboBox.Items.AddRange(new object[] {
             "OFF",
             "ON"});
-            this.lazyGenerateComboBox.Location = new System.Drawing.Point(410, 51);
+            this.lazyGenerateComboBox.Location = new System.Drawing.Point(462, 53);
             this.lazyGenerateComboBox.Name = "lazyGenerateComboBox";
             this.lazyGenerateComboBox.Size = new System.Drawing.Size(149, 23);
             this.lazyGenerateComboBox.TabIndex = 22;
@@ -288,7 +245,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(324, 30);
+            this.label9.Location = new System.Drawing.Point(385, 27);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 15);
             this.label9.TabIndex = 21;
@@ -301,7 +258,7 @@
             this.lazySearchComboBox.Items.AddRange(new object[] {
             "OFF",
             "ON"});
-            this.lazySearchComboBox.Location = new System.Drawing.Point(410, 22);
+            this.lazySearchComboBox.Location = new System.Drawing.Point(462, 24);
             this.lazySearchComboBox.Name = "lazySearchComboBox";
             this.lazySearchComboBox.Size = new System.Drawing.Size(149, 23);
             this.lazySearchComboBox.TabIndex = 20;
@@ -310,7 +267,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(201, 24);
+            this.label8.Location = new System.Drawing.Point(241, 51);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(95, 15);
             this.label8.TabIndex = 19;
@@ -318,7 +275,7 @@
             // 
             // stopAtPositionTextBox
             // 
-            this.stopAtPositionTextBox.Location = new System.Drawing.Point(302, 23);
+            this.stopAtPositionTextBox.Location = new System.Drawing.Point(342, 48);
             this.stopAtPositionTextBox.Name = "stopAtPositionTextBox";
             this.stopAtPositionTextBox.Size = new System.Drawing.Size(80, 23);
             this.stopAtPositionTextBox.TabIndex = 18;
@@ -327,7 +284,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(2, 29);
+            this.label7.Location = new System.Drawing.Point(435, 51);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(126, 15);
             this.label7.TabIndex = 16;
@@ -335,52 +292,16 @@
             // 
             // startChecksumPositionTextBox
             // 
-            this.startChecksumPositionTextBox.Location = new System.Drawing.Point(134, 26);
+            this.startChecksumPositionTextBox.Location = new System.Drawing.Point(567, 48);
             this.startChecksumPositionTextBox.Name = "startChecksumPositionTextBox";
             this.startChecksumPositionTextBox.Size = new System.Drawing.Size(183, 23);
             this.startChecksumPositionTextBox.TabIndex = 15;
             this.startChecksumPositionTextBox.Text = "0";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(28, 58);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(98, 15);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "Checksum Starts:";
-            // 
-            // currentChecksumPositionTextBox
-            // 
-            this.currentChecksumPositionTextBox.Location = new System.Drawing.Point(134, 55);
-            this.currentChecksumPositionTextBox.Name = "currentChecksumPositionTextBox";
-            this.currentChecksumPositionTextBox.ReadOnly = true;
-            this.currentChecksumPositionTextBox.Size = new System.Drawing.Size(183, 23);
-            this.currentChecksumPositionTextBox.TabIndex = 11;
-            this.currentChecksumPositionTextBox.Text = "0";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(388, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 15);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "File Length:";
-            // 
-            // fileLengthTextBox
-            // 
-            this.fileLengthTextBox.Location = new System.Drawing.Point(462, 21);
-            this.fileLengthTextBox.Name = "fileLengthTextBox";
-            this.fileLengthTextBox.ReadOnly = true;
-            this.fileLengthTextBox.Size = new System.Drawing.Size(84, 23);
-            this.fileLengthTextBox.TabIndex = 8;
-            this.fileLengthTextBox.Text = "0";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 24);
+            this.label2.Location = new System.Drawing.Point(57, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 15);
             this.label2.TabIndex = 7;
@@ -388,7 +309,7 @@
             // 
             // startSearchTextBox
             // 
-            this.startSearchTextBox.Location = new System.Drawing.Point(134, 22);
+            this.startSearchTextBox.Location = new System.Drawing.Point(174, 48);
             this.startSearchTextBox.Name = "startSearchTextBox";
             this.startSearchTextBox.Size = new System.Drawing.Size(61, 23);
             this.startSearchTextBox.TabIndex = 6;
@@ -397,7 +318,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 11);
+            this.label1.Location = new System.Drawing.Point(68, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 15);
             this.label1.TabIndex = 3;
@@ -418,134 +339,40 @@
             this.tabControl1.Controls.Add(this.serverModeTabPage);
             this.tabControl1.Controls.Add(this.clientModeTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl1.Location = new System.Drawing.Point(0, 212);
+            this.tabControl1.Location = new System.Drawing.Point(0, 221);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(853, 326);
+            this.tabControl1.Size = new System.Drawing.Size(853, 360);
             this.tabControl1.TabIndex = 9;
             // 
             // bruteforceTabPage
             // 
             this.bruteforceTabPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.bruteforceTabPage.Controls.Add(this.panel8);
-            this.bruteforceTabPage.Controls.Add(this.panel7);
             this.bruteforceTabPage.Controls.Add(this.panel6);
             this.bruteforceTabPage.Controls.Add(this.workMonitorListView);
+            this.bruteforceTabPage.Controls.Add(this.panel8);
             this.bruteforceTabPage.Location = new System.Drawing.Point(4, 24);
             this.bruteforceTabPage.Name = "bruteforceTabPage";
             this.bruteforceTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.bruteforceTabPage.Size = new System.Drawing.Size(845, 298);
+            this.bruteforceTabPage.Size = new System.Drawing.Size(845, 332);
             this.bruteforceTabPage.TabIndex = 0;
             this.bruteforceTabPage.Text = "Bruteforce For Checksums";
             this.bruteforceTabPage.UseVisualStyleBackColor = true;
-            // 
-            // panel8
-            // 
-            this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel8.Controls.Add(this.label1);
-            this.panel8.Controls.Add(this.checksumComboBox);
-            this.panel8.Controls.Add(this.groupBox1);
-            this.panel8.Controls.Add(this.groupBox2);
-            this.panel8.Controls.Add(this.groupBox3);
-            this.panel8.Location = new System.Drawing.Point(8, 50);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(574, 238);
-            this.panel8.TabIndex = 54;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.startTimeTextBox);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.stopTimeTextBox);
-            this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Location = new System.Drawing.Point(338, 101);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(223, 115);
-            this.groupBox1.TabIndex = 35;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Timer";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.checksumValueTextBox);
-            this.groupBox2.Controls.Add(this.startChecksumPositionTextBox);
-            this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.currentChecksumPositionTextBox);
-            this.groupBox2.Location = new System.Drawing.Point(9, 101);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(323, 115);
-            this.groupBox2.TabIndex = 36;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Checksum Information";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(60, 87);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(66, 15);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "Checksum:";
-            // 
-            // checksumValueTextBox
-            // 
-            this.checksumValueTextBox.Location = new System.Drawing.Point(134, 84);
-            this.checksumValueTextBox.Name = "checksumValueTextBox";
-            this.checksumValueTextBox.ReadOnly = true;
-            this.checksumValueTextBox.Size = new System.Drawing.Size(183, 23);
-            this.checksumValueTextBox.TabIndex = 17;
-            this.checksumValueTextBox.Text = "0";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.stopAtPositionTextBox);
-            this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.startSearchTextBox);
-            this.groupBox3.Controls.Add(this.fileLengthTextBox);
-            this.groupBox3.Location = new System.Drawing.Point(9, 37);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(552, 58);
-            this.groupBox3.TabIndex = 37;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Search Information";
-            // 
-            // panel7
-            // 
-            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel7.Controls.Add(this.addWorkButton);
-            this.panel7.Location = new System.Drawing.Point(8, 6);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(574, 38);
-            this.panel7.TabIndex = 53;
-            // 
-            // addWorkButton
-            // 
-            this.addWorkButton.Location = new System.Drawing.Point(8, 7);
-            this.addWorkButton.Name = "addWorkButton";
-            this.addWorkButton.Size = new System.Drawing.Size(553, 23);
-            this.addWorkButton.TabIndex = 44;
-            this.addWorkButton.Text = "Add Work";
-            this.addWorkButton.UseVisualStyleBackColor = true;
-            this.addWorkButton.Click += new System.EventHandler(this.addWorkButton_Click);
             // 
             // panel6
             // 
             this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel6.Controls.Add(this.label21);
-            this.panel6.Location = new System.Drawing.Point(585, 6);
+            this.panel6.Location = new System.Drawing.Point(7, 157);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(251, 38);
+            this.panel6.Size = new System.Drawing.Size(829, 38);
             this.panel6.TabIndex = 52;
             // 
             // label21
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(67, 6);
+            this.label21.Location = new System.Drawing.Point(355, 8);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(117, 21);
             this.label21.TabIndex = 0;
@@ -554,27 +381,99 @@
             // workMonitorListView
             // 
             this.workMonitorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader4,
-            this.columnHeader5});
+            this.workMonitorStatusHeader,
+            this.workMonitorWorkIdHeader,
+            this.workMonitorSecurityHeader,
+            this.workMonitorChecksumHeader,
+            this.workMonitorChecksumOffsetHeader,
+            this.workMonitorLengthHeader,
+            this.workMonitorStartTimeHeader,
+            this.workMonitorEndTimeHeader});
             this.workMonitorListView.FullRowSelect = true;
             this.workMonitorListView.GridLines = true;
-            this.workMonitorListView.Location = new System.Drawing.Point(585, 50);
+            this.workMonitorListView.Location = new System.Drawing.Point(6, 201);
             this.workMonitorListView.Name = "workMonitorListView";
-            this.workMonitorListView.Size = new System.Drawing.Size(251, 238);
+            this.workMonitorListView.Size = new System.Drawing.Size(830, 123);
             this.workMonitorListView.TabIndex = 51;
             this.workMonitorListView.UseCompatibleStateImageBehavior = false;
             this.workMonitorListView.View = System.Windows.Forms.View.Details;
             this.workMonitorListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.workMonitorListView_MouseDown);
             // 
-            // columnHeader4
+            // workMonitorStatusHeader
             // 
-            this.columnHeader4.Text = "Status";
-            this.columnHeader4.Width = 95;
+            this.workMonitorStatusHeader.Text = "Status";
+            this.workMonitorStatusHeader.Width = 95;
             // 
-            // columnHeader5
+            // workMonitorWorkIdHeader
             // 
-            this.columnHeader5.Text = "Worker ID";
-            this.columnHeader5.Width = 99;
+            this.workMonitorWorkIdHeader.Text = "Worker ID";
+            this.workMonitorWorkIdHeader.Width = 99;
+            // 
+            // workMonitorSecurityHeader
+            // 
+            this.workMonitorSecurityHeader.Text = "Security";
+            // 
+            // workMonitorChecksumHeader
+            // 
+            this.workMonitorChecksumHeader.Text = "Checksum";
+            this.workMonitorChecksumHeader.Width = 135;
+            // 
+            // workMonitorChecksumOffsetHeader
+            // 
+            this.workMonitorChecksumOffsetHeader.Text = "Checksum Offset";
+            this.workMonitorChecksumOffsetHeader.Width = 114;
+            // 
+            // workMonitorLengthHeader
+            // 
+            this.workMonitorLengthHeader.Text = "Generation Length";
+            this.workMonitorLengthHeader.Width = 121;
+            // 
+            // workMonitorStartTimeHeader
+            // 
+            this.workMonitorStartTimeHeader.Text = "Start Time";
+            this.workMonitorStartTimeHeader.Width = 84;
+            // 
+            // workMonitorEndTimeHeader
+            // 
+            this.workMonitorEndTimeHeader.Text = "End Time";
+            this.workMonitorEndTimeHeader.Width = 88;
+            // 
+            // panel8
+            // 
+            this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel8.Controls.Add(this.groupBox3);
+            this.panel8.Location = new System.Drawing.Point(7, 6);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(829, 145);
+            this.panel8.TabIndex = 54;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.addWorkButton);
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.checksumComboBox);
+            this.groupBox3.Controls.Add(this.stopAtPositionTextBox);
+            this.groupBox3.Controls.Add(this.startChecksumPositionTextBox);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.startSearchTextBox);
+            this.groupBox3.Location = new System.Drawing.Point(6, 7);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(803, 128);
+            this.groupBox3.TabIndex = 37;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Search Information";
+            // 
+            // addWorkButton
+            // 
+            this.addWorkButton.Location = new System.Drawing.Point(6, 82);
+            this.addWorkButton.Name = "addWorkButton";
+            this.addWorkButton.Size = new System.Drawing.Size(791, 40);
+            this.addWorkButton.TabIndex = 44;
+            this.addWorkButton.Text = "Add Work";
+            this.addWorkButton.UseVisualStyleBackColor = true;
+            this.addWorkButton.Click += new System.EventHandler(this.addWorkButton_Click);
             // 
             // serverModeTabPage
             // 
@@ -586,7 +485,7 @@
             this.serverModeTabPage.Location = new System.Drawing.Point(4, 24);
             this.serverModeTabPage.Name = "serverModeTabPage";
             this.serverModeTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.serverModeTabPage.Size = new System.Drawing.Size(845, 298);
+            this.serverModeTabPage.Size = new System.Drawing.Size(845, 332);
             this.serverModeTabPage.TabIndex = 2;
             this.serverModeTabPage.Text = "Server Mode";
             this.serverModeTabPage.UseVisualStyleBackColor = true;
@@ -708,7 +607,7 @@
             this.clientModeTabPage.Location = new System.Drawing.Point(4, 24);
             this.clientModeTabPage.Name = "clientModeTabPage";
             this.clientModeTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.clientModeTabPage.Size = new System.Drawing.Size(845, 298);
+            this.clientModeTabPage.Size = new System.Drawing.Size(845, 332);
             this.clientModeTabPage.TabIndex = 3;
             this.clientModeTabPage.Text = "Client Mode";
             this.clientModeTabPage.UseVisualStyleBackColor = true;
@@ -835,6 +734,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.convertFromBase64StringCheckBox);
             this.groupBox4.Controls.Add(this.groupBox5);
             this.groupBox4.Controls.Add(this.button1);
             this.groupBox4.Controls.Add(this.label15);
@@ -845,7 +745,7 @@
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Location = new System.Drawing.Point(15, 63);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(571, 114);
+            this.groupBox4.Size = new System.Drawing.Size(622, 114);
             this.groupBox4.TabIndex = 38;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Miscellaneous";
@@ -864,7 +764,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(410, 80);
+            this.button1.Location = new System.Drawing.Point(462, 82);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(149, 23);
             this.button1.TabIndex = 36;
@@ -874,7 +774,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(301, 84);
+            this.label15.Location = new System.Drawing.Point(362, 81);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(94, 15);
             this.label15.TabIndex = 35;
@@ -882,9 +782,9 @@
             // 
             // loadPCFButton
             // 
-            this.loadPCFButton.Location = new System.Drawing.Point(592, 3);
+            this.loadPCFButton.Location = new System.Drawing.Point(643, 3);
             this.loadPCFButton.Name = "loadPCFButton";
-            this.loadPCFButton.Size = new System.Drawing.Size(257, 23);
+            this.loadPCFButton.Size = new System.Drawing.Size(206, 23);
             this.loadPCFButton.TabIndex = 39;
             this.loadPCFButton.Text = "Load";
             this.loadPCFButton.UseVisualStyleBackColor = true;
@@ -904,14 +804,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(853, 188);
+            this.panel1.Size = new System.Drawing.Size(853, 197);
             this.panel1.TabIndex = 10;
             // 
             // clearPCFButton
             // 
-            this.clearPCFButton.Location = new System.Drawing.Point(592, 34);
+            this.clearPCFButton.Location = new System.Drawing.Point(643, 34);
             this.clearPCFButton.Name = "clearPCFButton";
-            this.clearPCFButton.Size = new System.Drawing.Size(257, 23);
+            this.clearPCFButton.Size = new System.Drawing.Size(206, 23);
             this.clearPCFButton.TabIndex = 42;
             this.clearPCFButton.Text = "Clear";
             this.clearPCFButton.UseVisualStyleBackColor = true;
@@ -923,9 +823,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dragAndDropPanel.BackColor = System.Drawing.Color.DimGray;
-            this.dragAndDropPanel.Location = new System.Drawing.Point(592, 63);
+            this.dragAndDropPanel.Location = new System.Drawing.Point(643, 63);
             this.dragAndDropPanel.Name = "dragAndDropPanel";
-            this.dragAndDropPanel.Size = new System.Drawing.Size(257, 114);
+            this.dragAndDropPanel.Size = new System.Drawing.Size(206, 123);
             this.dragAndDropPanel.TabIndex = 11;
             this.dragAndDropPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragDrop);
             this.dragAndDropPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragEnter);
@@ -1003,43 +903,66 @@
             this.workContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.viewDetailsToolStripMenuItem,
             this.toolStripSeparator2,
             this.removeToolStripMenuItem1});
             this.workContextMenuStrip.Name = "workContextMenuStrip";
-            this.workContextMenuStrip.Size = new System.Drawing.Size(118, 76);
+            this.workContextMenuStrip.Size = new System.Drawing.Size(138, 104);
             // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(134, 6);
+            // 
+            // viewDetailsToolStripMenuItem
+            // 
+            this.viewDetailsToolStripMenuItem.Name = "viewDetailsToolStripMenuItem";
+            this.viewDetailsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.viewDetailsToolStripMenuItem.Text = "View Details";
+            this.viewDetailsToolStripMenuItem.Click += new System.EventHandler(this.viewDetailsToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(114, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(134, 6);
             // 
             // removeToolStripMenuItem1
             // 
             this.removeToolStripMenuItem1.Name = "removeToolStripMenuItem1";
-            this.removeToolStripMenuItem1.Size = new System.Drawing.Size(117, 22);
+            this.removeToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
             this.removeToolStripMenuItem1.Text = "Remove";
             this.removeToolStripMenuItem1.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
+            // convertFromBase64StringCheckBox
+            // 
+            this.convertFromBase64StringCheckBox.Location = new System.Drawing.Point(186, 62);
+            this.convertFromBase64StringCheckBox.Name = "convertFromBase64StringCheckBox";
+            this.convertFromBase64StringCheckBox.Size = new System.Drawing.Size(161, 37);
+            this.convertFromBase64StringCheckBox.TabIndex = 42;
+            this.convertFromBase64StringCheckBox.Text = "Convert From Base 64 string (At Fail)?";
+            this.convertFromBase64StringCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 630);
+            this.ClientSize = new System.Drawing.Size(853, 620);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.mainMenuStrip);
@@ -1049,17 +972,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.bruteforceTabPage.ResumeLayout(false);
-            this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.panel7.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.serverModeTabPage.ResumeLayout(false);
             this.serverModeTabPage.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -1091,26 +1008,18 @@
 
         private System.Windows.Forms.ComboBox checksumComboBox;
         private System.Windows.Forms.TextBox fileLocationTextBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox fileLengthTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox startSearchTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox startChecksumPositionTextBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox currentChecksumPositionTextBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox stopAtPositionTextBox;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox lazyGenerateComboBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox lazySearchComboBox;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox stopTimeTextBox;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox startTimeTextBox;
         private System.Windows.Forms.NumericUpDown skipBytesNumericUpDown;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox byteSkippingCheckBox;
@@ -1121,13 +1030,9 @@
         private System.Windows.Forms.Panel dragAndDropPanel;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TabPage serverModeTabPage;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox checksumValueTextBox;
         private System.Windows.Forms.Button loadPCFButton;
         private System.Windows.Forms.TextBox possibleChecksumFileLocationTextBox;
         private System.Windows.Forms.Label label11;
@@ -1152,8 +1057,8 @@
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.ListView workMonitorListView;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader workMonitorStatusHeader;
+        private System.Windows.Forms.ColumnHeader workMonitorWorkIdHeader;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button startListeningButton;
         private System.Windows.Forms.Button stopListeningButton;
@@ -1178,8 +1083,16 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem1;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Button addWorkButton;
+        private System.Windows.Forms.ColumnHeader workMonitorSecurityHeader;
+        private System.Windows.Forms.ColumnHeader workMonitorChecksumHeader;
+        private System.Windows.Forms.ColumnHeader workMonitorChecksumOffsetHeader;
+        private System.Windows.Forms.ColumnHeader workMonitorLengthHeader;
+        private System.Windows.Forms.ColumnHeader workMonitorStartTimeHeader;
+        private System.Windows.Forms.ColumnHeader workMonitorEndTimeHeader;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem viewDetailsToolStripMenuItem;
+        private System.Windows.Forms.CheckBox convertFromBase64StringCheckBox;
     }
 }
 

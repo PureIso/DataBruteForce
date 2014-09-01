@@ -21,7 +21,9 @@ namespace oCryptoBruteForce
         #region Fields
         private string _fileName;
         private byte[] _fileBuffer;
+        private byte[] _fileBase64Buffer;
         private byte[] _possibleChecksumFileBuffer;
+        private byte[] _possibleChecksumBase64FileBuffer;
         private bool _stop;
         #endregion
 
@@ -33,7 +35,6 @@ namespace oCryptoBruteForce
             oDelegateFunctions.SetComboBoxSelectedIndex(checksumComboBox, 0);
         }
 
-
         #region Open File and Load
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -41,9 +42,13 @@ namespace oCryptoBruteForce
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
             _fileName = openFileDialog.FileNames[0];
             _fileBuffer = File.ReadAllBytes(_fileName);
+            _fileBase64Buffer = Convert.FromBase64String(File.ReadAllText(_fileName));
+            Console.WriteLine(_fileBase64Buffer[_fileBase64Buffer.Length - 4]);
+            Console.WriteLine(_fileBase64Buffer[_fileBase64Buffer.Length - 3]);
+            Console.WriteLine(_fileBase64Buffer[_fileBase64Buffer.Length - 2]);
+            Console.WriteLine(_fileBase64Buffer[_fileBase64Buffer.Length - 1]);
             //Thread Safe Functions to prevent illegal cross threads.
             oDelegateFunctions.SetControlText(fileLocationTextBox, _fileName);
-            oDelegateFunctions.SetControlText(fileLengthTextBox, _fileBuffer.Length.ToString());
             oDelegateFunctions.SetControlText(stopAtPositionTextBox, _fileBuffer.Length.ToString());
             oDelegateFunctions.SetNumericUpDownValues(skipBytesNumericUpDown, 1, _fileBuffer.Length,1);
         }
@@ -55,6 +60,7 @@ namespace oCryptoBruteForce
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
             oDelegateFunctions.SetControlText(possibleChecksumFileLocationTextBox, openFileDialog.FileNames[0]);
             _possibleChecksumFileBuffer = File.ReadAllBytes(openFileDialog.FileNames[0]);
+            _possibleChecksumBase64FileBuffer = Convert.FromBase64String(File.ReadAllText(openFileDialog.FileNames[0]));
         }
         #endregion
 
@@ -83,8 +89,6 @@ namespace oCryptoBruteForce
 
         #endregion
        
-        #region Functions
-
         #region Helper Functions
         private DelegateObject GetSearchTypeEnum(DelegateObject workObject)
         {
@@ -97,25 +101,25 @@ namespace oCryptoBruteForce
                 {
                     if (_possibleChecksumFileBuffer != null)
                     {
-                        workObject.searchType = SearchTypeEnum.NotLazyGenerateNotLazySearch;
+                        workObject.SearchType = SearchTypeEnum.NotLazyGenerateNotLazySearch;
                         workObject.PossibleChecksumsArray = _possibleChecksumFileBuffer;
                     }
                     else
                     {
-                        workObject.searchType = SearchTypeEnum.NotLazyGenerateNotLazySearch;
+                        workObject.SearchType = SearchTypeEnum.NotLazyGenerateNotLazySearch;
                     }
                 }
                 else if (isLazySearch && isLazyGenerate)
                 {
-                    workObject.searchType = SearchTypeEnum.LazyGenerateLazySearch;
+                    workObject.SearchType = SearchTypeEnum.LazyGenerateLazySearch;
                 }
                 else if (!isLazySearch)
                 {
-                    workObject.searchType = SearchTypeEnum.LazyGenerateNotLazySearch;
+                    workObject.SearchType = SearchTypeEnum.LazyGenerateNotLazySearch;
                 }
                 else
                 {
-                    workObject.searchType = SearchTypeEnum.NotLazyGenerateLazySearch;
+                    workObject.SearchType = SearchTypeEnum.NotLazyGenerateLazySearch;
                 }
             }
             catch (Exception)
@@ -247,13 +251,18 @@ namespace oCryptoBruteForce
                 workObject.StartSearch = int.Parse(oDelegateFunctions.GetControlText(startSearchTextBox));
                 workObject.StopSearchAt = int.Parse(oDelegateFunctions.GetControlText(stopAtPositionTextBox));
                 workObject.StartGeneratedChecksumFrom = int.Parse(oDelegateFunctions.GetControlText(startChecksumPositionTextBox));
-                workObject.Checksum = oDelegateFunctions.GetControlText(checksumComboBox);
+                workObject.ChecksumType = oDelegateFunctions.GetControlText(checksumComboBox);
                 workObject = GetSearchTypeEnum(workObject);
-                workObject.ChecksumLength = GetChecksumLength(workObject.Checksum);
+                workObject.ChecksumLength = GetChecksumLength(workObject.ChecksumType);
                 workObject.UseParallelComputation = oDelegateFunctions.GetCheckBoxCheck(parallelComputingCheckBox);
+                workObject.ConvertFromBase64String = oDelegateFunctions.GetCheckBoxCheck(convertFromBase64StringCheckBox);
                 if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
                     workObject.SkipSearchBytesBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
                 else workObject.SkipSearchBytesBy = 1;
+                workObject.DataArray = _fileBuffer;
+                workObject.DataArrayBase64 = _fileBase64Buffer;
+                workObject.PossibleChecksumsArray = _possibleChecksumFileBuffer;
+                workObject.PossibleChecksumsBase64Array = _possibleChecksumBase64FileBuffer;
             }
             catch (Exception ex)
             {
@@ -261,192 +270,6 @@ namespace oCryptoBruteForce
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return workObject;
-        }
-        #endregion
-
-        #region Main Search Functions
-        private void SearchAndGenerateUsingPossibleChecksumFile(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
-        {
-            int checksumFound = -1;
-            for (int checksumGenIndex = startGeneratedChecksumFrom; checksumGenIndex < stopSearchAt; )
-            {
-                if (_stop) return;
-                byte[] checksum = GenerateChecksum(theChecksum,checksumGenIndex, _fileBuffer);
-                #region Main Search
-                for (int i = startSearch; i < _possibleChecksumFileBuffer.Length - 1; )
-                {
-                    if (_stop) return;
-                    foreach (byte item in checksum)
-                    {
-                        if (i == _possibleChecksumFileBuffer.Length) break;
-
-                        if (_possibleChecksumFileBuffer[i] == item)
-                        {
-                            checksumFound = i;
-                            i++;
-                        }
-                        else
-                        {
-                            checksumFound = -1;
-                            break;
-                        }
-                    }
-
-                    if (checksumFound != -1) break;
-
-                    #region Search Type to determing next index
-                    switch (searchType)
-                    {
-                        case SearchTypeEnum.LazyGenerateLazySearch:
-                            i += checksum.Length;
-                            break;
-                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            i += skipSearchBytesBy;
-                            break;
-                        case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            i += skipSearchBytesBy;
-                            break;
-                        case SearchTypeEnum.NotLazyGenerateLazySearch:
-                            i += checksum.Length;
-                            break;
-                    }
-                    #endregion
-                }
-                #endregion
-
-                if (checksumFound != -1) break;
-
-                #region Checksum Generation
-                switch (searchType)
-                {
-                    case SearchTypeEnum.LazyGenerateLazySearch:
-                        checksumGenIndex += checksumLength;
-                        break;
-                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                        checksumGenIndex += 1;
-                        break;
-                    case SearchTypeEnum.LazyGenerateNotLazySearch:
-                        checksumGenIndex += checksumLength;
-                        break;
-                    case SearchTypeEnum.NotLazyGenerateLazySearch:
-                        checksumGenIndex += 1;
-                        break;
-                }
-                oDelegateFunctions.SetControlText(currentChecksumPositionTextBox, checksumGenIndex.ToString());
-                #endregion
-            }
-        }
-
-        private void SearchAndGenerate(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
-        {
-            int checksumFound = -1;
-            for (int checksumGenerationIndex = startGeneratedChecksumFrom; checksumGenerationIndex < stopSearchAt;)
-            {
-                if (_stop) return;
-                byte[] checksum = GenerateChecksum(theChecksum,checksumGenerationIndex, _fileBuffer);
-                for (int i = startSearch; i < stopSearchAt - checksumLength;)
-                {
-                    if (_stop) return;
-                    foreach (byte item in checksum)
-                    {
-                        if (_fileBuffer[i] == item )
-                        {
-                            checksumFound = i;
-                            i++;
-                        }
-                        else
-                        {
-                            checksumFound = -1;
-                            break;
-                        }
-                    }
-
-                    if (checksumFound != -1) break;
-                    #region Search Type to determing next index
-                    switch (searchType)
-                    {
-                        case SearchTypeEnum.LazyGenerateLazySearch:
-                            i += checksum.Length;
-                            break;
-                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            i += skipSearchBytesBy;
-                            break;
-                        case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            i += skipSearchBytesBy;
-                            break;
-                        case SearchTypeEnum.NotLazyGenerateLazySearch:
-                            i += checksum.Length;
-                            break;
-                    }
-                    #endregion
-                }
-                if (checksumFound != -1) break;
-                switch (searchType)
-                {
-                    case SearchTypeEnum.LazyGenerateLazySearch:
-                        checksumGenerationIndex += checksumLength;
-                        break;
-                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                        checksumGenerationIndex += 1;
-                        break;
-                    case SearchTypeEnum.LazyGenerateNotLazySearch:
-                        checksumGenerationIndex += checksumLength;
-                        break;
-                    case SearchTypeEnum.NotLazyGenerateLazySearch:
-                        checksumGenerationIndex += 1;
-                        break;
-                }
-            }
-        }
-
-        private void ParallelSearchAndGenerate(string theChecksum,int skipSearchBytesBy, int startSearch, int stopSearchAt, int startGeneratedChecksumFrom, int checksumLength, SearchTypeEnum searchType)
-        {
-
-            Parallel.For(startGeneratedChecksumFrom, stopSearchAt, checksumGenerationIndex =>
-            {
-                if (_stop) return;
-                byte[] checksum = GenerateChecksum(theChecksum, checksumGenerationIndex, _fileBuffer);
-                for (int i = startSearch; i < stopSearchAt - checksumLength;)
-                {
-                    int checksumFound = -1;
-                    if (_stop) return;
-                    foreach (byte item in checksum)
-                    {
-                        if (_fileBuffer[i] == item)
-                        {
-                            checksumFound = i;
-                            i++;
-                        }
-                        else
-                        {
-                            checksumFound = -1;
-                            break;
-                        }
-                    }
-
-                    if (checksumFound != -1) break;
-
-                    #region Search Type to determing next index
-
-                    switch (searchType)
-                    {
-                        case SearchTypeEnum.LazyGenerateLazySearch:
-                            i += checksum.Length;
-                            break;
-                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            i += skipSearchBytesBy;
-                            break;
-                        case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            i += skipSearchBytesBy;
-                            break;
-                        case SearchTypeEnum.NotLazyGenerateLazySearch:
-                            i += checksum.Length;
-                            break;
-                    }
-
-                    #endregion
-                }
-            });
         }
         #endregion
 
@@ -464,50 +287,533 @@ namespace oCryptoBruteForce
             }
         }
 
-        private void OnSearchAndGenerateUsingPossibleChecksumFile(DelegateObject searchInformationObject)
+        private void OnSearchAndGenerateUsingPossibleChecksumFile(DelegateObject input)
         {
-            _fileBuffer = searchInformationObject.DataArray;
-            _possibleChecksumFileBuffer = searchInformationObject.PossibleChecksumsArray;
+            int checksumFound = -1;
+            for (int checksumGenIndex = input.StartGeneratedChecksumFrom; checksumGenIndex < input.StopSearchAt; )
+            {
+                if (input.IsWorkDone) return;
+                byte[] checksum = GenerateChecksum(input.ChecksumType, checksumGenIndex, input.DataArray);
+                #region Main Search
+                for (int i = input.StartSearch; i < input.PossibleChecksumsArray.Length - 1; )
+                {
+                    if (input.IsWorkDone) return;
+                    foreach (byte item in checksum)
+                    {
+                        if (i == input.PossibleChecksumsArray.Length) break;
 
-            SearchAndGenerateUsingPossibleChecksumFile(
-                searchInformationObject.Checksum,
-                searchInformationObject.SkipSearchBytesBy,
-                searchInformationObject.StartSearch,
-                searchInformationObject.StopSearchAt,
-                searchInformationObject.StartGeneratedChecksumFrom,
-                searchInformationObject.ChecksumLength,
-                searchInformationObject.searchType);
+                        if (input.PossibleChecksumsArray[i] == item)
+                        {
+                            checksumFound = i;
+                            i++;
+                        }
+                        else
+                        {
+                            checksumFound = -1;
+                            break;
+                        }
+                    }
+
+                    if (checksumFound != -1) break;
+
+                    #region Search Type to determing next index
+                    switch (input.SearchType)
+                    {
+                        case SearchTypeEnum.LazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.LazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                    }
+                    #endregion
+                }
+                #endregion
+
+                if (checksumFound != -1) break;
+
+                #region Checksum Generation
+                switch (input.SearchType)
+                {
+                    case SearchTypeEnum.LazyGenerateLazySearch:
+                        checksumGenIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                        checksumGenIndex += 1;
+                        break;
+                    case SearchTypeEnum.LazyGenerateNotLazySearch:
+                        checksumGenIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateLazySearch:
+                        checksumGenIndex += 1;
+                        break;
+                }
+                #endregion
+            }
+
+            if (checksumFound == -1) input.FoundChecksum = false;
+            else input.FoundChecksum = true;
+            input.IsWorkDone = true;
         }
 
-        private void OnSearchAndGenerate(DelegateObject searchInformationObject)
+        #region Search and Generate
+        private void OnSearchAndGenerate(DelegateObject input)
         {
-            _fileBuffer = searchInformationObject.DataArray;
+            int checksumFound = -1;
+            input.StartTime = DateTime.Now;
+            for (int checksumGenerationIndex = input.StartGeneratedChecksumFrom; checksumGenerationIndex < input.StopSearchAt; )
+            {
+                if (input.IsWorkDone) return;
+                byte[] checksum = GenerateChecksum(input.ChecksumType, checksumGenerationIndex, input.DataArray);
+                input.ChecksumOffset = checksumGenerationIndex;
+                input.ChecksumGenerationLength = input.StopSearchAt - checksumGenerationIndex;
+                input.Checksum = BitConverter.ToString(checksum).Replace("-",string.Empty);
 
-            SearchAndGenerate(
-                searchInformationObject.Checksum,
-                searchInformationObject.SkipSearchBytesBy,
-                searchInformationObject.StartSearch,
-                searchInformationObject.StopSearchAt,
-                searchInformationObject.StartGeneratedChecksumFrom,
-                searchInformationObject.ChecksumLength,
-                searchInformationObject.searchType);
+                for (int i = input.StartSearch; i < input.StopSearchAt - input.ChecksumLength; )
+                {
+                    if (input.IsWorkDone) return;
+                    foreach (byte item in checksum)
+                    {
+                        if (input.DataArray[i] == item)
+                        {
+                            input.ChecksumOffset = i;
+                            checksumFound = i;
+                            i++;
+                        }
+                        else
+                        {
+                            checksumFound = -1;
+                            break;
+                        }
+                    }
+                    if (input.IsWorkDone) return;
+                    if (checksumFound == -1)
+                    {
+                        Array.Reverse(checksum);
+                        foreach (byte item in checksum)
+                        {
+                            if (input.DataArray[i] == item)
+                            {
+                                input.ChecksumOffset = i;
+                                checksumFound = i;
+                                i++;
+                            }
+                            else
+                            {
+                                checksumFound = -1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (checksumFound != -1) break;
+                    #region Search Type to determing next index
+                    switch (input.SearchType)
+                    {
+                        case SearchTypeEnum.LazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.LazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                    }
+                    #endregion
+                }
+                if (checksumFound != -1) break;
+                switch (input.SearchType)
+                {
+                    case SearchTypeEnum.LazyGenerateLazySearch:
+                        checksumGenerationIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                        checksumGenerationIndex += 1;
+                        break;
+                    case SearchTypeEnum.LazyGenerateNotLazySearch:
+                        checksumGenerationIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateLazySearch:
+                        checksumGenerationIndex += 1;
+                        break;
+                }
+            }
+
+            if (checksumFound == -1)
+            {
+                input.FoundChecksum = false;
+                Array.Reverse(input.DataArray);
+                OnSearchAndGenerateReverse(input);
+            }
+            else
+            {
+                input.FoundChecksum = true;
+            }
+            input.EndTime = DateTime.Now;
+            input.IsWorkDone = true;
         }
 
-        private void OnParallelSearchAndGenerate(DelegateObject searchInformationObject)
+        private void OnSearchAndGenerateReverse(DelegateObject input)
         {
-            _fileBuffer = searchInformationObject.DataArray;
+            int checksumFound = -1;
+            input.StartTime = DateTime.Now;
+            for (int checksumGenerationIndex = input.StartGeneratedChecksumFrom; checksumGenerationIndex < input.StopSearchAt; )
+            {
+                if (input.IsWorkDone) return;
+                byte[] checksum = GenerateChecksum(input.ChecksumType, checksumGenerationIndex, input.DataArray);
+                input.ChecksumOffset = checksumGenerationIndex;
+                input.ChecksumGenerationLength = input.StopSearchAt - checksumGenerationIndex;
+                input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
 
-            ParallelSearchAndGenerate(
-                searchInformationObject.Checksum,
-                searchInformationObject.SkipSearchBytesBy,
-                searchInformationObject.StartSearch,
-                searchInformationObject.StopSearchAt,
-                searchInformationObject.StartGeneratedChecksumFrom,
-                searchInformationObject.ChecksumLength,
-                searchInformationObject.searchType);
+                for (int i = input.StartSearch; i < input.StopSearchAt - input.ChecksumLength; )
+                {
+                    if (input.IsWorkDone) return;
+                    foreach (byte item in checksum)
+                    {
+                        if (input.DataArray[i] == item)
+                        {
+                            input.ChecksumOffset = i;
+                            checksumFound = i;
+                            i++;
+                        }
+                        else
+                        {
+                            checksumFound = -1;
+                            break;
+                        }
+                    }
+                    if (input.IsWorkDone) return;
+                    if (checksumFound == -1)
+                    {
+                        Array.Reverse(checksum);
+                        foreach (byte item in checksum)
+                        {
+                            if (input.DataArray[i] == item)
+                            {
+                                input.ChecksumOffset = i;
+                                checksumFound = i;
+                                i++;
+                            }
+                            else
+                            {
+                                checksumFound = -1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (checksumFound != -1) break;
+                    #region Search Type to determing next index
+                    switch (input.SearchType)
+                    {
+                        case SearchTypeEnum.LazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.LazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                    }
+                    #endregion
+                }
+                if (checksumFound != -1) break;
+                switch (input.SearchType)
+                {
+                    case SearchTypeEnum.LazyGenerateLazySearch:
+                        checksumGenerationIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                        checksumGenerationIndex += 1;
+                        break;
+                    case SearchTypeEnum.LazyGenerateNotLazySearch:
+                        checksumGenerationIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateLazySearch:
+                        checksumGenerationIndex += 1;
+                        break;
+                }
+            }
+
+            if (checksumFound == -1)
+            {
+                input.FoundChecksum = false;
+                if (input.ConvertFromBase64String)
+                {
+                    OnSearchAndGenerateBase64(input);
+                }
+            }
+            else
+            {
+                input.FoundChecksum = true;
+            }
+            input.EndTime = DateTime.Now;
+            input.IsWorkDone = true;
+        }
+
+        private void OnSearchAndGenerateBase64(DelegateObject input)
+        {
+            int checksumFound = -1;
+            input.StartTime = DateTime.Now;
+            for (int checksumGenerationIndex = 0; checksumGenerationIndex < input.DataArrayBase64.Length; )
+            {
+                if (input.IsWorkDone) return;
+                byte[] checksum = GenerateChecksum(input.ChecksumType, checksumGenerationIndex, input.DataArrayBase64);
+                input.ChecksumOffset = checksumGenerationIndex;
+                input.ChecksumGenerationLength = input.DataArrayBase64.Length - checksumGenerationIndex;
+                input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
+
+                if (input.DataArrayBase64.Length - 4 == checksumGenerationIndex)
+                {
+                    Console.WriteLine(checksum[0]);
+                    Console.WriteLine(checksum[1]);
+                    Console.WriteLine(checksum[2]);
+                    Console.WriteLine(checksum[3]);
+                }
+
+                for (int i = input.StartSearch; i < input.DataArrayBase64.Length; )
+                {
+                    if (input.IsWorkDone) return;
+                    foreach (byte item in checksum)
+                    {
+                        if (input.DataArray[i] == item)
+                        {
+                            input.ChecksumOffset = i;
+                            checksumFound = i;
+                            i++;
+                        }
+                        else
+                        {
+                            checksumFound = -1;
+                            break;
+                        }
+                    }
+                    if (input.IsWorkDone) return;
+                    if (checksumFound == -1)
+                    {
+                        Array.Reverse(checksum);
+                        foreach (byte item in checksum)
+                        {
+                            if (input.DataArray[i] == item)
+                            {
+                                input.ChecksumOffset = i;
+                                checksumFound = i;
+                                i++;
+                            }
+                            else
+                            {
+                                checksumFound = -1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (checksumFound != -1) break;
+                    #region Search Type to determing next index
+                    switch (input.SearchType)
+                    {
+                        case SearchTypeEnum.LazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.LazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                    }
+                    #endregion
+                }
+                if (checksumFound != -1) break;
+                switch (input.SearchType)
+                {
+                    case SearchTypeEnum.LazyGenerateLazySearch:
+                        checksumGenerationIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                        checksumGenerationIndex += 1;
+                        break;
+                    case SearchTypeEnum.LazyGenerateNotLazySearch:
+                        checksumGenerationIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateLazySearch:
+                        checksumGenerationIndex += 1;
+                        break;
+                }
+            }
+
+            if (checksumFound == -1)
+            {
+                input.FoundChecksum = false;
+                Array.Reverse(input.DataArrayBase64);
+                OnSearchAndGenerateBase64Reverse(input);
+            }
+            else input.FoundChecksum = true;
+        }
+
+        private void OnSearchAndGenerateBase64Reverse(DelegateObject input)
+        {
+            int checksumFound = -1;
+            input.StartTime = DateTime.Now;
+            for (int checksumGenerationIndex = 0; checksumGenerationIndex < input.DataArrayBase64.Length; )
+            {
+                if (input.IsWorkDone) return;
+                byte[] checksum = GenerateChecksum(input.ChecksumType, checksumGenerationIndex, input.DataArrayBase64);
+                input.ChecksumOffset = checksumGenerationIndex;
+                input.ChecksumGenerationLength = input.DataArrayBase64.Length - checksumGenerationIndex;
+                input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
+
+                if (input.DataArrayBase64.Length - 4 == checksumGenerationIndex)
+                {
+                    Console.WriteLine(checksum[0]);
+                    Console.WriteLine(checksum[1]);
+                    Console.WriteLine(checksum[2]);
+                    Console.WriteLine(checksum[3]);
+                }
+
+                for (int i = input.StartSearch; i < input.DataArrayBase64.Length; )
+                {
+                    if (input.IsWorkDone) return;
+                    foreach (byte item in checksum)
+                    {
+                        if (input.DataArray[i] == item)
+                        {
+                            input.ChecksumOffset = i;
+                            checksumFound = i;
+                            i++;
+                        }
+                        else
+                        {
+                            checksumFound = -1;
+                            break;
+                        }
+                    }
+                    if (input.IsWorkDone) return;
+                    if (checksumFound == -1)
+                    {
+                        Array.Reverse(checksum);
+                        foreach (byte item in checksum)
+                        {
+                            if (input.DataArray[i] == item)
+                            {
+                                input.ChecksumOffset = i;
+                                checksumFound = i;
+                                i++;
+                            }
+                            else
+                            {
+                                checksumFound = -1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (checksumFound != -1) break;
+                    #region Search Type to determing next index
+                    switch (input.SearchType)
+                    {
+                        case SearchTypeEnum.LazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.LazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                    }
+                    #endregion
+                }
+                if (checksumFound != -1) break;
+                switch (input.SearchType)
+                {
+                    case SearchTypeEnum.LazyGenerateLazySearch:
+                        checksumGenerationIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                        checksumGenerationIndex += 1;
+                        break;
+                    case SearchTypeEnum.LazyGenerateNotLazySearch:
+                        checksumGenerationIndex += input.ChecksumLength;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateLazySearch:
+                        checksumGenerationIndex += 1;
+                        break;
+                }
+            }
+
+            if (checksumFound == -1) input.FoundChecksum = false;
+            else input.FoundChecksum = true;
         }
         #endregion
 
+        private void OnParallelSearchAndGenerate(DelegateObject input)
+        {
+            Parallel.For(input.StartGeneratedChecksumFrom, input.StopSearchAt, checksumGenerationIndex =>
+            {
+                if (input.IsWorkDone) return;
+                byte[] checksum = GenerateChecksum(input.ChecksumType, checksumGenerationIndex, _fileBuffer);
+                for (int i = input.StartSearch; i < input.StopSearchAt - input.ChecksumLength; )
+                {
+                    int checksumFound = -1;
+                    if (input.IsWorkDone) return;
+                    foreach (byte item in checksum)
+                    {
+                        if (input.DataArray[i] == item)
+                        {
+                            checksumFound = i;
+                            i++;
+                        }
+                        else
+                        {
+                            checksumFound = -1;
+                            break;
+                        }
+                    }
+
+                    if (checksumFound != -1) break;
+
+                    #region Search Type to determing next index
+
+                    switch (input.SearchType)
+                    {
+                        case SearchTypeEnum.LazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.LazyGenerateNotLazySearch:
+                            i += input.SkipSearchBytesBy;
+                            break;
+                        case SearchTypeEnum.NotLazyGenerateLazySearch:
+                            i += checksum.Length;
+                            break;
+                    }
+                    #endregion
+                }
+            });
+        }
         #endregion
 
         #region Server Mode
@@ -683,15 +989,32 @@ namespace oCryptoBruteForce
                         .Select(s => s[random.Next(s.Length)]).ToArray());
                 }
                 delegateObject.WorkerId = workId;
+                delegateObject.IsWorkDone = false;
+                //Adding Event Handlers
+                delegateObject.OnStatusChange += WorkMonitorStatusChangeEventHandler;
 
                 ListViewItem item = new ListViewItem(new[]
                 {
-                    "Idle",                          //Status
-                    workId                           //Worker ID
+                    "Idle",                         //Status
+                    workId,                         //Worker ID
+                    "",                             //Security
+                    "",                             //Checksum
+                    "",                             //Checksum Offset
+                    "",                             //Generation Length
+                    "",                             //Start Time
+                    "",                             //End Time
                 });
 
                 _listOfWorkObjects.Add(delegateObject);
                 workMonitorListView.Items.Add(item);
+
+                //Clear
+                oDelegateFunctions.SetControlText(startSearchTextBox,"0");
+                oDelegateFunctions.SetControlText(stopAtPositionTextBox,"0");
+                oDelegateFunctions.SetControlText(startChecksumPositionTextBox, "0");
+                oDelegateFunctions.SetComboBoxSelectedIndex(checksumComboBox, 0);
+                _fileBuffer = null;
+                _possibleChecksumFileBuffer = null;
             }
             catch (Exception ex)
             {
@@ -702,22 +1025,35 @@ namespace oCryptoBruteForce
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _listOfWorkObjects[_selectedWorkMonitorItemIndex].Status = true;
-            ThreadPool.QueueUserWorkItem(
-                x => OnStartWork(_listOfWorkObjects[_selectedWorkMonitorItemIndex]));
+            _listOfWorkObjects[_selectedWorkMonitorItemIndex].IsWorkDone = false;
+            _listOfWorkObjects[_selectedWorkMonitorItemIndex].FoundChecksum = false;
+            ThreadPool.QueueUserWorkItem(x => OnStartWork(_listOfWorkObjects[_selectedWorkMonitorItemIndex]));
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _listOfWorkObjects[_selectedWorkMonitorItemIndex].Status = false;
+            _listOfWorkObjects[_selectedWorkMonitorItemIndex].IsWorkDone = true;
         }
 
         private void removeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _listOfWorkObjects.RemoveAt(_selectedWorkMonitorItemIndex);
+            for (int i = 0; i < workMonitorListView.Items.Count; i++)
+            {
+                if (workMonitorListView.Items[i].SubItems.Count > 0)
+                {
+                    //Worker Id
+                    if (workMonitorListView.Items[i].SubItems[1].Text ==
+                        _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId)
+                    {
+                        workMonitorListView.Items.RemoveAt(i);
+                        _listOfWorkObjects.RemoveAt(_selectedWorkMonitorItemIndex);
+                    }
+                }
+            }
         }
         #endregion
 
+        #region Drag Drop Panel
         private void dragAndDropPanel_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[]) e.Data.GetData((DataFormats.FileDrop));
@@ -725,7 +1061,6 @@ namespace oCryptoBruteForce
             _fileBuffer = File.ReadAllBytes(_fileName);
             //Thread Safe Functions to prevent illegal cross threads.
             oDelegateFunctions.SetControlText(fileLocationTextBox, _fileName);
-            oDelegateFunctions.SetControlText(fileLengthTextBox, _fileBuffer.Length.ToString());
             oDelegateFunctions.SetControlText(stopAtPositionTextBox, _fileBuffer.Length.ToString());
             oDelegateFunctions.SetNumericUpDownValues(skipBytesNumericUpDown, 1, _fileBuffer.Length, 1);
         }
@@ -736,6 +1071,52 @@ namespace oCryptoBruteForce
             {
                 e.Effect = DragDropEffects.All;
             }
+        }
+        #endregion
+
+        private void WorkMonitorStatusChangeEventHandler(DelegateObject sender)
+        {
+            if (workMonitorListView.InvokeRequired)
+                workMonitorListView.Invoke((MethodInvoker)delegate {
+                    WorkMonitorStatusChangeEventHandler(sender);
+                });
+            else
+            {
+                for (int i = 0; i < workMonitorListView.Items.Count; i++)
+                {
+                    if (workMonitorListView.Items[i].SubItems.Count > 0)
+                    {
+                        //Worker Id
+                        if (workMonitorListView.Items[i].SubItems[1].Text == sender.WorkerId)
+                        {
+                            //Status
+                            if (sender.IsWorkDone == true) workMonitorListView.Items[i].SubItems[0].Text = "Done";
+                            else workMonitorListView.Items[i].SubItems[0].Text = "Searching";
+                            //Result
+                            if (sender.FoundChecksum == true) 
+                            {
+                                workMonitorListView.Items[i].SubItems[2].Text = "Found";
+                                //Checksum
+                                workMonitorListView.Items[i].SubItems[3].Text = sender.Checksum;
+                                //Checksum Offset
+                                workMonitorListView.Items[i].SubItems[4].Text = sender.ChecksumOffset.ToString();
+                                //Generation Length
+                                workMonitorListView.Items[i].SubItems[5].Text = sender.ChecksumGenerationLength.ToString();
+                                //Start Time
+                                workMonitorListView.Items[i].SubItems[6].Text = sender.StartTime.ToString();
+                                //End Time
+                                workMonitorListView.Items[i].SubItems[7].Text = sender.EndTime.ToString();
+                            }
+                            else workMonitorListView.Items[i].SubItems[2].Text = "Unknown";                 
+                        }
+                    }
+                }
+            }
+        }
+
+        private void viewDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
