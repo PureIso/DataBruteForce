@@ -14,6 +14,7 @@ namespace oCryptoBruteForce
 
         public string WorkerId { get; set; }
         public string ChecksumType { get; set; }
+        public string Note { get; set; }
 
         public int StartSearch { get; set; }
         public int StopSearchAt { get; set; }
@@ -21,8 +22,10 @@ namespace oCryptoBruteForce
         public int ChecksumLength { get; set; } 
         public int SkipSearchBytesBy { get; set; }
 
-        public bool UseParallelComputation { get; set;}
+        public bool UseTPL { get; set;}
         public bool ConvertFromBase64String { get; set; }
+        public bool ExhaustiveSearch { get; set; }
+
         public SearchTypeEnum SearchType { get; set; }
 
         #region Result Properties

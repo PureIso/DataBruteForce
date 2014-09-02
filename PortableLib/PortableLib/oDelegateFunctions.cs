@@ -114,6 +114,16 @@ namespace PortableLib
 
         #region Setter
 
+        public static void SetCheckBoxCheck(CheckBox checkbox, bool isChecked)
+        {
+            if (checkbox.InvokeRequired)
+                checkbox.Invoke((MethodInvoker)delegate { SetCheckBoxCheck(checkbox, isChecked); });
+            else
+            {
+                checkbox.Checked = isChecked;
+            }
+        }
+
         public static void SetNumericUpDownValues(NumericUpDown numericUpDown,int min, int max, int value)
         {
             if (numericUpDown.InvokeRequired)

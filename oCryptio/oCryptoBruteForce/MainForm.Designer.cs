@@ -30,8 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.checksumComboBox = new System.Windows.Forms.ComboBox();
-            this.fileLocationTextBox = new System.Windows.Forms.TextBox();
-            this.parallelComputingCheckBox = new System.Windows.Forms.CheckBox();
+            this.tplCheckBox = new System.Windows.Forms.CheckBox();
             this.byteSkippingCheckBox = new System.Windows.Forms.CheckBox();
             this.skipBytesNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
@@ -46,7 +45,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.startSearchTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.bruteforceTabPage = new System.Windows.Forms.TabPage();
             this.panel6 = new System.Windows.Forms.Panel();
@@ -92,21 +90,18 @@
             this.serverPortColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.clientInformationTextBox = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.convertFromBase64StringCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label15 = new System.Windows.Forms.Label();
-            this.loadPCFButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.clearPCFButton = new System.Windows.Forms.Button();
             this.dragAndDropPanel = new System.Windows.Forms.Panel();
-            this.possibleChecksumFileLocationTextBox = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.clientModeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openPossibleChecksumFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.workContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,7 +110,7 @@
             this.viewDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.removeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertFromBase64StringCheckBox = new System.Windows.Forms.CheckBox();
+            this.exhaustiveSearchCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.bruteforceTabPage.SuspendLayout();
@@ -138,6 +133,7 @@
             // 
             // checksumComboBox
             // 
+            this.checksumComboBox.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.checksumComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.checksumComboBox.FormattingEnabled = true;
             this.checksumComboBox.Items.AddRange(new object[] {
@@ -161,32 +157,24 @@
             "HMAC SHA 512 - {64Bytes}",
             "MD5 - {16Bytes}",
             "MD5 CNG - {16Bytes}"});
-            this.checksumComboBox.Location = new System.Drawing.Point(174, 16);
+            this.checksumComboBox.Location = new System.Drawing.Point(143, 22);
             this.checksumComboBox.Name = "checksumComboBox";
-            this.checksumComboBox.Size = new System.Drawing.Size(576, 23);
+            this.checksumComboBox.Size = new System.Drawing.Size(488, 23);
             this.checksumComboBox.TabIndex = 2;
             // 
-            // fileLocationTextBox
+            // tplCheckBox
             // 
-            this.fileLocationTextBox.Location = new System.Drawing.Point(201, 3);
-            this.fileLocationTextBox.Name = "fileLocationTextBox";
-            this.fileLocationTextBox.ReadOnly = true;
-            this.fileLocationTextBox.Size = new System.Drawing.Size(385, 23);
-            this.fileLocationTextBox.TabIndex = 3;
-            // 
-            // parallelComputingCheckBox
-            // 
-            this.parallelComputingCheckBox.Location = new System.Drawing.Point(187, 22);
-            this.parallelComputingCheckBox.Name = "parallelComputingCheckBox";
-            this.parallelComputingCheckBox.Size = new System.Drawing.Size(160, 37);
-            this.parallelComputingCheckBox.TabIndex = 34;
-            this.parallelComputingCheckBox.Text = "Use Parallel Computing ?";
-            this.parallelComputingCheckBox.UseVisualStyleBackColor = true;
+            this.tplCheckBox.Location = new System.Drawing.Point(142, 22);
+            this.tplCheckBox.Name = "tplCheckBox";
+            this.tplCheckBox.Size = new System.Drawing.Size(236, 37);
+            this.tplCheckBox.TabIndex = 34;
+            this.tplCheckBox.Text = "Task Parallelism (Task Parallel Library)";
+            this.tplCheckBox.UseVisualStyleBackColor = true;
             // 
             // byteSkippingCheckBox
             // 
             this.byteSkippingCheckBox.AutoSize = true;
-            this.byteSkippingCheckBox.Location = new System.Drawing.Point(11, 22);
+            this.byteSkippingCheckBox.Location = new System.Drawing.Point(18, 32);
             this.byteSkippingCheckBox.Name = "byteSkippingCheckBox";
             this.byteSkippingCheckBox.Size = new System.Drawing.Size(136, 19);
             this.byteSkippingCheckBox.TabIndex = 33;
@@ -197,7 +185,7 @@
             // skipBytesNumericUpDown
             // 
             this.skipBytesNumericUpDown.Enabled = false;
-            this.skipBytesNumericUpDown.Location = new System.Drawing.Point(77, 47);
+            this.skipBytesNumericUpDown.Location = new System.Drawing.Point(84, 58);
             this.skipBytesNumericUpDown.Minimum = new decimal(new int[] {
             1,
             0,
@@ -215,7 +203,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 50);
+            this.label14.Location = new System.Drawing.Point(15, 61);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(63, 15);
             this.label14.TabIndex = 31;
@@ -224,7 +212,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(373, 54);
+            this.label10.Location = new System.Drawing.Point(246, 68);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(83, 15);
             this.label10.TabIndex = 23;
@@ -237,7 +225,7 @@
             this.lazyGenerateComboBox.Items.AddRange(new object[] {
             "OFF",
             "ON"});
-            this.lazyGenerateComboBox.Location = new System.Drawing.Point(462, 53);
+            this.lazyGenerateComboBox.Location = new System.Drawing.Point(335, 65);
             this.lazyGenerateComboBox.Name = "lazyGenerateComboBox";
             this.lazyGenerateComboBox.Size = new System.Drawing.Size(149, 23);
             this.lazyGenerateComboBox.TabIndex = 22;
@@ -245,7 +233,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(385, 27);
+            this.label9.Location = new System.Drawing.Point(12, 68);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 15);
             this.label9.TabIndex = 21;
@@ -258,7 +246,7 @@
             this.lazySearchComboBox.Items.AddRange(new object[] {
             "OFF",
             "ON"});
-            this.lazySearchComboBox.Location = new System.Drawing.Point(462, 24);
+            this.lazySearchComboBox.Location = new System.Drawing.Point(89, 65);
             this.lazySearchComboBox.Name = "lazySearchComboBox";
             this.lazySearchComboBox.Size = new System.Drawing.Size(149, 23);
             this.lazySearchComboBox.TabIndex = 20;
@@ -266,8 +254,9 @@
             // 
             // label8
             // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(241, 51);
+            this.label8.Location = new System.Drawing.Point(210, 57);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(95, 15);
             this.label8.TabIndex = 19;
@@ -275,7 +264,8 @@
             // 
             // stopAtPositionTextBox
             // 
-            this.stopAtPositionTextBox.Location = new System.Drawing.Point(342, 48);
+            this.stopAtPositionTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.stopAtPositionTextBox.Location = new System.Drawing.Point(311, 54);
             this.stopAtPositionTextBox.Name = "stopAtPositionTextBox";
             this.stopAtPositionTextBox.Size = new System.Drawing.Size(80, 23);
             this.stopAtPositionTextBox.TabIndex = 18;
@@ -283,8 +273,9 @@
             // 
             // label7
             // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(435, 51);
+            this.label7.Location = new System.Drawing.Point(404, 57);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(126, 15);
             this.label7.TabIndex = 16;
@@ -292,16 +283,18 @@
             // 
             // startChecksumPositionTextBox
             // 
-            this.startChecksumPositionTextBox.Location = new System.Drawing.Point(567, 48);
+            this.startChecksumPositionTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.startChecksumPositionTextBox.Location = new System.Drawing.Point(536, 54);
             this.startChecksumPositionTextBox.Name = "startChecksumPositionTextBox";
-            this.startChecksumPositionTextBox.Size = new System.Drawing.Size(183, 23);
+            this.startChecksumPositionTextBox.Size = new System.Drawing.Size(95, 23);
             this.startChecksumPositionTextBox.TabIndex = 15;
             this.startChecksumPositionTextBox.Text = "0";
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(57, 51);
+            this.label2.Location = new System.Drawing.Point(26, 57);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 15);
             this.label2.TabIndex = 7;
@@ -309,7 +302,8 @@
             // 
             // startSearchTextBox
             // 
-            this.startSearchTextBox.Location = new System.Drawing.Point(174, 48);
+            this.startSearchTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.startSearchTextBox.Location = new System.Drawing.Point(143, 54);
             this.startSearchTextBox.Name = "startSearchTextBox";
             this.startSearchTextBox.Size = new System.Drawing.Size(61, 23);
             this.startSearchTextBox.TabIndex = 6;
@@ -317,21 +311,13 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(68, 19);
+            this.label1.Location = new System.Drawing.Point(37, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "Select Checksum:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(118, 6);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 15);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "File Location:";
             // 
             // tabControl1
             // 
@@ -339,7 +325,7 @@
             this.tabControl1.Controls.Add(this.serverModeTabPage);
             this.tabControl1.Controls.Add(this.clientModeTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl1.Location = new System.Drawing.Point(0, 221);
+            this.tabControl1.Location = new System.Drawing.Point(0, 187);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(853, 360);
@@ -348,8 +334,8 @@
             // bruteforceTabPage
             // 
             this.bruteforceTabPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.bruteforceTabPage.Controls.Add(this.panel6);
             this.bruteforceTabPage.Controls.Add(this.workMonitorListView);
+            this.bruteforceTabPage.Controls.Add(this.panel6);
             this.bruteforceTabPage.Controls.Add(this.panel8);
             this.bruteforceTabPage.Location = new System.Drawing.Point(4, 24);
             this.bruteforceTabPage.Name = "bruteforceTabPage";
@@ -363,9 +349,10 @@
             // 
             this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel6.Controls.Add(this.label21);
-            this.panel6.Location = new System.Drawing.Point(7, 157);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel6.Location = new System.Drawing.Point(3, 148);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(829, 38);
+            this.panel6.Size = new System.Drawing.Size(837, 38);
             this.panel6.TabIndex = 52;
             // 
             // label21
@@ -380,6 +367,9 @@
             // 
             // workMonitorListView
             // 
+            this.workMonitorListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.workMonitorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.workMonitorStatusHeader,
             this.workMonitorWorkIdHeader,
@@ -393,7 +383,7 @@
             this.workMonitorListView.GridLines = true;
             this.workMonitorListView.Location = new System.Drawing.Point(6, 201);
             this.workMonitorListView.Name = "workMonitorListView";
-            this.workMonitorListView.Size = new System.Drawing.Size(830, 123);
+            this.workMonitorListView.Size = new System.Drawing.Size(830, 138);
             this.workMonitorListView.TabIndex = 51;
             this.workMonitorListView.UseCompatibleStateImageBehavior = false;
             this.workMonitorListView.View = System.Windows.Forms.View.Details;
@@ -431,26 +421,28 @@
             // workMonitorStartTimeHeader
             // 
             this.workMonitorStartTimeHeader.Text = "Start Time";
-            this.workMonitorStartTimeHeader.Width = 84;
+            this.workMonitorStartTimeHeader.Width = 105;
             // 
             // workMonitorEndTimeHeader
             // 
             this.workMonitorEndTimeHeader.Text = "End Time";
-            this.workMonitorEndTimeHeader.Width = 88;
+            this.workMonitorEndTimeHeader.Width = 99;
             // 
             // panel8
             // 
             this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel8.Controls.Add(this.groupBox3);
-            this.panel8.Location = new System.Drawing.Point(7, 6);
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel8.Location = new System.Drawing.Point(3, 3);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(829, 145);
+            this.panel8.Size = new System.Drawing.Size(837, 145);
             this.panel8.TabIndex = 54;
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.addWorkButton);
             this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.checksumComboBox);
             this.groupBox3.Controls.Add(this.stopAtPositionTextBox);
@@ -458,18 +450,20 @@
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.startSearchTextBox);
-            this.groupBox3.Location = new System.Drawing.Point(6, 7);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(803, 128);
+            this.groupBox3.Size = new System.Drawing.Size(835, 143);
             this.groupBox3.TabIndex = 37;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Search Information";
             // 
             // addWorkButton
             // 
-            this.addWorkButton.Location = new System.Drawing.Point(6, 82);
+            this.addWorkButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.addWorkButton.Location = new System.Drawing.Point(25, 88);
             this.addWorkButton.Name = "addWorkButton";
-            this.addWorkButton.Size = new System.Drawing.Size(791, 40);
+            this.addWorkButton.Size = new System.Drawing.Size(606, 40);
             this.addWorkButton.TabIndex = 44;
             this.addWorkButton.Text = "Add Work";
             this.addWorkButton.UseVisualStyleBackColor = true;
@@ -682,7 +676,7 @@
             this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(91, 8);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(124, 21);
+            this.label19.Size = new System.Drawing.Size(125, 21);
             this.label19.TabIndex = 0;
             this.label19.Text = "Server Monitor";
             // 
@@ -734,118 +728,65 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.exhaustiveSearchCheckBox);
             this.groupBox4.Controls.Add(this.convertFromBase64StringCheckBox);
-            this.groupBox4.Controls.Add(this.groupBox5);
-            this.groupBox4.Controls.Add(this.button1);
-            this.groupBox4.Controls.Add(this.label15);
-            this.groupBox4.Controls.Add(this.parallelComputingCheckBox);
+            this.groupBox4.Controls.Add(this.tplCheckBox);
             this.groupBox4.Controls.Add(this.lazySearchComboBox);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.lazyGenerateComboBox);
             this.groupBox4.Controls.Add(this.label10);
-            this.groupBox4.Location = new System.Drawing.Point(15, 63);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(622, 114);
+            this.groupBox4.Size = new System.Drawing.Size(851, 114);
             this.groupBox4.TabIndex = 38;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Miscellaneous";
             // 
+            // convertFromBase64StringCheckBox
+            // 
+            this.convertFromBase64StringCheckBox.Location = new System.Drawing.Point(384, 22);
+            this.convertFromBase64StringCheckBox.Name = "convertFromBase64StringCheckBox";
+            this.convertFromBase64StringCheckBox.Size = new System.Drawing.Size(226, 37);
+            this.convertFromBase64StringCheckBox.TabIndex = 42;
+            this.convertFromBase64StringCheckBox.Text = "Convert From Base 64 string";
+            this.convertFromBase64StringCheckBox.UseVisualStyleBackColor = true;
+            // 
             // groupBox5
             // 
+            this.groupBox5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.groupBox5.Controls.Add(this.byteSkippingCheckBox);
             this.groupBox5.Controls.Add(this.label14);
             this.groupBox5.Controls.Add(this.skipBytesNumericUpDown);
-            this.groupBox5.Location = new System.Drawing.Point(6, 18);
+            this.groupBox5.Location = new System.Drawing.Point(647, 22);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(175, 81);
+            this.groupBox5.Size = new System.Drawing.Size(169, 106);
             this.groupBox5.TabIndex = 41;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Search Byte Skipping";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(462, 82);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(149, 23);
-            this.button1.TabIndex = 36;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(362, 81);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(94, 15);
-            this.label15.TabIndex = 35;
-            this.label15.Text = "Save / Continue:";
-            // 
-            // loadPCFButton
-            // 
-            this.loadPCFButton.Location = new System.Drawing.Point(643, 3);
-            this.loadPCFButton.Name = "loadPCFButton";
-            this.loadPCFButton.Size = new System.Drawing.Size(206, 23);
-            this.loadPCFButton.TabIndex = 39;
-            this.loadPCFButton.Text = "Load";
-            this.loadPCFButton.UseVisualStyleBackColor = true;
-            this.loadPCFButton.Click += new System.EventHandler(this.loadPossibleChecksumFileButton_Click);
-            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.clearPCFButton);
             this.panel1.Controls.Add(this.dragAndDropPanel);
-            this.panel1.Controls.Add(this.loadPCFButton);
-            this.panel1.Controls.Add(this.possibleChecksumFileLocationTextBox);
-            this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.groupBox4);
-            this.panel1.Controls.Add(this.fileLocationTextBox);
-            this.panel1.Controls.Add(this.label4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(853, 197);
+            this.panel1.Size = new System.Drawing.Size(853, 163);
             this.panel1.TabIndex = 10;
-            // 
-            // clearPCFButton
-            // 
-            this.clearPCFButton.Location = new System.Drawing.Point(643, 34);
-            this.clearPCFButton.Name = "clearPCFButton";
-            this.clearPCFButton.Size = new System.Drawing.Size(206, 23);
-            this.clearPCFButton.TabIndex = 42;
-            this.clearPCFButton.Text = "Clear";
-            this.clearPCFButton.UseVisualStyleBackColor = true;
             // 
             // dragAndDropPanel
             // 
             this.dragAndDropPanel.AllowDrop = true;
-            this.dragAndDropPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dragAndDropPanel.BackColor = System.Drawing.Color.DimGray;
-            this.dragAndDropPanel.Location = new System.Drawing.Point(643, 63);
+            this.dragAndDropPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dragAndDropPanel.Location = new System.Drawing.Point(0, 114);
             this.dragAndDropPanel.Name = "dragAndDropPanel";
-            this.dragAndDropPanel.Size = new System.Drawing.Size(206, 123);
+            this.dragAndDropPanel.Size = new System.Drawing.Size(851, 47);
             this.dragAndDropPanel.TabIndex = 11;
             this.dragAndDropPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragDrop);
             this.dragAndDropPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragEnter);
-            // 
-            // possibleChecksumFileLocationTextBox
-            // 
-            this.possibleChecksumFileLocationTextBox.Location = new System.Drawing.Point(201, 34);
-            this.possibleChecksumFileLocationTextBox.Name = "possibleChecksumFileLocationTextBox";
-            this.possibleChecksumFileLocationTextBox.ReadOnly = true;
-            this.possibleChecksumFileLocationTextBox.Size = new System.Drawing.Size(385, 23);
-            this.possibleChecksumFileLocationTextBox.TabIndex = 39;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(13, 37);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(182, 15);
-            this.label11.TabIndex = 40;
-            this.label11.Text = "Possible Checksum File Location:";
             // 
             // clientModeContextMenuStrip
             // 
@@ -882,10 +823,26 @@
             // 
             // openToolStripMenuItem
             // 
+            this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openFileToolStripMenuItem,
+            this.openPossibleChecksumFileToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.openToolStripMenuItem.Text = "File";
+            // 
+            // openFileToolStripMenuItem
+            // 
+            this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.openFileToolStripMenuItem.Text = "Open File";
+            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
+            // 
+            // openPossibleChecksumFileToolStripMenuItem
+            // 
+            this.openPossibleChecksumFileToolStripMenuItem.Name = "openPossibleChecksumFileToolStripMenuItem";
+            this.openPossibleChecksumFileToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.openPossibleChecksumFileToolStripMenuItem.Text = "Open Possible Checksum File";
+            this.openPossibleChecksumFileToolStripMenuItem.Click += new System.EventHandler(this.openPossibleChecksumFileToolStripMenuItem_Click);
             // 
             // mainMenuStrip
             // 
@@ -948,21 +905,21 @@
             this.removeToolStripMenuItem1.Text = "Remove";
             this.removeToolStripMenuItem1.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
-            // convertFromBase64StringCheckBox
+            // exhaustiveSearchCheckBox
             // 
-            this.convertFromBase64StringCheckBox.Location = new System.Drawing.Point(186, 62);
-            this.convertFromBase64StringCheckBox.Name = "convertFromBase64StringCheckBox";
-            this.convertFromBase64StringCheckBox.Size = new System.Drawing.Size(161, 37);
-            this.convertFromBase64StringCheckBox.TabIndex = 42;
-            this.convertFromBase64StringCheckBox.Text = "Convert From Base 64 string (At Fail)?";
-            this.convertFromBase64StringCheckBox.UseVisualStyleBackColor = true;
+            this.exhaustiveSearchCheckBox.Location = new System.Drawing.Point(6, 22);
+            this.exhaustiveSearchCheckBox.Name = "exhaustiveSearchCheckBox";
+            this.exhaustiveSearchCheckBox.Size = new System.Drawing.Size(130, 37);
+            this.exhaustiveSearchCheckBox.TabIndex = 43;
+            this.exhaustiveSearchCheckBox.Text = "Exhaustive Search";
+            this.exhaustiveSearchCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 620);
+            this.ClientSize = new System.Drawing.Size(853, 546);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.mainMenuStrip);
@@ -994,7 +951,6 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.clientModeContextMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
@@ -1007,11 +963,9 @@
         #endregion
 
         private System.Windows.Forms.ComboBox checksumComboBox;
-        private System.Windows.Forms.TextBox fileLocationTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox startSearchTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox startChecksumPositionTextBox;
         private System.Windows.Forms.Label label8;
@@ -1023,21 +977,15 @@
         private System.Windows.Forms.NumericUpDown skipBytesNumericUpDown;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox byteSkippingCheckBox;
-        private System.Windows.Forms.CheckBox parallelComputingCheckBox;
+        private System.Windows.Forms.CheckBox tplCheckBox;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage bruteforceTabPage;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel dragAndDropPanel;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TabPage serverModeTabPage;
-        private System.Windows.Forms.Button loadPCFButton;
-        private System.Windows.Forms.TextBox possibleChecksumFileLocationTextBox;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button clearPCFButton;
         private System.Windows.Forms.TextBox infoTextBox;
         private System.Windows.Forms.TabPage clientModeTabPage;
         private System.Windows.Forms.ListView serverMonitorListView;
@@ -1093,6 +1041,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem viewDetailsToolStripMenuItem;
         private System.Windows.Forms.CheckBox convertFromBase64StringCheckBox;
+        private System.Windows.Forms.ToolStripMenuItem openFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openPossibleChecksumFileToolStripMenuItem;
+        private System.Windows.Forms.CheckBox exhaustiveSearchCheckBox;
     }
 }
 
