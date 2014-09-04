@@ -7,7 +7,6 @@ namespace oCryptoBruteForce
 {
     public static class NormalSearch
     {
-        #region Normal Search
         public static void OnSearchAndGenerate(DelegateObject input)
         {
             int checksumFound = -1;
@@ -59,6 +58,7 @@ namespace oCryptoBruteForce
                         }
 
                         if (checksumFound != -1) break;
+
                         #region Search Type to determing next index
                         switch (input.SearchType)
                         {
@@ -94,6 +94,7 @@ namespace oCryptoBruteForce
                             eof -= 1;
                             break;
                     }
+                    if (!input.ExhaustiveSearch) break;
                 }
                 if (checksumFound != -1) break;
                 switch (input.SearchType)
@@ -214,6 +215,7 @@ namespace oCryptoBruteForce
                             eof -= 1;
                             break;
                     }
+                    if (!input.ExhaustiveSearch) break;
                 }
 
 
@@ -250,9 +252,7 @@ namespace oCryptoBruteForce
             }
             input.IsWorkDone = true;
         }
-        #endregion
 
-        #region Base 64 Search
         public static void OnSearchAndGenerateBase64(DelegateObject input)
         {
             int checksumFound = -1;
@@ -339,6 +339,7 @@ namespace oCryptoBruteForce
                             eof -= 1;
                             break;
                     }
+                    if (!input.ExhaustiveSearch) break;
                 }
 
                 if (checksumFound != -1) break;
@@ -455,6 +456,7 @@ namespace oCryptoBruteForce
                             eof -= 1;
                             break;
                     }
+                    if (!input.ExhaustiveSearch) break;
                 }
 
                 if (checksumFound != -1) break;
@@ -482,6 +484,5 @@ namespace oCryptoBruteForce
             }
             else input.FoundChecksum = true;
         }
-        #endregion
     }
 }

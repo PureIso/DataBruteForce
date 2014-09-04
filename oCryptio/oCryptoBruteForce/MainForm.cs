@@ -152,6 +152,8 @@ namespace oCryptoBruteForce
                 if (oDelegateFunctions.GetCheckBoxCheck(byteSkippingCheckBox))
                     workObject.SkipSearchBytesBy = (int)oDelegateFunctions.GetNumericUpDown(skipBytesNumericUpDown);
                 else workObject.SkipSearchBytesBy = 1;
+                workObject.ExhaustiveSearch = oDelegateFunctions.GetCheckBoxCheck(exhaustiveSearchCheckBox);
+                //====================================================================================================
                 workObject.DataArray = _fileBuffer;
                 workObject.DataArrayBase64 = _fileBase64Buffer;
                 workObject.PossibleChecksumsArray = _possibleChecksumFileBuffer;
@@ -465,15 +467,18 @@ namespace oCryptoBruteForce
         {
             try
             {
+                
+                DelegateObject delegateObject = CreateDelegateObject();
+                //Randomly generate a worker id
                 Random random = new Random();
                 string workId = "";
-                DelegateObject delegateObject = CreateDelegateObject();
+                //Create a work object
                 List<string> workIdList = _listOfWorkObjects
                     .Select(worker => worker.WorkerId).ToList();
 
                 while (workIdList.Contains(workId) || workId == "")
                 {
-                    workId = new string(Enumerable.Repeat(Characters, 5)
+                    workId = new string(Enumerable.Repeat(Characters, 8)
                         .Select(s => s[random.Next(s.Length)]).ToArray());
                 }
                 delegateObject.WorkerId = workId;
