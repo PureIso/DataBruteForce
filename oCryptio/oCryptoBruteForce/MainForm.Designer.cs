@@ -47,8 +47,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.bruteforceTabPage = new System.Windows.Forms.TabPage();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.label21 = new System.Windows.Forms.Label();
             this.workMonitorListView = new System.Windows.Forms.ListView();
             this.workMonitorStatusHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.workMonitorWorkIdHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -58,9 +56,12 @@
             this.workMonitorLengthHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.workMonitorStartTimeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.workMonitorEndTimeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.addWorkButton = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.serverModeTabPage = new System.Windows.Forms.TabPage();
             this.panel5 = new System.Windows.Forms.Panel();
             this.startListeningButton = new System.Windows.Forms.Button();
@@ -90,8 +91,8 @@
             this.serverPortColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.clientInformationTextBox = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.exhaustiveSearchCheckBox = new System.Windows.Forms.CheckBox();
             this.convertFromBase64StringCheckBox = new System.Windows.Forms.CheckBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dragAndDropPanel = new System.Windows.Forms.Panel();
             this.clientModeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -110,13 +111,13 @@
             this.viewDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.removeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.exhaustiveSearchCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.bruteforceTabPage.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel8.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.serverModeTabPage.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -124,7 +125,6 @@
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.panel1.SuspendLayout();
             this.clientModeContextMenuStrip.SuspendLayout();
             this.mainMenuStrip.SuspendLayout();
@@ -313,11 +313,11 @@
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(37, 25);
+            this.label1.Location = new System.Drawing.Point(8, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 15);
+            this.label1.Size = new System.Drawing.Size(129, 15);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Select Checksum:";
+            this.label1.Text = "Select Checksum Type:";
             // 
             // tabControl1
             // 
@@ -344,26 +344,6 @@
             this.bruteforceTabPage.TabIndex = 0;
             this.bruteforceTabPage.Text = "Bruteforce For Checksums";
             this.bruteforceTabPage.UseVisualStyleBackColor = true;
-            // 
-            // panel6
-            // 
-            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel6.Controls.Add(this.label21);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel6.Location = new System.Drawing.Point(3, 148);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(837, 38);
-            this.panel6.TabIndex = 52;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(355, 8);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(117, 21);
-            this.label21.TabIndex = 0;
-            this.label21.Text = "Work Monitor";
             // 
             // workMonitorListView
             // 
@@ -428,6 +408,26 @@
             this.workMonitorEndTimeHeader.Text = "End Time";
             this.workMonitorEndTimeHeader.Width = 99;
             // 
+            // panel6
+            // 
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.label21);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel6.Location = new System.Drawing.Point(3, 148);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(837, 38);
+            this.panel6.TabIndex = 52;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(355, 8);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(117, 21);
+            this.label21.TabIndex = 0;
+            this.label21.Text = "Work Monitor";
+            // 
             // panel8
             // 
             this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -468,6 +468,19 @@
             this.addWorkButton.Text = "Add Work";
             this.addWorkButton.UseVisualStyleBackColor = true;
             this.addWorkButton.Click += new System.EventHandler(this.addWorkButton_Click);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.groupBox5.Controls.Add(this.byteSkippingCheckBox);
+            this.groupBox5.Controls.Add(this.label14);
+            this.groupBox5.Controls.Add(this.skipBytesNumericUpDown);
+            this.groupBox5.Location = new System.Drawing.Point(647, 22);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(169, 106);
+            this.groupBox5.TabIndex = 41;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Search Byte Skipping";
             // 
             // serverModeTabPage
             // 
@@ -743,6 +756,15 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Miscellaneous";
             // 
+            // exhaustiveSearchCheckBox
+            // 
+            this.exhaustiveSearchCheckBox.Location = new System.Drawing.Point(6, 22);
+            this.exhaustiveSearchCheckBox.Name = "exhaustiveSearchCheckBox";
+            this.exhaustiveSearchCheckBox.Size = new System.Drawing.Size(130, 37);
+            this.exhaustiveSearchCheckBox.TabIndex = 43;
+            this.exhaustiveSearchCheckBox.Text = "Exhaustive Search";
+            this.exhaustiveSearchCheckBox.UseVisualStyleBackColor = true;
+            // 
             // convertFromBase64StringCheckBox
             // 
             this.convertFromBase64StringCheckBox.Location = new System.Drawing.Point(384, 22);
@@ -751,19 +773,6 @@
             this.convertFromBase64StringCheckBox.TabIndex = 42;
             this.convertFromBase64StringCheckBox.Text = "Convert From Base 64 string";
             this.convertFromBase64StringCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.groupBox5.Controls.Add(this.byteSkippingCheckBox);
-            this.groupBox5.Controls.Add(this.label14);
-            this.groupBox5.Controls.Add(this.skipBytesNumericUpDown);
-            this.groupBox5.Location = new System.Drawing.Point(647, 22);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(169, 106);
-            this.groupBox5.TabIndex = 41;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Search Byte Skipping";
             // 
             // panel1
             // 
@@ -905,15 +914,6 @@
             this.removeToolStripMenuItem1.Text = "Remove";
             this.removeToolStripMenuItem1.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
-            // exhaustiveSearchCheckBox
-            // 
-            this.exhaustiveSearchCheckBox.Location = new System.Drawing.Point(6, 22);
-            this.exhaustiveSearchCheckBox.Name = "exhaustiveSearchCheckBox";
-            this.exhaustiveSearchCheckBox.Size = new System.Drawing.Size(130, 37);
-            this.exhaustiveSearchCheckBox.TabIndex = 43;
-            this.exhaustiveSearchCheckBox.Text = "Exhaustive Search";
-            this.exhaustiveSearchCheckBox.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -934,6 +934,8 @@
             this.panel8.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.serverModeTabPage.ResumeLayout(false);
             this.serverModeTabPage.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -948,8 +950,6 @@
             this.panel2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.clientModeContextMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.ResumeLayout(false);

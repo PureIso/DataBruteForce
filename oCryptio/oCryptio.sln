@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oCryptio", "oCryptio\oCrypt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableLib", "..\PortableLib\PortableLib\PortableLib.csproj", "{B2302316-91CE-4D64-BC12-97751138572A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataBruteForce_Images", "DataBruteForce_Images", "{EBD7827F-2D2A-441C-854C-7AE62BF19F3A}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Desktop\databruteforce.png = ..\..\..\..\Desktop\databruteforce.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

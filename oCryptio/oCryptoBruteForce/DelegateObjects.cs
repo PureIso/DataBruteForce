@@ -7,6 +7,11 @@ namespace oCryptoBruteForce
     {
         private bool _workDone;
 
+        public string FileName { get; set; }
+        public string FileLocation { get; set; }
+        public string PossibleChecksumFileName { get; set; }
+        public string PossibleChecksumFileLocation { get; set; }
+
         public byte[] DataArray { get; set; }
         public byte[] DataArrayBase64 { get; set; }
         public byte[] PossibleChecksumsArray { get; set; }
