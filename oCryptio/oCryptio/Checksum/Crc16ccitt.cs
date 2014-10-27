@@ -61,13 +61,18 @@ namespace oCryptio.Checksum
 
         public byte[] Compute(int offset, byte[] bytes)
         {
+            return Compute(offset, bytes, bytes.Length);
+        }
+
+        public byte[] Compute(int offset, byte[] bytes, int eof)
+        {
             ushort num = this.CRC_InitialValue;
-            for (int i = offset; i < bytes.Length; i++)
+            for (int i = offset; i < eof; i++)
             {
                 byte num2 = bytes[i];
-                ushort num4 = (ushort) (0xff & num2);
-                ushort index = (ushort) (((ushort) (num >> 8)) ^ num4);
-                num = (ushort) (((ushort) (num << 8)) ^ this.CRC_Table[index]);
+                ushort num4 = (ushort)(0xff & num2);
+                ushort index = (ushort)(((ushort)(num >> 8)) ^ num4);
+                num = (ushort)(((ushort)(num << 8)) ^ this.CRC_Table[index]);
             }
             bytes = BitConverter.GetBytes(num);
             Array.Reverse(bytes);

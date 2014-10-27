@@ -93,18 +93,7 @@ namespace oCryptio.Checksum
 
         public static byte[] Compute(int offset, byte[] value)
         {
-            uint maxValue = uint.MaxValue;
-            int i;
-            for (i = offset; i < value.Length; i++)
-            {
-                maxValue = (maxValue >> 8) ^ CrcTable[(int)((IntPtr)((maxValue & 0xff) ^ value[i]))];
-            }
-            maxValue ^= uint.MaxValue;
-            return new[]
-            {
-                ((byte) (maxValue >> 0x18)), ((byte) (maxValue >> 0x10)), ((byte) (maxValue >> 8)),
-                ((byte) maxValue)
-            };
+            return Compute(offset, value, value.Length);
         }
 
         public static byte[] Compute(int offset, byte[] value, int eof)

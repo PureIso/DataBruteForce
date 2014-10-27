@@ -17,7 +17,12 @@ namespace oCryptio.Checksum
 
         public static byte[] Compute(int offset, byte[] bytes)
         {
-            byte[] mainBuffer = new byte[bytes.Length - offset];
+            return Compute(offset, bytes, bytes.Length);
+        }
+
+        public static byte[] Compute(int offset, byte[] bytes, int eof)
+        {
+            byte[] mainBuffer = new byte[eof - offset];
             Array.Copy(bytes, offset, mainBuffer, 0, mainBuffer.Length);
             MD5CryptoServiceProvider hash = new MD5CryptoServiceProvider();
             return hash.ComputeHash(mainBuffer);

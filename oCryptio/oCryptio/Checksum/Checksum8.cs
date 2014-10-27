@@ -12,15 +12,20 @@
             return num2;
         }
 
-        public static byte[] Compute(int offset, byte[] Bytes)
+        public static byte[] Compute(int offset, byte[] bytes)
+        {
+            return Compute(offset, bytes, bytes.Length);
+        }
+
+        public static byte[] Compute(int offset, byte[] bytes, int eof)
         {
             byte num2 = 0;
-            for (int index = offset; index < Bytes.Length; index++)
+            for (int index = offset; index < eof; index++)
             {
-                byte num3 = Bytes[index];
-                num2 = (byte) (((byte) (num2 + num3)) & 0xff);
+                byte num3 = bytes[index];
+                num2 = (byte)(((byte)(num2 + num3)) & 0xff);
             }
-            return new []{num2};
+            return new[] { num2 };
         }
     }
 }

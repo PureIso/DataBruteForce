@@ -15,17 +15,22 @@ namespace oCryptio.Checksum
             return Bytes;
         }
 
-        public static byte[] Compute(int offset, byte[] Bytes)
+        public static byte[] Compute(int offset, byte[] bytes)
+        {
+            return Compute(offset, bytes, bytes.Length);
+        }
+
+        public static byte[] Compute(int offset, byte[] bytes, int eof)
         {
             ushort num = 0;
-            for (int index = offset; index < Bytes.Length; index++)
+            for (int index = offset; index < eof; index++)
             {
-                byte num2 = Bytes[index];
-                num = (ushort) (((ushort) (num + num2)) & 0xffff);
+                byte num2 = bytes[index];
+                num = (ushort)(((ushort)(num + num2)) & 0xffff);
             }
-            Bytes = BitConverter.GetBytes(num);
-            Array.Reverse(Bytes);
-            return Bytes;
+            bytes = BitConverter.GetBytes(num);
+            Array.Reverse(bytes);
+            return bytes;
         }
     }
 }

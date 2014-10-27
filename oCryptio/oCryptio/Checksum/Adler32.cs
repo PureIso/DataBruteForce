@@ -25,10 +25,15 @@ namespace oCryptio
 
         public static byte[] Compute(int offset, byte[] bytes)
         {
+            return Compute(offset, bytes, bytes.Length);
+        }
+
+        public static byte[] Compute(int offset, byte[] bytes, int eof)
+        {
             const ushort adlerMod = 65521;
             uint num = 1;
             uint num2 = 0;
-            for (int i = offset; i < bytes.Length; i++)
+            for (int i = offset; i < eof; i++)
             {
                 num = (num + bytes[i]) % adlerMod;
                 num2 = (num2 + num) % adlerMod;

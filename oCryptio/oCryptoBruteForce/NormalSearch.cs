@@ -7,6 +7,134 @@ namespace oCryptoBruteForce
 {
     public static class NormalSearch
     {
+        private static int Search(DelegateObject input, byte[] checksum)
+        {
+            int checksumFound = -1;
+            for (int i = input.StartSearch; i < input.StopSearchAt - input.ChecksumLength; )
+            {
+                if (input.IsWorkDone) return checksumFound;
+                input.ChecksumOffset = i;
+
+                #region Compare
+                //Normal Compare
+                foreach (byte item in checksum)
+                {
+                    if (input.DataArray[i] == item)
+                    {
+                        checksumFound = i;
+                        i++;
+                    }
+                    else
+                    {
+                        checksumFound = -1;
+                        break;
+                    }
+                }
+
+                if (input.IsWorkDone) return checksumFound;
+                if (checksumFound == -1)
+                {
+                    //Reverse Compare
+                    Array.Reverse(checksum);
+                    foreach (byte item in checksum)
+                    {
+                        if (input.DataArray[i] == item)
+                        {
+                            checksumFound = i;
+                            i++;
+                        }
+                        else
+                        {
+                            checksumFound = -1;
+                            break;
+                        }
+                    }
+                }
+                #endregion
+
+                if (checksumFound != -1) break;
+                #region Search Type to determing next index
+                switch (input.SearchType)
+                {
+                    case SearchTypeEnum.LazyGenerateLazySearch:
+                        i += checksum.Length;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                        i += input.SkipSearchBytesBy;
+                        break;
+                    case SearchTypeEnum.LazyGenerateNotLazySearch:
+                        i += input.SkipSearchBytesBy;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateLazySearch:
+                        i += checksum.Length;
+                        break;
+                }
+                #endregion
+            }
+            return checksumFound;
+        }
+
+        private static int SearchBase64(DelegateObject input, byte[] checksum)
+        {
+            int checksumFound = -1;
+            for (int i = input.StartSearch; i < input.DataArrayBase64.Length - 1; )
+            {
+                if (input.IsWorkDone) return checksumFound;
+                input.ChecksumOffset = i;
+                foreach (byte item in checksum)
+                {
+                    if (input.DataArrayBase64[i] == item)
+                    {
+                        checksumFound = i;
+                        i++;
+                    }
+                    else
+                    {
+                        checksumFound = -1;
+                        break;
+                    }
+                }
+                if (input.IsWorkDone) return checksumFound;
+                if (checksumFound == -1)
+                {
+                    Array.Reverse(checksum);
+                    foreach (byte item in checksum)
+                    {
+                        if (input.DataArrayBase64[i] == item)
+                        {
+                            checksumFound = i;
+                            i++;
+                        }
+                        else
+                        {
+                            checksumFound = -1;
+                            break;
+                        }
+                    }
+                }
+
+                if (checksumFound != -1) break;
+                #region Search Type to determing next index
+                switch (input.SearchType)
+                {
+                    case SearchTypeEnum.LazyGenerateLazySearch:
+                        i += checksum.Length;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                        i += input.SkipSearchBytesBy;
+                        break;
+                    case SearchTypeEnum.LazyGenerateNotLazySearch:
+                        i += input.SkipSearchBytesBy;
+                        break;
+                    case SearchTypeEnum.NotLazyGenerateLazySearch:
+                        i += checksum.Length;
+                        break;
+                }
+                #endregion
+            }
+            return checksumFound;
+        }
+
         public static void OnSearchAndGenerate(DelegateObject input)
         {
             int checksumFound = -1;
@@ -20,63 +148,7 @@ namespace oCryptoBruteForce
                     input.ChecksumGenerationLength = input.StopSearchAt - checksumGenerationIndex;
                     input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
 
-                    for (int i = input.StartSearch; i < input.StopSearchAt - input.ChecksumLength; )
-                    {
-                        if (input.IsWorkDone) return;
-                        input.ChecksumOffset = i;
-
-                        foreach (byte item in checksum)
-                        {
-                            if (input.DataArray[i] == item)
-                            {
-                                checksumFound = i;
-                                i++;
-                            }
-                            else
-                            {
-                                checksumFound = -1;
-                                break;
-                            }
-                        }
-                        if (input.IsWorkDone) return;
-                        if (checksumFound == -1)
-                        {
-                            Array.Reverse(checksum);
-                            foreach (byte item in checksum)
-                            {
-                                if (input.DataArray[i] == item)
-                                {
-                                    checksumFound = i;
-                                    i++;
-                                }
-                                else
-                                {
-                                    checksumFound = -1;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (checksumFound != -1) break;
-
-                        #region Search Type to determing next index
-                        switch (input.SearchType)
-                        {
-                            case SearchTypeEnum.LazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                                i += input.SkipSearchBytesBy;
-                                break;
-                            case SearchTypeEnum.LazyGenerateNotLazySearch:
-                                i += input.SkipSearchBytesBy;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                        }
-                        #endregion
-                    }
+                    checksumFound = Search(input, checksum);
 
                     if (checksumFound != -1) break;
                     switch (input.SearchType)
@@ -141,63 +213,7 @@ namespace oCryptoBruteForce
                     input.ChecksumGenerationLength = input.StopSearchAt - checksumGenerationIndex;
                     input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
 
-                    for (int i = input.StartSearch; i < input.StopSearchAt - input.ChecksumLength; )
-                    {
-                        if (input.IsWorkDone) return;
-                        input.ChecksumOffset = i;
-
-                        foreach (byte item in checksum)
-                        {
-                            if (input.DataArray[i] == item)
-                            {
-                                checksumFound = i;
-                                i++;
-                            }
-                            else
-                            {
-                                checksumFound = -1;
-                                break;
-                            }
-                        }
-                        if (input.IsWorkDone) return;
-                        if (checksumFound == -1)
-                        {
-                            Array.Reverse(checksum);
-                            foreach (byte item in checksum)
-                            {
-                                if (input.DataArray[i] == item)
-                                {
-                                    checksumFound = i;
-                                    i++;
-                                }
-                                else
-                                {
-                                    checksumFound = -1;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (checksumFound != -1) break;
-                        #region Search Type to determing next index
-                        switch (input.SearchType)
-                        {
-                            case SearchTypeEnum.LazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                                i += input.SkipSearchBytesBy;
-                                break;
-                            case SearchTypeEnum.LazyGenerateNotLazySearch:
-                                i += input.SkipSearchBytesBy;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                        }
-                        #endregion
-
-                    }
+                    checksumFound = Search(input, checksum);
 
                     if (checksumFound != -1) break;
                     switch (input.SearchType)
@@ -217,7 +233,6 @@ namespace oCryptoBruteForce
                     }
                     if (!input.ExhaustiveSearch) break;
                 }
-
 
                 if (checksumFound != -1) break;
                 switch (input.SearchType)
@@ -267,61 +282,7 @@ namespace oCryptoBruteForce
                     input.ChecksumGenerationLength = input.DataArrayBase64.Length - checksumGenerationIndex;
                     input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
 
-                    for (int i = input.StartSearch; i < input.DataArrayBase64.Length - 1; )
-                    {
-                        if (input.IsWorkDone) return;
-                        input.ChecksumOffset = i;
-                        foreach (byte item in checksum)
-                        {
-                            if (input.DataArrayBase64[i] == item)
-                            {
-                                checksumFound = i;
-                                i++;
-                            }
-                            else
-                            {
-                                checksumFound = -1;
-                                break;
-                            }
-                        }
-                        if (input.IsWorkDone) return;
-                        if (checksumFound == -1)
-                        {
-                            Array.Reverse(checksum);
-                            foreach (byte item in checksum)
-                            {
-                                if (input.DataArrayBase64[i] == item)
-                                {
-                                    checksumFound = i;
-                                    i++;
-                                }
-                                else
-                                {
-                                    checksumFound = -1;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (checksumFound != -1) break;
-                        #region Search Type to determing next index
-                        switch (input.SearchType)
-                        {
-                            case SearchTypeEnum.LazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                                i += input.SkipSearchBytesBy;
-                                break;
-                            case SearchTypeEnum.LazyGenerateNotLazySearch:
-                                i += input.SkipSearchBytesBy;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                        }
-                        #endregion
-                    }
+                    checksumFound = SearchBase64(input, checksum);
 
                     if (checksumFound != -1) break;
                     switch (input.SearchType)
@@ -383,62 +344,7 @@ namespace oCryptoBruteForce
                     input.ChecksumGenerationLength = input.DataArrayBase64.Length - checksumGenerationIndex;
                     input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
 
-                    for (int i = input.StartSearch; i < input.DataArrayBase64.Length - 1; )
-                    {
-                        if (input.IsWorkDone) return;
-                        input.ChecksumOffset = i;
-
-                        foreach (byte item in checksum)
-                        {
-                            if (input.DataArrayBase64[i] == item)
-                            {
-                                checksumFound = i;
-                                i++;
-                            }
-                            else
-                            {
-                                checksumFound = -1;
-                                break;
-                            }
-                        }
-                        if (input.IsWorkDone) return;
-                        if (checksumFound == -1)
-                        {
-                            Array.Reverse(checksum);
-                            foreach (byte item in checksum)
-                            {
-                                if (input.DataArrayBase64[i] == item)
-                                {
-                                    checksumFound = i;
-                                    i++;
-                                }
-                                else
-                                {
-                                    checksumFound = -1;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (checksumFound != -1) break;
-                        #region Search Type to determing next index
-                        switch (input.SearchType)
-                        {
-                            case SearchTypeEnum.LazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                                i += input.SkipSearchBytesBy;
-                                break;
-                            case SearchTypeEnum.LazyGenerateNotLazySearch:
-                                i += input.SkipSearchBytesBy;
-                                break;
-                            case SearchTypeEnum.NotLazyGenerateLazySearch:
-                                i += checksum.Length;
-                                break;
-                        }
-                        #endregion
-                    }
+                    checksumFound = SearchBase64(input, checksum);
 
                     if (checksumFound != -1) break;
                     switch (input.SearchType)
