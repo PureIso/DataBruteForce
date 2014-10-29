@@ -378,7 +378,7 @@ namespace oCryptoBruteForce
                     serverIPTextBox.Text,               //Server IP Address
                     serverPortTextBox.Text              //Server Port
                 });
-                SetClientInformationText("Server Added: " + item.SubItems[2] + " - " + item.SubItems[3]);
+                SetClientInformationText("Server Added: " + item.SubItems[2].Text + ":" + item.SubItems[3].Text);
                 serverMonitorListView.Items.Add(item);
             }
             catch (Exception ex)
@@ -386,6 +386,11 @@ namespace oCryptoBruteForce
                 oDelegateFunctions.MessageBoxShow(this, ex.Message, "Crypto BruteForce", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         //private void connectToServerButton_Click(object sender, EventArgs e)

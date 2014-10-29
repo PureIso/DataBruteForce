@@ -1,9 +1,6 @@
 ﻿using oCryptio;
 using oCryptio.Checksum;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace oCryptoBruteForce
 {
@@ -15,86 +12,66 @@ namespace oCryptoBruteForce
             switch (checksum)
             {
                 case "Adler8 - {1Bytes}":
-                    if (eof == -1) returnValue = Adler8.Compute(offset, buffer);
-                    else returnValue = Adler8.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Adler8.Compute(offset, buffer) : Adler8.Compute(offset, buffer, eof);
                     break;
                 case "Adler16 - {2Bytes}":
-                    if (eof == -1) returnValue = Adler16.Compute(offset, buffer);
-                    else returnValue = Adler16.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Adler16.Compute(offset, buffer) : Adler16.Compute(offset, buffer, eof);
                     break;
                 case "Adler32 - {4Bytes}":
-                    if (eof == -1) returnValue = Adler32.Compute(offset, buffer);
-                    else returnValue = Adler32.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Adler32.Compute(offset, buffer) : Adler32.Compute(offset, buffer, eof);
                     break;
                 case "Checksum8 - {1Bytes}":
-                    if (eof == -1) returnValue = Checksum8.Compute(offset, buffer);
-                    else returnValue = Checksum8.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Checksum8.Compute(offset, buffer) : Checksum8.Compute(offset, buffer, eof);
                     break;
                 case "Checksum16 - {2Bytes}":
-                    if (eof == -1) returnValue = Checksum16.Compute(offset, buffer);
-                    else returnValue = Checksum16.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Checksum16.Compute(offset, buffer) : Checksum16.Compute(offset, buffer, eof);
                     break;
                 case "Checksum24 - {3Bytes}":
-                    if (eof == -1) returnValue = Checksum24.Compute(offset, buffer);
-                    else returnValue = Checksum24.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Checksum24.Compute(offset, buffer) : Checksum24.Compute(offset, buffer, eof);
                     break;
                 case "Checksum32 - {4Bytes}":
-                    if (eof == -1) returnValue = Checksum32.Compute(offset, buffer);
-                    else returnValue = Checksum32.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Checksum32.Compute(offset, buffer) : Checksum32.Compute(offset, buffer, eof);
                     break;
                 case "Checksum40 - {5Bytes}":
-                    if (eof == -1) returnValue = Checksum40.Compute(offset, buffer);
-                    else returnValue = Checksum40.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Checksum40.Compute(offset, buffer) : Checksum40.Compute(offset, buffer, eof);
                     break;
                 case "Checksum48 - {6Bytes}":
-                    if (eof == -1) returnValue = Checksum48.Compute(offset, buffer);
-                    else returnValue = Checksum48.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Checksum48.Compute(offset, buffer) : Checksum48.Compute(offset, buffer, eof);
                     break;
                 case "Checksum56 - {7Bytes}":
-                    if (eof == -1) returnValue = Checksum56.Compute(offset, buffer);
-                    else returnValue = Checksum56.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Checksum56.Compute(offset, buffer) : Checksum56.Compute(offset, buffer, eof);
                     break;
                 case "Checksum64 - {8Bytes}":
-                    if (eof == -1) returnValue = Checksum64.Compute(offset, buffer);
-                    else returnValue = Checksum64.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Checksum64.Compute(offset, buffer) : Checksum64.Compute(offset, buffer, eof);
                     break;
                 case "CRC16 - {2Bytes}":
                     Crc16 crc16 = new Crc16();
-                    if (eof == -1) returnValue = crc16.Compute(offset, buffer);
-                    else returnValue = crc16.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? crc16.Compute(offset, buffer) : crc16.Compute(offset, buffer, eof);
                     break;
                 case "CRC16 CCITT - {2Bytes}":
                     Crc16ccitt crc16Ccitt = new Crc16ccitt();
-                    if (eof == -1) returnValue = crc16Ccitt.Compute(offset, buffer);
-                    else returnValue = crc16Ccitt.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? crc16Ccitt.Compute(offset, buffer) : crc16Ccitt.Compute(offset, buffer, eof);
                     break;
                 case "CRC32 - {4Bytes}":
-                    if (eof == -1) returnValue = Crc32.Compute(offset, buffer);
-                    else returnValue = Crc32.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Crc32.Compute(offset, buffer) : Crc32.Compute(offset, buffer, eof);
                     break;
                 case "HMAC SHA 1 (128)  - {16Bytes}":
-                    if (eof == -1) returnValue = HmacSha1.Compute(offset, buffer);
-                    else returnValue = HmacSha1.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? HmacSha1.Compute(offset, buffer) : HmacSha1.Compute(offset, buffer, eof);
                     break;
                 case "HMAC SHA 256 - {32Bytes}":
-                    if (eof == -1) returnValue = HmacSha256.Compute(offset, buffer);
-                    else returnValue = HmacSha256.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? HmacSha256.Compute(offset, buffer) : HmacSha256.Compute(offset, buffer, eof);
                     break;
                 case "HMAC SHA 384 - {48Bytes}":
-                    if (eof == -1) returnValue = HmacSha384.Compute(offset, buffer);
-                    else returnValue = HmacSha384.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? HmacSha384.Compute(offset, buffer) : HmacSha384.Compute(offset, buffer, eof);
                     break;
                 case "HMAC SHA 512 - {64Bytes}":
-                    if (eof == -1) returnValue = HmacSha512.Compute(offset, buffer);
-                    else returnValue = HmacSha512.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? HmacSha512.Compute(offset, buffer) : HmacSha512.Compute(offset, buffer, eof);
                     break;
                 case "MD5 - {16Bytes}":
-                    if (eof == -1) returnValue = Md5.Compute(offset, buffer);
-                    else returnValue = Md5.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Md5.Compute(offset, buffer) : Md5.Compute(offset, buffer, eof);
                     break;
                 case "MD5 CNG - {16Bytes}":
-                    if (eof == -1) returnValue = Md5Cng.Compute(offset, buffer);
-                    else returnValue = Md5Cng.Compute(offset, buffer, eof);
+                    returnValue = eof == -1 ? Md5Cng.Compute(offset, buffer) : Md5Cng.Compute(offset, buffer, eof);
                     break;
             }
             return returnValue;
@@ -136,7 +113,7 @@ namespace oCryptoBruteForce
             }
             catch (Exception)
             {
-
+                //TODO Add logger to .txt
                 throw;
             }
             return checksumLength;
