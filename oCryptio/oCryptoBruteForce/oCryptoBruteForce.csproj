@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsynchronousSocketListener.cs" />
+    <Compile Include="ComboBoxItem.cs" />
     <Compile Include="DelegateObjects.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MainForm.cs">

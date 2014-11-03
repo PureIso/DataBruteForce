@@ -77,6 +77,8 @@
             this.infoTextBox = new System.Windows.Forms.TextBox();
             this.clientModeTabPage = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.clientServerAddressComboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.addServerButton = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.serverIPTextBox = new System.Windows.Forms.TextBox();
@@ -96,21 +98,23 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.dragAndDropPanel = new System.Windows.Forms.Panel();
             this.clientModeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientDisconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.clientRemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openPossibleChecksumFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.workContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workStopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.viewDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workViewDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.removeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.workRemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.bruteforceTabPage.SuspendLayout();
@@ -622,6 +626,8 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.clientServerAddressComboBox);
+            this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.addServerButton);
             this.panel3.Controls.Add(this.label17);
             this.panel3.Controls.Add(this.serverIPTextBox);
@@ -629,14 +635,32 @@
             this.panel3.Controls.Add(this.label18);
             this.panel3.Location = new System.Drawing.Point(8, 6);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(515, 38);
+            this.panel3.Size = new System.Drawing.Size(515, 77);
             this.panel3.TabIndex = 49;
+            // 
+            // clientServerAddressComboBox
+            // 
+            this.clientServerAddressComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.clientServerAddressComboBox.FormattingEnabled = true;
+            this.clientServerAddressComboBox.Location = new System.Drawing.Point(83, 43);
+            this.clientServerAddressComboBox.Name = "clientServerAddressComboBox";
+            this.clientServerAddressComboBox.Size = new System.Drawing.Size(245, 23);
+            this.clientServerAddressComboBox.TabIndex = 47;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(4, 46);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(73, 15);
+            this.label3.TabIndex = 48;
+            this.label3.Text = "Address List:";
             // 
             // addServerButton
             // 
             this.addServerButton.Location = new System.Drawing.Point(336, 8);
             this.addServerButton.Name = "addServerButton";
-            this.addServerButton.Size = new System.Drawing.Size(149, 23);
+            this.addServerButton.Size = new System.Drawing.Size(174, 59);
             this.addServerButton.TabIndex = 43;
             this.addServerButton.Text = "Add";
             this.addServerButton.UseVisualStyleBackColor = true;
@@ -732,11 +756,11 @@
             // 
             this.clientInformationTextBox.BackColor = System.Drawing.SystemColors.InfoText;
             this.clientInformationTextBox.ForeColor = System.Drawing.SystemColors.Info;
-            this.clientInformationTextBox.Location = new System.Drawing.Point(8, 50);
+            this.clientInformationTextBox.Location = new System.Drawing.Point(8, 89);
             this.clientInformationTextBox.Multiline = true;
             this.clientInformationTextBox.Name = "clientInformationTextBox";
             this.clientInformationTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.clientInformationTextBox.Size = new System.Drawing.Size(515, 242);
+            this.clientInformationTextBox.Size = new System.Drawing.Size(515, 203);
             this.clientInformationTextBox.TabIndex = 44;
             // 
             // groupBox4
@@ -751,7 +775,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(851, 114);
+            this.groupBox4.Size = new System.Drawing.Size(851, 96);
             this.groupBox4.TabIndex = 38;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Miscellaneous";
@@ -790,9 +814,9 @@
             this.dragAndDropPanel.AllowDrop = true;
             this.dragAndDropPanel.BackColor = System.Drawing.Color.DimGray;
             this.dragAndDropPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dragAndDropPanel.Location = new System.Drawing.Point(0, 114);
+            this.dragAndDropPanel.Location = new System.Drawing.Point(0, 96);
             this.dragAndDropPanel.Name = "dragAndDropPanel";
-            this.dragAndDropPanel.Size = new System.Drawing.Size(851, 47);
+            this.dragAndDropPanel.Size = new System.Drawing.Size(851, 66);
             this.dragAndDropPanel.TabIndex = 11;
             this.dragAndDropPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragDrop);
             this.dragAndDropPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragEnter);
@@ -800,36 +824,51 @@
             // clientModeContextMenuStrip
             // 
             this.clientModeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectToolStripMenuItem,
-            this.disconnectToolStripMenuItem,
+            this.selectAddressToolStripMenuItem,
             this.toolStripSeparator1,
-            this.removeToolStripMenuItem});
+            this.clientConnectToolStripMenuItem,
+            this.clientDisconnectToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.clientRemoveToolStripMenuItem});
             this.clientModeContextMenuStrip.Name = "contextMenuStrip1";
-            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(153, 98);
+            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(151, 104);
             // 
-            // connectToolStripMenuItem
+            // selectAddressToolStripMenuItem
             // 
-            this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.connectToolStripMenuItem.Text = "Connect";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
-            // 
-            // disconnectToolStripMenuItem
-            // 
-            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.disconnectToolStripMenuItem.Text = "Disconnect";
+            this.selectAddressToolStripMenuItem.Name = "selectAddressToolStripMenuItem";
+            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.selectAddressToolStripMenuItem.Text = "Select Address";
+            this.selectAddressToolStripMenuItem.Click += new System.EventHandler(this.selectAddressToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(147, 6);
             // 
-            // removeToolStripMenuItem
+            // clientConnectToolStripMenuItem
             // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.removeToolStripMenuItem.Text = "Remove";
+            this.clientConnectToolStripMenuItem.Name = "clientConnectToolStripMenuItem";
+            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientConnectToolStripMenuItem.Text = "Connect";
+            this.clientConnectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            // 
+            // clientDisconnectToolStripMenuItem
+            // 
+            this.clientDisconnectToolStripMenuItem.Name = "clientDisconnectToolStripMenuItem";
+            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientDisconnectToolStripMenuItem.Text = "Disconnect";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
+            // 
+            // clientRemoveToolStripMenuItem
+            // 
+            this.clientRemoveToolStripMenuItem.Name = "clientRemoveToolStripMenuItem";
+            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientRemoveToolStripMenuItem.Text = "Remove";
+            this.clientRemoveToolStripMenuItem.Click += new System.EventHandler(this.clientRemoveToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -868,52 +907,52 @@
             // workContextMenuStrip
             // 
             this.workContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startToolStripMenuItem,
-            this.stopToolStripMenuItem,
+            this.workStartToolStripMenuItem,
+            this.workStopToolStripMenuItem,
             this.toolStripSeparator3,
-            this.viewDetailsToolStripMenuItem,
+            this.workViewDetailsToolStripMenuItem,
             this.toolStripSeparator2,
-            this.removeToolStripMenuItem1});
+            this.workRemoveToolStripMenuItem});
             this.workContextMenuStrip.Name = "workContextMenuStrip";
             this.workContextMenuStrip.Size = new System.Drawing.Size(138, 104);
             // 
-            // startToolStripMenuItem
+            // workStartToolStripMenuItem
             // 
-            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
-            this.startToolStripMenuItem.Text = "Start";
-            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            this.workStartToolStripMenuItem.Name = "workStartToolStripMenuItem";
+            this.workStartToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.workStartToolStripMenuItem.Text = "Start";
+            this.workStartToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
-            // stopToolStripMenuItem
+            // workStopToolStripMenuItem
             // 
-            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
-            this.stopToolStripMenuItem.Text = "Stop";
-            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            this.workStopToolStripMenuItem.Name = "workStopToolStripMenuItem";
+            this.workStopToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.workStopToolStripMenuItem.Text = "Stop";
+            this.workStopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(134, 6);
             // 
-            // viewDetailsToolStripMenuItem
+            // workViewDetailsToolStripMenuItem
             // 
-            this.viewDetailsToolStripMenuItem.Name = "viewDetailsToolStripMenuItem";
-            this.viewDetailsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
-            this.viewDetailsToolStripMenuItem.Text = "View Details";
-            this.viewDetailsToolStripMenuItem.Click += new System.EventHandler(this.viewDetailsToolStripMenuItem_Click);
+            this.workViewDetailsToolStripMenuItem.Name = "workViewDetailsToolStripMenuItem";
+            this.workViewDetailsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.workViewDetailsToolStripMenuItem.Text = "View Details";
+            this.workViewDetailsToolStripMenuItem.Click += new System.EventHandler(this.viewDetailsToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(134, 6);
             // 
-            // removeToolStripMenuItem1
+            // workRemoveToolStripMenuItem
             // 
-            this.removeToolStripMenuItem1.Name = "removeToolStripMenuItem1";
-            this.removeToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
-            this.removeToolStripMenuItem1.Text = "Remove";
-            this.removeToolStripMenuItem1.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            this.workRemoveToolStripMenuItem.Name = "workRemoveToolStripMenuItem";
+            this.workRemoveToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.workRemoveToolStripMenuItem.Text = "Remove";
+            this.workRemoveToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1022,15 +1061,15 @@
         private System.Windows.Forms.ContextMenuStrip clientModeContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.MenuStrip mainMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clientConnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clientDisconnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clientRemoveToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip workContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workStartToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workStopToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem workRemoveToolStripMenuItem;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Button addWorkButton;
         private System.Windows.Forms.ColumnHeader workMonitorSecurityHeader;
@@ -1040,11 +1079,15 @@
         private System.Windows.Forms.ColumnHeader workMonitorStartTimeHeader;
         private System.Windows.Forms.ColumnHeader workMonitorEndTimeHeader;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem viewDetailsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workViewDetailsToolStripMenuItem;
         private System.Windows.Forms.CheckBox convertFromBase64StringCheckBox;
         private System.Windows.Forms.ToolStripMenuItem openFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openPossibleChecksumFileToolStripMenuItem;
         private System.Windows.Forms.CheckBox exhaustiveSearchCheckBox;
+        private System.Windows.Forms.ComboBox clientServerAddressComboBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ToolStripMenuItem selectAddressToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
 

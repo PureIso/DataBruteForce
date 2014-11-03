@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace oCryptoBruteForce
 {
@@ -6,6 +7,7 @@ namespace oCryptoBruteForce
     public class DelegateObject
     {
         private bool _workDone;
+        private IPEndPoint _ipEndpoint;
 
         public string FileName { get; set; }
         public string FileLocation { get; set; }
@@ -54,8 +56,25 @@ namespace oCryptoBruteForce
         public DateTime EndTime { get; set; }
         #endregion
 
+        #region Network Address
+
+        public IPEndPoint Endpoint
+        {
+            get
+            {
+                return _ipEndpoint;
+            }
+            set
+            {
+                _ipEndpoint = value;
+                if (OnEndPointChange != null) OnEndPointChange(this);
+            }
+        }
+        #endregion
+
         //Public Events
         public event DelegateObjectInVoidOut OnStatusChange;
+        public event DelegateObjectInVoidOut OnEndPointChange;
     }
 
     public delegate void DelegateObjectDelegate(DelegateObject searchInformationObject);

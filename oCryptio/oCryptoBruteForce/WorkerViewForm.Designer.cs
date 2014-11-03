@@ -328,7 +328,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(541, 474);
+            this.ClientSize = new System.Drawing.Size(689, 474);
             this.Controls.Add(this.lazyGenerateLabel);
             this.Controls.Add(this.lazySearchLabel);
             this.Controls.Add(this.skipBytesLabel);

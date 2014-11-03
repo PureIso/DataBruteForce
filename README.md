@@ -7,7 +7,6 @@ Crypto Brute Force
 - Run brute force attack with multiple computers over TCP/IP.
  
 ####To do List - To contribute simple attempt the to do list
-- Complete the - view work details view
 - Complete enable and disable of form controls to prevent users from selecting unavailable options
 - Complete the overloading checksum parameters to allow for search length
 - Complete the functionality of the application acting as a server

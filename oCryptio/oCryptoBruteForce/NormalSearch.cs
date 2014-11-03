@@ -20,6 +20,7 @@ namespace oCryptoBruteForce
                     {
                         checksumFound = i;
                         i++;
+                        if (i >= input.DataArray.Length) break;
                     }
                     else
                     {
@@ -27,7 +28,6 @@ namespace oCryptoBruteForce
                         break;
                     }
                 }
-
                 if (input.IsWorkDone) return checksumFound;
                 if (checksumFound == -1)
                 {
@@ -39,6 +39,7 @@ namespace oCryptoBruteForce
                         {
                             checksumFound = i;
                             i++;
+                            if (i >= input.DataArray.Length) break;
                         }
                         else
                         {
@@ -84,6 +85,7 @@ namespace oCryptoBruteForce
                     {
                         checksumFound = i;
                         i++;
+                        if (i >= input.DataArrayBase64.Length) break;
                     }
                     else
                     {
@@ -101,6 +103,7 @@ namespace oCryptoBruteForce
                         {
                             checksumFound = i;
                             i++;
+                            if (i >= input.DataArrayBase64.Length) break;
                         }
                         else
                         {
