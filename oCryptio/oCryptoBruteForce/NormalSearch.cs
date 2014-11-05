@@ -197,7 +197,6 @@ namespace oCryptoBruteForce
             {
                 input.FoundChecksum = true;
             }
-            input.IsWorkDone = true;
         }
 
         public static void OnSearchAndGenerateReverse(DelegateObject input)
@@ -265,7 +264,6 @@ namespace oCryptoBruteForce
             {
                 input.FoundChecksum = true;
             }
-            input.IsWorkDone = true;
         }
 
         public static void OnSearchAndGenerateBase64(DelegateObject input)

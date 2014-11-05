@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
+using System.Linq;
 
 #endregion
 
@@ -25,9 +26,8 @@ namespace oCryptoBruteForce
         #endregion
 
         #region Event
-        public static event DelegateObjectDelegate OnSearchAndGenerateUsingPossibleChecksumFileEvent;
-        public static event DelegateObjectDelegate OnSearchAndGenerate;
-        public static event DelegateObjectDelegate OnParallelSearchAndGenerate;
+        public static event DelegateObjectDelegate OnStartWork;
+        public static event DelegateObjectDelegate OnEndWork;
         public static event SetInfoText OnSetTextToInfo;
         #endregion
 
@@ -64,15 +64,12 @@ namespace oCryptoBruteForce
 
         #region Methods
 
-        private static byte[] StringToByteArray(string content)
+        private static byte[] StringToByteArray(string hex)
         {
-            if ((content.Length%2) != 0) content = 0 + content;
-            byte[] output = new byte[content.Length / 2];
-            for (int i = 0; i < content.Length; i++)
-            {
-                output[i] = Convert.ToByte(content.Substring((i*2), 2), 16);
-            }
-            return output;
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
         }
 
         private static void AcceptCallback(IAsyncResult ar)
@@ -114,12 +111,12 @@ namespace oCryptoBruteForce
             {
                 content = content.Replace("<EOF>", "");
                 byte[] currentData;
-                if (content.StartsWith("<OnSearchAndGenerateUsingPossibleChecksumFileEvent>"))
+                if (content.StartsWith("<OnStartWork>"))
                 {
-                    #region OnSearchAndGenerateUsingPossibleChecksumFileEvent
+                    #region OnStartWork
                     try
                     {
-                        content = content.Replace("<OnSearchAndGenerateUsingPossibleChecksumFileEvent>", "");
+                        content = content.Replace("<OnStartWork>", "");
                         DelegateObject serializedDelegateObject;
                         byte[] contentBytes = StringToByteArray(content);
                         //De-serializing serialized object
@@ -128,10 +125,17 @@ namespace oCryptoBruteForce
                             BinaryFormatter binaryFormatter = new BinaryFormatter();
                             memoryStream.Write(contentBytes, 0, contentBytes.Length);
                             memoryStream.Seek(0, SeekOrigin.Begin);
-                            serializedDelegateObject = (DelegateObject) binaryFormatter.Deserialize(memoryStream);
+                            serializedDelegateObject = (DelegateObject)binaryFormatter.Deserialize(memoryStream);
+                        }
+                        //Add return Address
+                        var ipEndPoint = handler.RemoteEndPoint as IPEndPoint;
+                        if (ipEndPoint != null)
+                        {
+                            ipEndPoint.Port = serializedDelegateObject.ListeningPort;
+                            serializedDelegateObject.LocalEndpoint = ipEndPoint;
                         }
                         //Call function with object
-                        OnSearchAndGenerateUsingPossibleChecksumFileEvent(serializedDelegateObject);
+                        OnStartWork(serializedDelegateObject);
                         //Reply true
                         currentData = Encoding.UTF8.GetBytes("TRUE");
                         using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
@@ -159,12 +163,12 @@ namespace oCryptoBruteForce
                     }
                     #endregion
                 }
-                else if (content.StartsWith("<OnSearchAndGenerate>"))
+                else if (content.StartsWith("<OnEndWork>"))
                 {
-                    #region OnSearchAndGenerate
+                    #region OnEndWork
                     try
                     {
-                        content = content.Replace("<OnSearchAndGenerate>", "");
+                        content = content.Replace("<OnEndWork>", "");
                         DelegateObject serializedDelegateObject;
                         byte[] contentBytes = StringToByteArray(content);
                         //De-serializing serialized object
@@ -175,53 +179,9 @@ namespace oCryptoBruteForce
                             memoryStream.Seek(0, SeekOrigin.Begin);
                             serializedDelegateObject = (DelegateObject)binaryFormatter.Deserialize(memoryStream);
                         }
+                        //Add return Address
                         //Call function with object
-                        OnSearchAndGenerate(serializedDelegateObject);
-                        //Reply true
-                        currentData = Encoding.UTF8.GetBytes("TRUE");
-                        using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
-                        {
-                            byte[] size = BitConverter.GetBytes(currentData.Length);
-                            ms.Write(size, 0, 4);
-                            ms.Write(currentData, 0, currentData.Length);
-                            state.SendBuffer = ms.ToArray();
-                            Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
-                            ms.Close();
-                        }
-                    }
-                    catch
-                    {
-                        currentData = Encoding.UTF8.GetBytes("FALSE");
-                        using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))
-                        {
-                            byte[] size = BitConverter.GetBytes(currentData.Length);
-                            ms.Write(size, 0, 4);
-                            ms.Write(currentData, 0, currentData.Length);
-                            state.SendBuffer = ms.ToArray();
-                            Send(handler, Encoding.UTF8.GetString(state.SendBuffer, 0, state.SendBuffer.Length));
-                            ms.Close();
-                        }
-                    }
-                    #endregion
-                }
-                else if (content.StartsWith("<OnParallelSearchAndGenerate>"))
-                {
-                    #region OnParallelSearchAndGenerate
-                    try
-                    {
-                        content = content.Replace("<OnParallelSearchAndGenerate>", "");
-                        DelegateObject serializedDelegateObject;
-                        byte[] contentBytes = StringToByteArray(content);
-                        //De-serializing serialized object
-                        using (MemoryStream memoryStream = new MemoryStream())
-                        {
-                            BinaryFormatter binaryFormatter = new BinaryFormatter();
-                            memoryStream.Write(contentBytes, 0, contentBytes.Length);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            serializedDelegateObject = (DelegateObject)binaryFormatter.Deserialize(memoryStream);
-                        }
-                        //Call function with object
-                        OnParallelSearchAndGenerate(serializedDelegateObject);
+                        Console.WriteLine("Search Finished Checksum = "+serializedDelegateObject.Checksum);
                         //Reply true
                         currentData = Encoding.UTF8.GetBytes("TRUE");
                         using (MemoryStream ms = new MemoryStream(new byte[currentData.Length + 4]))

@@ -1,5 +1,7 @@
-﻿namespace oCryptoBruteForce
+﻿using System;
+namespace oCryptoBruteForce
 {
+    [Serializable]
     public enum SearchTypeEnum
     {
         NotLazyGenerateNotLazySearch,

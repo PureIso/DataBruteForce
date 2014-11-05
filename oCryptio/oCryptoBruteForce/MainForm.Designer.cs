@@ -104,6 +104,8 @@
             this.clientDisconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.clientRemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.clientViewDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openPossibleChecksumFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -713,7 +715,7 @@
             this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(91, 8);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(125, 21);
+            this.label19.Size = new System.Drawing.Size(124, 21);
             this.label19.TabIndex = 0;
             this.label19.Text = "Server Monitor";
             // 
@@ -829,46 +831,60 @@
             this.clientConnectToolStripMenuItem,
             this.clientDisconnectToolStripMenuItem,
             this.toolStripSeparator4,
-            this.clientRemoveToolStripMenuItem});
+            this.clientRemoveToolStripMenuItem,
+            this.toolStripSeparator5,
+            this.clientViewDetailsToolStripMenuItem});
             this.clientModeContextMenuStrip.Name = "contextMenuStrip1";
-            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(151, 104);
+            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(151, 132);
             // 
             // selectAddressToolStripMenuItem
             // 
             this.selectAddressToolStripMenuItem.Name = "selectAddressToolStripMenuItem";
-            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.selectAddressToolStripMenuItem.Text = "Select Address";
             this.selectAddressToolStripMenuItem.Click += new System.EventHandler(this.selectAddressToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // clientConnectToolStripMenuItem
             // 
             this.clientConnectToolStripMenuItem.Name = "clientConnectToolStripMenuItem";
-            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clientConnectToolStripMenuItem.Text = "Connect";
             this.clientConnectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
             // 
             // clientDisconnectToolStripMenuItem
             // 
             this.clientDisconnectToolStripMenuItem.Name = "clientDisconnectToolStripMenuItem";
-            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clientDisconnectToolStripMenuItem.Text = "Disconnect";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // clientRemoveToolStripMenuItem
             // 
             this.clientRemoveToolStripMenuItem.Name = "clientRemoveToolStripMenuItem";
-            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clientRemoveToolStripMenuItem.Text = "Remove";
             this.clientRemoveToolStripMenuItem.Click += new System.EventHandler(this.clientRemoveToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+            // 
+            // clientViewDetailsToolStripMenuItem
+            // 
+            this.clientViewDetailsToolStripMenuItem.Name = "clientViewDetailsToolStripMenuItem";
+            this.clientViewDetailsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientViewDetailsToolStripMenuItem.Text = "View Details";
+            this.clientViewDetailsToolStripMenuItem.Click += new System.EventHandler(this.clientViewDetailsToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -959,7 +975,7 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 656);
+            this.ClientSize = new System.Drawing.Size(853, 701);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.mainMenuStrip);
@@ -1088,6 +1104,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripMenuItem selectAddressToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem clientViewDetailsToolStripMenuItem;
     }
 }
 
