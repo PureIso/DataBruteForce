@@ -11,9 +11,7 @@ namespace oCryptoBruteForce
     public class StateObject
     {
         #region Constants
-
-        public const int BufferSize = 1024; // Size of the receiver buffer
-
+        public const int BufferSize = 4096;
         #endregion
 
         #region Fields

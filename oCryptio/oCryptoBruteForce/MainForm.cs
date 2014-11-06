@@ -318,6 +318,8 @@ namespace oCryptoBruteForce
 
 
         #region Server Mode
+        private readonly List<DelegateObject> _listOfServerWorkObjects = new List<DelegateObject>(); 
+
         #region Application Listen for incoming requests
         private bool _isListening;
         private int _listeningPort;
@@ -347,6 +349,7 @@ namespace oCryptoBruteForce
             AsynchronousSocketListener.OnEndWork += WorkMonitorStatusChangeEventHandler;
             AsynchronousSocketListener.OnStartWork += OnStartWork;
             AsynchronousSocketListener.OnSetTextToInfo += SetInformationTextListening;
+            AsynchronousSocketListener.OnClientToServerRequest += ServerMonitorStatusChangeEventHandler;
             AsynchronousSocketListener.StartListening(_listeningPort);
             SetInformationTextListening("Stopped listening on port: " + _listeningPort);
             _isListening = false;
@@ -357,6 +360,76 @@ namespace oCryptoBruteForce
         {
             if (!_isListening) return;
             AsynchronousSocketListener.Listening = false;
+        }
+        private void SendResultRequest(DelegateObject delegateObject)
+        {
+            ServerMonitorStatusChangeEventHandler(delegateObject);
+            //Serialise object
+            string sendString;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(memoryStream, delegateObject);
+                sendString = BitConverter.ToString(memoryStream.ToArray()).Replace("-", string.Empty);
+            }
+            byte[] sendBuffer = Encoding.ASCII.GetBytes(sendString);
+
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                try
+                {
+                    Socket clientSocket = new Socket(
+                        AddressFamily.InterNetwork,
+                        SocketType.Stream,
+                        ProtocolType.Tcp);
+                    try
+                    {
+                        clientSocket.Connect(delegateObject.LocalEndpoint);
+                        byte[] sofBuffer = Encoding.ASCII.GetBytes("<OnEndWork>");
+                        byte[] eofBuffer = Encoding.ASCII.GetBytes("<EOF>");
+                        byte[] finalBuffer = new byte[sendBuffer.Length + sofBuffer.Length + eofBuffer.Length];
+                        //==========================================================
+                        Array.Copy(sofBuffer, 0, finalBuffer, 0, sofBuffer.Length);
+                        Array.Copy(sendBuffer, 0, finalBuffer, sofBuffer.Length, sendBuffer.Length);
+                        Array.Copy(eofBuffer, 0, finalBuffer, sofBuffer.Length + sendBuffer.Length, eofBuffer.Length);
+                        clientSocket.Send(finalBuffer);
+                        //==========================================================
+                        //Peek into the socket for the data size
+                        byte[] size = new byte[4];
+                        clientSocket.Receive(size, 4, SocketFlags.Peek);
+                        //Covert the size to integer
+                        int intSize = BitConverter.ToInt32(size, 0);
+
+                        //Initialize a buffer for incoming data
+                        byte[] receiveBuffer = new byte[intSize + size.Length];
+                        clientSocket.Receive(receiveBuffer);
+                        byte[] data = new byte[intSize];
+                        Array.Copy(receiveBuffer, 4, data, 0, intSize);
+                        string result = Encoding.ASCII.GetString(data);
+                        if (result == "FALSE")
+                        {
+                            SetInformationTextListening("Server Request End was not successful. WorkId: " + delegateObject.WorkerId);
+                        }
+                    }
+                    catch (SocketException)
+                    {
+                        SetInformationTextListening("Server Offline. EndPoint: " + delegateObject.LocalEndpoint);
+                    }
+                    catch (Exception ex)
+                    {
+                        SetInformationTextListening("Send Exception: " + ex + " WorkId: " + delegateObject.WorkerId);
+                    }
+                    finally
+                    {
+                        clientSocket.Dispose();
+                        clientSocket.Close();
+                    }
+                }
+                catch (Exception nestedException)
+                {
+                    SetInformationTextListening("[Nested] Send Exception: " + nestedException + " WorkId: " + delegateObject.WorkerId);
+                }
+            });
         }
         private void SetInformationTextListening(string text)
         {
@@ -397,23 +470,27 @@ namespace oCryptoBruteForce
                 oDelegateFunctions.MessageBoxShow(this, "Please add an IPEndpoint.", "Crypto BruteForce", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            for (int i = 0; i < clientServerAddressComboBox.Items.Count; i++)
+            ComboboxItem comboboxItem = clientServerAddressComboBox.SelectedItem as ComboboxItem;
+            if (comboboxItem == null) return;
+            IPEndPoint endPoint = (IPEndPoint)comboboxItem.Value;
+
+            for (int i = 0; i < serverMonitorListView.Items.Count; i++)
             {
                 if (serverMonitorListView.Items[i].SubItems.Count <= 0) continue;
                 //Worker Id
                 if (serverMonitorListView.Items[i].SubItems[1].Text != _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId) continue;
-                ComboboxItem comboboxItem = clientServerAddressComboBox.SelectedItem as ComboboxItem;
-                if (comboboxItem == null) continue;
-                IPEndPoint endPoint = (IPEndPoint)comboboxItem.Value;
-                _listOfWorkObjects[_selectedWorkMonitorItemIndex].Endpoint = endPoint;
-                SetClientInformationText("IPEndpoint Set to Worker Id: " + _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId);
+               
+                _listOfWorkObjects[_selectedWorkMonitorItemIndex].RemoteEndpoint = endPoint;
+                SetClientInformationText("RemoteEndpoint Set for WorkId: " + 
+                    _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId +
+                    " Address: " + endPoint.ToString());
             }
         }
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                StartListening(_listOfWorkObjects[_selectedWorkMonitorItemIndex].Endpoint.Port);
+                StartListening(_listOfWorkObjects[_selectedWorkMonitorItemIndex].RemoteEndpoint.Port);
                 _listOfWorkObjects[_selectedWorkMonitorItemIndex].ListeningPort = _listeningPort;
                 SendRequest(_listOfWorkObjects[_selectedWorkMonitorItemIndex]);
             }
@@ -466,7 +543,7 @@ namespace oCryptoBruteForce
                         ProtocolType.Tcp);
                     try
                     {
-                        clientSocket.Connect(delegateObject.Endpoint);
+                        clientSocket.Connect(delegateObject.RemoteEndpoint);
                         byte[] sofBuffer = Encoding.ASCII.GetBytes("<OnStartWork>");
                         byte[] eofBuffer = Encoding.ASCII.GetBytes("<EOF>");
                         byte[] finalBuffer = new byte[sendBuffer.Length + sofBuffer.Length + eofBuffer.Length];
@@ -488,8 +565,10 @@ namespace oCryptoBruteForce
                         byte[] data = new byte[intSize];
                         Array.Copy(receiveBuffer, 4, data, 0, intSize);
                         string result = Encoding.ASCII.GetString(data);
-                        SetClientInformationText("Server Request returned: " + result);
-
+                        if (result == "FALSE")
+                        {
+                            SetClientInformationText("Server Request Start was not successful. WorkId: " + delegateObject.WorkerId);
+                        }
                         //==========================================================
                         //Wait For Result
                         //==========================================================
@@ -507,20 +586,19 @@ namespace oCryptoBruteForce
                                 newBytes = CombineBytes(newBytes, myReadBuffer, read);
                                 Thread.Sleep(300);
                             } while (netStream.DataAvailable);
-                            SetClientInformationText("Server Request Waiting Done.");
                         }
                         catch (Exception ex)
                         {
-                            SetClientInformationText("Server Request Waiting Exception: " + ex);
+                            SetClientInformationText("Server Request Waiting Exception: " + ex + " WorkId: " + delegateObject.WorkerId);
                         }
                     }
                     catch (SocketException)
                     {
-                        SetClientInformationText("Socket Error");
+                        SetClientInformationText("Server Offline. EndPoint: " + delegateObject.RemoteEndpoint);
                     }
                     catch (Exception ex)
                     {
-                        SetClientInformationText("---Send Exception---" + ex);
+                        SetClientInformationText("Send Exception: " + ex + " WorkId: " + delegateObject.WorkerId);
                     }
                     finally
                     {
@@ -530,73 +608,7 @@ namespace oCryptoBruteForce
                 }
                 catch (Exception nestedException)
                 {
-                    SetClientInformationText("[Nested] Send Exception: " + nestedException);
-                }
-            });
-        }
-        private void SendResultRequest(DelegateObject delegateObject)
-        {
-            //Serialise object
-            string sendString;
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(memoryStream, delegateObject);
-                sendString = BitConverter.ToString(memoryStream.ToArray()).Replace("-", string.Empty);
-            }
-            byte[] sendBuffer = Encoding.ASCII.GetBytes(sendString);
-
-            ThreadPool.QueueUserWorkItem(x =>
-            {
-                try
-                {
-                    Socket clientSocket = new Socket(
-                        AddressFamily.InterNetwork,
-                        SocketType.Stream,
-                        ProtocolType.Tcp);
-                    try
-                    {
-                        clientSocket.Connect(delegateObject.LocalEndpoint);
-                        byte[] sofBuffer = Encoding.ASCII.GetBytes("<OnEndWork>");
-                        byte[] eofBuffer = Encoding.ASCII.GetBytes("<EOF>");
-                        byte[] finalBuffer = new byte[sendBuffer.Length + sofBuffer.Length + eofBuffer.Length];
-                        //==========================================================
-                        Array.Copy(sofBuffer, 0, finalBuffer, 0, sofBuffer.Length);
-                        Array.Copy(sendBuffer, 0, finalBuffer, sofBuffer.Length, sendBuffer.Length);
-                        Array.Copy(eofBuffer, 0, finalBuffer, sofBuffer.Length + sendBuffer.Length, eofBuffer.Length);
-                        clientSocket.Send(finalBuffer);
-                        //==========================================================
-                        //Peek into the socket for the data size
-                        byte[] size = new byte[4];
-                        clientSocket.Receive(size, 4, SocketFlags.Peek);
-                        //Covert the size to integer
-                        int intSize = BitConverter.ToInt32(size, 0);
-
-                        //Initialize a buffer for incoming data
-                        byte[] receiveBuffer = new byte[intSize + size.Length];
-                        clientSocket.Receive(receiveBuffer);
-                        byte[] data = new byte[intSize];
-                        Array.Copy(receiveBuffer, 4, data, 0, intSize);
-                        string result = Encoding.ASCII.GetString(data);
-                        SetClientInformationText("Server Request returned: " + result);
-                    }
-                    catch (SocketException)
-                    {
-                        SetClientInformationText("Socket Error");
-                    }
-                    catch (Exception ex)
-                    {
-                        SetClientInformationText("---Send Exception---" + ex);
-                    }
-                    finally
-                    {
-                        clientSocket.Dispose();
-                        clientSocket.Close();
-                    }
-                }
-                catch (Exception nestedException)
-                {
-                    SetClientInformationText("[Nested] Send Exception: " + nestedException);
+                    SetClientInformationText("[Nested] Send Exception: " + nestedException + " WorkId: " + delegateObject.WorkerId);
                 }
             });
         }
@@ -720,7 +732,6 @@ namespace oCryptoBruteForce
 
         #region Mouse Down Events
         private int _selectedWorkMonitorItemIndex;
-        private int _selectedServerMonitorItemIndex;
         private void workMonitorListView_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right) return;
@@ -735,7 +746,7 @@ namespace oCryptoBruteForce
             if (e.Button != MouseButtons.Right) return;
             ListViewItem selectedItem = serverMonitorListView.GetItemAt(e.X, e.Y);
             if (selectedItem == null) return;
-            _selectedServerMonitorItemIndex = selectedItem.Index;
+            _selectedWorkMonitorItemIndex = selectedItem.Index;
             Point screenPoint = serverMonitorListView.PointToScreen(e.Location);
             clientModeContextMenuStrip.Show(screenPoint);
         }
@@ -762,6 +773,48 @@ namespace oCryptoBruteForce
         #endregion
 
         #region Custom Handlers
+        private void ServerMonitorStatusChangeEventHandler(DelegateObject sender)
+        {
+            if (clientMonitorListView.InvokeRequired)
+                clientMonitorListView.Invoke((MethodInvoker)delegate
+                {
+                    ServerMonitorStatusChangeEventHandler(sender);
+                });
+            else
+            {
+                //Create a work object
+                List<string> workIdList = _listOfServerWorkObjects
+                    .Select(worker => sender.WorkerId).ToList();
+
+                if (workIdList.Count == 0)
+                {
+                    _listOfServerWorkObjects.Add(sender);
+                    ListViewItem clientMonitorListViewItem = new ListViewItem(new[]
+                    {
+                        "Idle",                         //Status
+                        sender.WorkerId,                //Worker ID
+                        "",                             //Server Ip
+                        ""                              //Port
+                    });
+                    clientMonitorListView.Items.Add(clientMonitorListViewItem);
+                }
+
+                #region Worker Monitor Only
+                for (int i = 0; i < clientMonitorListView.Items.Count; i++)
+                {
+                    if (clientMonitorListView.Items[i].SubItems.Count <= 0) continue;
+                    //Worker Id
+                    if (clientMonitorListView.Items[i].SubItems[1].Text != sender.WorkerId) continue;
+                    //Status
+                    clientMonitorListView.Items[i].SubItems[0].Text = sender.IsWorkDone ? "Done" : "Searching";
+                    //IP 2
+                    clientMonitorListView.Items[i].SubItems[2].Text = sender.LocalEndpoint.Address.ToString();
+                    //Port 3
+                    clientMonitorListView.Items[i].SubItems[3].Text = sender.LocalEndpoint.Port.ToString();
+                }
+                #endregion
+            }
+        }
         private void WorkMonitorStatusChangeEventHandler(DelegateObject sender)
         {
             if (workMonitorListView.InvokeRequired)
@@ -775,6 +828,7 @@ namespace oCryptoBruteForce
                     if (sender.LocalEndpoint != null) SendResultRequest(sender);
                 }
 
+                #region Worker Monitor Only
                 for (int i = 0; i < workMonitorListView.Items.Count; i++)
                 {
                     if (workMonitorListView.Items[i].SubItems.Count <= 0) continue;
@@ -800,6 +854,18 @@ namespace oCryptoBruteForce
                     }
                     else workMonitorListView.Items[i].SubItems[2].Text = "Unknown";
                 }
+                #endregion
+
+                #region Client To Server Monitor
+                for (int i = 0; i < serverMonitorListView.Items.Count; i++)
+                {
+                    if (serverMonitorListView.Items[i].SubItems.Count <= 0) continue;
+                    //Worker Id
+                    if (serverMonitorListView.Items[i].SubItems[1].Text != sender.WorkerId) continue;
+                    //Status
+                    serverMonitorListView.Items[i].SubItems[0].Text = sender.IsWorkDone ? "Done" : "Searching";
+                }
+                #endregion
             }
         }
         private void WorkIPEndPontChangeEventHandler(DelegateObject sender)
@@ -817,14 +883,12 @@ namespace oCryptoBruteForce
                     //Worker Id
                     if (serverMonitorListView.Items[i].SubItems[1].Text != sender.WorkerId) continue;
                     //IP 2
-                    serverMonitorListView.Items[i].SubItems[2].Text = sender.Endpoint.Address.ToString();
+                    serverMonitorListView.Items[i].SubItems[2].Text = sender.RemoteEndpoint.Address.ToString();
                     //Port 3
-                    serverMonitorListView.Items[i].SubItems[3].Text = sender.Endpoint.Port.ToString();
+                    serverMonitorListView.Items[i].SubItems[3].Text = sender.RemoteEndpoint.Port.ToString();
                 }
             }
         }
-        #endregion
-
-        
+        #endregion  
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

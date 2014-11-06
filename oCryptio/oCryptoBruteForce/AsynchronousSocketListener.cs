@@ -28,6 +28,7 @@ namespace oCryptoBruteForce
         #region Event
         public static event DelegateObjectDelegate OnStartWork;
         public static event DelegateObjectDelegate OnEndWork;
+        public static event DelegateObjectDelegate OnClientToServerRequest;
         public static event SetInfoText OnSetTextToInfo;
         #endregion
 
@@ -135,6 +136,7 @@ namespace oCryptoBruteForce
                             serializedDelegateObject.LocalEndpoint = ipEndPoint;
                         }
                         //Call function with object
+                        OnClientToServerRequest(serializedDelegateObject);
                         OnStartWork(serializedDelegateObject);
                         //Reply true
                         currentData = Encoding.UTF8.GetBytes("TRUE");

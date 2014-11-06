@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.checksumComboBox = new System.Windows.Forms.ComboBox();
             this.tplCheckBox = new System.Windows.Forms.CheckBox();
             this.byteSkippingCheckBox = new System.Windows.Forms.CheckBox();
@@ -71,9 +72,10 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.clientMonitorListView = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clientStatusColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clientWorkerIdColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clientIpColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clientPortColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.infoTextBox = new System.Windows.Forms.TextBox();
             this.clientModeTabPage = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -87,8 +89,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.label19 = new System.Windows.Forms.Label();
             this.serverMonitorListView = new System.Windows.Forms.ListView();
-            this.statusColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.workerIdColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.serverStatusColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.serverWorkerIdColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.serverIpColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.serverPortColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.clientInformationTextBox = new System.Windows.Forms.TextBox();
@@ -573,9 +575,10 @@
             // clientMonitorListView
             // 
             this.clientMonitorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
+            this.clientStatusColumnHeader,
+            this.clientWorkerIdColumnHeader,
+            this.clientIpColumnHeader,
+            this.clientPortColumnHeader});
             this.clientMonitorListView.FullRowSelect = true;
             this.clientMonitorListView.GridLines = true;
             this.clientMonitorListView.Location = new System.Drawing.Point(529, 50);
@@ -585,20 +588,24 @@
             this.clientMonitorListView.UseCompatibleStateImageBehavior = false;
             this.clientMonitorListView.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader1
+            // clientStatusColumnHeader
             // 
-            this.columnHeader1.Text = "Status";
-            this.columnHeader1.Width = 95;
+            this.clientStatusColumnHeader.Text = "Status";
+            this.clientStatusColumnHeader.Width = 61;
             // 
-            // columnHeader2
+            // clientWorkerIdColumnHeader
             // 
-            this.columnHeader2.Text = "Worker ID";
-            this.columnHeader2.Width = 99;
+            this.clientWorkerIdColumnHeader.Text = "Worker ID";
+            this.clientWorkerIdColumnHeader.Width = 72;
             // 
-            // columnHeader3
+            // clientIpColumnHeader
             // 
-            this.columnHeader3.Text = "IP Address";
-            this.columnHeader3.Width = 103;
+            this.clientIpColumnHeader.Text = "IP Address";
+            this.clientIpColumnHeader.Width = 103;
+            // 
+            // clientPortColumnHeader
+            // 
+            this.clientPortColumnHeader.Text = "Port";
             // 
             // infoTextBox
             // 
@@ -722,8 +729,8 @@
             // serverMonitorListView
             // 
             this.serverMonitorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.statusColumnHeader,
-            this.workerIdColumnHeader,
+            this.serverStatusColumnHeader,
+            this.serverWorkerIdColumnHeader,
             this.serverIpColumnHeader,
             this.serverPortColumnHeader});
             this.serverMonitorListView.FullRowSelect = true;
@@ -736,14 +743,14 @@
             this.serverMonitorListView.View = System.Windows.Forms.View.Details;
             this.serverMonitorListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.serverMonitorListView_MouseDown);
             // 
-            // statusColumnHeader
+            // serverStatusColumnHeader
             // 
-            this.statusColumnHeader.Text = "Status";
+            this.serverStatusColumnHeader.Text = "Status";
             // 
-            // workerIdColumnHeader
+            // serverWorkerIdColumnHeader
             // 
-            this.workerIdColumnHeader.Text = "Worker ID";
-            this.workerIdColumnHeader.Width = 84;
+            this.serverWorkerIdColumnHeader.Text = "Worker ID";
+            this.serverWorkerIdColumnHeader.Width = 84;
             // 
             // serverIpColumnHeader
             // 
@@ -775,7 +782,7 @@
             this.groupBox4.Controls.Add(this.lazyGenerateComboBox);
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox4.Location = new System.Drawing.Point(0, 0);
+            this.groupBox4.Location = new System.Drawing.Point(0, 66);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(851, 96);
             this.groupBox4.TabIndex = 38;
@@ -803,8 +810,8 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.dragAndDropPanel);
             this.panel1.Controls.Add(this.groupBox4);
+            this.panel1.Controls.Add(this.dragAndDropPanel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
@@ -815,8 +822,9 @@
             // 
             this.dragAndDropPanel.AllowDrop = true;
             this.dragAndDropPanel.BackColor = System.Drawing.Color.DimGray;
+            this.dragAndDropPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.dragAndDropPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dragAndDropPanel.Location = new System.Drawing.Point(0, 96);
+            this.dragAndDropPanel.Location = new System.Drawing.Point(0, 0);
             this.dragAndDropPanel.Name = "dragAndDropPanel";
             this.dragAndDropPanel.Size = new System.Drawing.Size(851, 66);
             this.dragAndDropPanel.TabIndex = 11;
@@ -840,49 +848,49 @@
             // selectAddressToolStripMenuItem
             // 
             this.selectAddressToolStripMenuItem.Name = "selectAddressToolStripMenuItem";
-            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.selectAddressToolStripMenuItem.Text = "Select Address";
             this.selectAddressToolStripMenuItem.Click += new System.EventHandler(this.selectAddressToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(147, 6);
             // 
             // clientConnectToolStripMenuItem
             // 
             this.clientConnectToolStripMenuItem.Name = "clientConnectToolStripMenuItem";
-            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.clientConnectToolStripMenuItem.Text = "Connect";
             this.clientConnectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
             // 
             // clientDisconnectToolStripMenuItem
             // 
             this.clientDisconnectToolStripMenuItem.Name = "clientDisconnectToolStripMenuItem";
-            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.clientDisconnectToolStripMenuItem.Text = "Disconnect";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
             // 
             // clientRemoveToolStripMenuItem
             // 
             this.clientRemoveToolStripMenuItem.Name = "clientRemoveToolStripMenuItem";
-            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.clientRemoveToolStripMenuItem.Text = "Remove";
             this.clientRemoveToolStripMenuItem.Click += new System.EventHandler(this.clientRemoveToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(147, 6);
             // 
             // clientViewDetailsToolStripMenuItem
             // 
             this.clientViewDetailsToolStripMenuItem.Name = "clientViewDetailsToolStripMenuItem";
-            this.clientViewDetailsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientViewDetailsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.clientViewDetailsToolStripMenuItem.Text = "View Details";
             this.clientViewDetailsToolStripMenuItem.Click += new System.EventHandler(this.clientViewDetailsToolStripMenuItem_Click);
             // 
@@ -980,6 +988,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.mainMenuStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Crypto File Brute Force";
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).EndInit();
@@ -1054,8 +1063,8 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.ColumnHeader statusColumnHeader;
-        private System.Windows.Forms.ColumnHeader workerIdColumnHeader;
+        private System.Windows.Forms.ColumnHeader serverStatusColumnHeader;
+        private System.Windows.Forms.ColumnHeader serverWorkerIdColumnHeader;
         private System.Windows.Forms.ColumnHeader serverIpColumnHeader;
         private System.Windows.Forms.ColumnHeader serverPortColumnHeader;
         private System.Windows.Forms.Panel panel6;
@@ -1071,9 +1080,9 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.ListView clientMonitorListView;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader clientStatusColumnHeader;
+        private System.Windows.Forms.ColumnHeader clientWorkerIdColumnHeader;
+        private System.Windows.Forms.ColumnHeader clientIpColumnHeader;
         private System.Windows.Forms.ContextMenuStrip clientModeContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.MenuStrip mainMenuStrip;
@@ -1106,6 +1115,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem clientViewDetailsToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader clientPortColumnHeader;
     }
 }
 

@@ -60,7 +60,7 @@ namespace oCryptoBruteForce
         #endregion
 
         #region Network Address
-        public IPEndPoint Endpoint
+        public IPEndPoint RemoteEndpoint
         {
             get
             {
