@@ -95,6 +95,7 @@
             this.serverPortColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.clientInformationTextBox = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.panel7 = new System.Windows.Forms.Panel();
             this.exhaustiveSearchCheckBox = new System.Windows.Forms.CheckBox();
             this.convertFromBase64StringCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -133,6 +134,7 @@
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.panel1.SuspendLayout();
             this.clientModeContextMenuStrip.SuspendLayout();
             this.mainMenuStrip.SuspendLayout();
@@ -172,7 +174,7 @@
             // 
             // tplCheckBox
             // 
-            this.tplCheckBox.Location = new System.Drawing.Point(142, 22);
+            this.tplCheckBox.Location = new System.Drawing.Point(144, 9);
             this.tplCheckBox.Name = "tplCheckBox";
             this.tplCheckBox.Size = new System.Drawing.Size(236, 37);
             this.tplCheckBox.TabIndex = 34;
@@ -220,7 +222,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(246, 68);
+            this.label10.Location = new System.Drawing.Point(604, 68);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(83, 15);
             this.label10.TabIndex = 23;
@@ -233,7 +235,7 @@
             this.lazyGenerateComboBox.Items.AddRange(new object[] {
             "OFF",
             "ON"});
-            this.lazyGenerateComboBox.Location = new System.Drawing.Point(335, 65);
+            this.lazyGenerateComboBox.Location = new System.Drawing.Point(693, 60);
             this.lazyGenerateComboBox.Name = "lazyGenerateComboBox";
             this.lazyGenerateComboBox.Size = new System.Drawing.Size(149, 23);
             this.lazyGenerateComboBox.TabIndex = 22;
@@ -241,7 +243,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 68);
+            this.label9.Location = new System.Drawing.Point(616, 32);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 15);
             this.label9.TabIndex = 21;
@@ -254,7 +256,7 @@
             this.lazySearchComboBox.Items.AddRange(new object[] {
             "OFF",
             "ON"});
-            this.lazySearchComboBox.Location = new System.Drawing.Point(89, 65);
+            this.lazySearchComboBox.Location = new System.Drawing.Point(693, 24);
             this.lazySearchComboBox.Name = "lazySearchComboBox";
             this.lazySearchComboBox.Size = new System.Drawing.Size(149, 23);
             this.lazySearchComboBox.TabIndex = 20;
@@ -336,7 +338,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 187);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(853, 360);
+            this.tabControl1.Size = new System.Drawing.Size(853, 397);
             this.tabControl1.TabIndex = 9;
             // 
             // bruteforceTabPage
@@ -348,16 +350,13 @@
             this.bruteforceTabPage.Location = new System.Drawing.Point(4, 24);
             this.bruteforceTabPage.Name = "bruteforceTabPage";
             this.bruteforceTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.bruteforceTabPage.Size = new System.Drawing.Size(845, 332);
+            this.bruteforceTabPage.Size = new System.Drawing.Size(845, 369);
             this.bruteforceTabPage.TabIndex = 0;
             this.bruteforceTabPage.Text = "Bruteforce For Checksums";
             this.bruteforceTabPage.UseVisualStyleBackColor = true;
             // 
             // workMonitorListView
             // 
-            this.workMonitorListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.workMonitorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.workMonitorStatusHeader,
             this.workMonitorWorkIdHeader,
@@ -367,11 +366,12 @@
             this.workMonitorLengthHeader,
             this.workMonitorStartTimeHeader,
             this.workMonitorEndTimeHeader});
+            this.workMonitorListView.Dock = System.Windows.Forms.DockStyle.Top;
             this.workMonitorListView.FullRowSelect = true;
             this.workMonitorListView.GridLines = true;
-            this.workMonitorListView.Location = new System.Drawing.Point(6, 201);
+            this.workMonitorListView.Location = new System.Drawing.Point(3, 186);
             this.workMonitorListView.Name = "workMonitorListView";
-            this.workMonitorListView.Size = new System.Drawing.Size(830, 138);
+            this.workMonitorListView.Size = new System.Drawing.Size(837, 176);
             this.workMonitorListView.TabIndex = 51;
             this.workMonitorListView.UseCompatibleStateImageBehavior = false;
             this.workMonitorListView.View = System.Windows.Forms.View.Details;
@@ -500,7 +500,7 @@
             this.serverModeTabPage.Location = new System.Drawing.Point(4, 24);
             this.serverModeTabPage.Name = "serverModeTabPage";
             this.serverModeTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.serverModeTabPage.Size = new System.Drawing.Size(845, 332);
+            this.serverModeTabPage.Size = new System.Drawing.Size(845, 369);
             this.serverModeTabPage.TabIndex = 2;
             this.serverModeTabPage.Text = "Server Mode";
             this.serverModeTabPage.UseVisualStyleBackColor = true;
@@ -583,7 +583,7 @@
             this.clientMonitorListView.GridLines = true;
             this.clientMonitorListView.Location = new System.Drawing.Point(529, 50);
             this.clientMonitorListView.Name = "clientMonitorListView";
-            this.clientMonitorListView.Size = new System.Drawing.Size(308, 242);
+            this.clientMonitorListView.Size = new System.Drawing.Size(308, 311);
             this.clientMonitorListView.TabIndex = 49;
             this.clientMonitorListView.UseCompatibleStateImageBehavior = false;
             this.clientMonitorListView.View = System.Windows.Forms.View.Details;
@@ -615,7 +615,7 @@
             this.infoTextBox.Multiline = true;
             this.infoTextBox.Name = "infoTextBox";
             this.infoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.infoTextBox.Size = new System.Drawing.Size(514, 240);
+            this.infoTextBox.Size = new System.Drawing.Size(514, 311);
             this.infoTextBox.TabIndex = 39;
             // 
             // clientModeTabPage
@@ -627,7 +627,7 @@
             this.clientModeTabPage.Location = new System.Drawing.Point(4, 24);
             this.clientModeTabPage.Name = "clientModeTabPage";
             this.clientModeTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.clientModeTabPage.Size = new System.Drawing.Size(845, 332);
+            this.clientModeTabPage.Size = new System.Drawing.Size(845, 369);
             this.clientModeTabPage.TabIndex = 3;
             this.clientModeTabPage.Text = "Client Mode";
             this.clientModeTabPage.UseVisualStyleBackColor = true;
@@ -722,7 +722,7 @@
             this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(91, 8);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(124, 21);
+            this.label19.Size = new System.Drawing.Size(125, 21);
             this.label19.TabIndex = 0;
             this.label19.Text = "Server Monitor";
             // 
@@ -737,7 +737,7 @@
             this.serverMonitorListView.GridLines = true;
             this.serverMonitorListView.Location = new System.Drawing.Point(529, 50);
             this.serverMonitorListView.Name = "serverMonitorListView";
-            this.serverMonitorListView.Size = new System.Drawing.Size(308, 242);
+            this.serverMonitorListView.Size = new System.Drawing.Size(308, 313);
             this.serverMonitorListView.TabIndex = 47;
             this.serverMonitorListView.UseCompatibleStateImageBehavior = false;
             this.serverMonitorListView.View = System.Windows.Forms.View.Details;
@@ -769,14 +769,12 @@
             this.clientInformationTextBox.Multiline = true;
             this.clientInformationTextBox.Name = "clientInformationTextBox";
             this.clientInformationTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.clientInformationTextBox.Size = new System.Drawing.Size(515, 203);
+            this.clientInformationTextBox.Size = new System.Drawing.Size(515, 274);
             this.clientInformationTextBox.TabIndex = 44;
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.exhaustiveSearchCheckBox);
-            this.groupBox4.Controls.Add(this.convertFromBase64StringCheckBox);
-            this.groupBox4.Controls.Add(this.tplCheckBox);
+            this.groupBox4.Controls.Add(this.panel7);
             this.groupBox4.Controls.Add(this.lazySearchComboBox);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.lazyGenerateComboBox);
@@ -789,9 +787,20 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Miscellaneous";
             // 
+            // panel7
+            // 
+            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel7.Controls.Add(this.exhaustiveSearchCheckBox);
+            this.panel7.Controls.Add(this.tplCheckBox);
+            this.panel7.Controls.Add(this.convertFromBase64StringCheckBox);
+            this.panel7.Location = new System.Drawing.Point(6, 22);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(592, 61);
+            this.panel7.TabIndex = 44;
+            // 
             // exhaustiveSearchCheckBox
             // 
-            this.exhaustiveSearchCheckBox.Location = new System.Drawing.Point(6, 22);
+            this.exhaustiveSearchCheckBox.Location = new System.Drawing.Point(8, 9);
             this.exhaustiveSearchCheckBox.Name = "exhaustiveSearchCheckBox";
             this.exhaustiveSearchCheckBox.Size = new System.Drawing.Size(130, 37);
             this.exhaustiveSearchCheckBox.TabIndex = 43;
@@ -800,9 +809,10 @@
             // 
             // convertFromBase64StringCheckBox
             // 
-            this.convertFromBase64StringCheckBox.Location = new System.Drawing.Point(384, 22);
+            this.convertFromBase64StringCheckBox.Enabled = false;
+            this.convertFromBase64StringCheckBox.Location = new System.Drawing.Point(386, 9);
             this.convertFromBase64StringCheckBox.Name = "convertFromBase64StringCheckBox";
-            this.convertFromBase64StringCheckBox.Size = new System.Drawing.Size(226, 37);
+            this.convertFromBase64StringCheckBox.Size = new System.Drawing.Size(192, 37);
             this.convertFromBase64StringCheckBox.TabIndex = 42;
             this.convertFromBase64StringCheckBox.Text = "Convert From Base 64 string";
             this.convertFromBase64StringCheckBox.UseVisualStyleBackColor = true;
@@ -843,54 +853,54 @@
             this.toolStripSeparator5,
             this.clientViewDetailsToolStripMenuItem});
             this.clientModeContextMenuStrip.Name = "contextMenuStrip1";
-            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(151, 132);
+            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(153, 154);
             // 
             // selectAddressToolStripMenuItem
             // 
             this.selectAddressToolStripMenuItem.Name = "selectAddressToolStripMenuItem";
-            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.selectAddressToolStripMenuItem.Text = "Select Address";
             this.selectAddressToolStripMenuItem.Click += new System.EventHandler(this.selectAddressToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // clientConnectToolStripMenuItem
             // 
             this.clientConnectToolStripMenuItem.Name = "clientConnectToolStripMenuItem";
-            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clientConnectToolStripMenuItem.Text = "Connect";
             this.clientConnectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
             // 
             // clientDisconnectToolStripMenuItem
             // 
             this.clientDisconnectToolStripMenuItem.Name = "clientDisconnectToolStripMenuItem";
-            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clientDisconnectToolStripMenuItem.Text = "Disconnect";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // clientRemoveToolStripMenuItem
             // 
             this.clientRemoveToolStripMenuItem.Name = "clientRemoveToolStripMenuItem";
-            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clientRemoveToolStripMenuItem.Text = "Remove";
             this.clientRemoveToolStripMenuItem.Click += new System.EventHandler(this.clientRemoveToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
             // 
             // clientViewDetailsToolStripMenuItem
             // 
             this.clientViewDetailsToolStripMenuItem.Name = "clientViewDetailsToolStripMenuItem";
-            this.clientViewDetailsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.clientViewDetailsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clientViewDetailsToolStripMenuItem.Text = "View Details";
             this.clientViewDetailsToolStripMenuItem.Click += new System.EventHandler(this.clientViewDetailsToolStripMenuItem_Click);
             // 
@@ -1015,6 +1025,7 @@
             this.panel2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.panel7.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.clientModeContextMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.ResumeLayout(false);
@@ -1116,6 +1127,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem clientViewDetailsToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader clientPortColumnHeader;
+        private System.Windows.Forms.Panel panel7;
     }
 }
 

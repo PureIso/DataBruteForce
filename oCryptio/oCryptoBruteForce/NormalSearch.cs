@@ -20,7 +20,6 @@ namespace oCryptoBruteForce
                     {
                         checksumFound = i;
                         i++;
-                        if (i >= input.DataArray.Length) break;
                     }
                     else
                     {
@@ -39,7 +38,6 @@ namespace oCryptoBruteForce
                         {
                             checksumFound = i;
                             i++;
-                            if (i >= input.DataArray.Length) break;
                         }
                         else
                         {
@@ -79,13 +77,13 @@ namespace oCryptoBruteForce
             {
                 if (input.IsWorkDone) return checksumFound;
                 input.ChecksumOffset = i;
+
                 foreach (byte item in checksum)
                 {
                     if (input.DataArrayBase64[i] == item)
                     {
                         checksumFound = i;
                         i++;
-                        if (i >= input.DataArrayBase64.Length) break;
                     }
                     else
                     {
@@ -103,7 +101,6 @@ namespace oCryptoBruteForce
                         {
                             checksumFound = i;
                             i++;
-                            if (i >= input.DataArrayBase64.Length) break;
                         }
                         else
                         {
@@ -137,65 +134,72 @@ namespace oCryptoBruteForce
 
         public static void OnSearchAndGenerate(DelegateObject input)
         {
-            int checksumFound = -1;
-            for (int checksumGenerationIndex = input.StartGeneratedChecksumFrom; checksumGenerationIndex < input.StopSearchAt; )
+            if (input.ConvertFromBase64String)
             {
-                for (int eof = input.DataArray.Length; eof >= 0; )
+                OnSearchAndGenerateBase64(input);
+            }
+            else
+            {
+                int checksumFound = -1;
+                for (int checksumGenerationIndex = input.StartGeneratedChecksumFrom; checksumGenerationIndex < input.StopSearchAt; )
                 {
-                    if (input.IsWorkDone) return;
-                    byte[] checksum = Helper.GenerateChecksum(input.ChecksumType, checksumGenerationIndex, input.DataArray, eof);
-                    input.ChecksumOffset = checksumGenerationIndex;
-                    input.ChecksumGenerationLength = input.StopSearchAt - checksumGenerationIndex;
-                    input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
+                    for (int eof = input.DataArray.Length; eof >= 0; )
+                    {
+                        if (input.IsWorkDone) return;
+                        byte[] checksum = Helper.GenerateChecksum(input.ChecksumType, checksumGenerationIndex, input.DataArray, eof);
+                        input.ChecksumOffset = checksumGenerationIndex;
+                        input.ChecksumGenerationLength = input.StopSearchAt - checksumGenerationIndex;
+                        input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
 
-                    checksumFound = Search(input, checksum);
+                        checksumFound = Search(input, checksum);
 
+                        if (checksumFound != -1) break;
+                        switch (input.SearchType)
+                        {
+                            case SearchTypeEnum.LazyGenerateLazySearch:
+                                eof -= input.ChecksumLength;
+                                break;
+                            case SearchTypeEnum.NotLazyGenerateNotLazySearch:
+                                eof -= 1;
+                                break;
+                            case SearchTypeEnum.LazyGenerateNotLazySearch:
+                                eof -= input.ChecksumLength;
+                                break;
+                            case SearchTypeEnum.NotLazyGenerateLazySearch:
+                                eof -= 1;
+                                break;
+                        }
+                        if (!input.ExhaustiveSearch) break;
+                    }
                     if (checksumFound != -1) break;
                     switch (input.SearchType)
                     {
                         case SearchTypeEnum.LazyGenerateLazySearch:
-                            eof -= input.ChecksumLength;
+                            checksumGenerationIndex += input.ChecksumLength;
                             break;
                         case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            eof -= 1;
+                            checksumGenerationIndex += 1;
                             break;
                         case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            eof -= input.ChecksumLength;
+                            checksumGenerationIndex += input.ChecksumLength;
                             break;
                         case SearchTypeEnum.NotLazyGenerateLazySearch:
-                            eof -= 1;
+                            checksumGenerationIndex += 1;
                             break;
                     }
-                    if (!input.ExhaustiveSearch) break;
                 }
-                if (checksumFound != -1) break;
-                switch (input.SearchType)
-                {
-                    case SearchTypeEnum.LazyGenerateLazySearch:
-                        checksumGenerationIndex += input.ChecksumLength;
-                        break;
-                    case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                        checksumGenerationIndex += 1;
-                        break;
-                    case SearchTypeEnum.LazyGenerateNotLazySearch:
-                        checksumGenerationIndex += input.ChecksumLength;
-                        break;
-                    case SearchTypeEnum.NotLazyGenerateLazySearch:
-                        checksumGenerationIndex += 1;
-                        break;
-                }
-            }
 
-            if (checksumFound == -1)
-            {
-                input.FoundChecksum = false;
-                input.ChecksumOffset = -1;
-                Array.Reverse(input.DataArray);
-                OnSearchAndGenerateReverse(input);
-            }
-            else
-            {
-                input.FoundChecksum = true;
+                if (checksumFound == -1)
+                {
+                    input.FoundChecksum = false;
+                    input.ChecksumOffset = -1;
+                    Array.Reverse(input.DataArray);
+                    OnSearchAndGenerateReverse(input);
+                }
+                else
+                {
+                    input.FoundChecksum = true;
+                }
             }
         }
 
@@ -269,17 +273,15 @@ namespace oCryptoBruteForce
         public static void OnSearchAndGenerateBase64(DelegateObject input)
         {
             int checksumFound = -1;
-            for (int checksumGenerationIndex = 0; checksumGenerationIndex < input.DataArrayBase64.Length; )
+            for (int checksumGenerationIndex = 0; checksumGenerationIndex < input.DataArrayBase64.Length - 1; )
             {
                 for (int eof = input.DataArrayBase64.Length; eof >= 0; )
                 {
                     if (input.IsWorkDone) return;
                     byte[] checksum = Helper.GenerateChecksum(input.ChecksumType, checksumGenerationIndex, input.DataArrayBase64, eof);
-
                     input.ChecksumOffset = checksumGenerationIndex;
                     input.ChecksumGenerationLength = input.DataArrayBase64.Length - checksumGenerationIndex;
                     input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
-
                     checksumFound = SearchBase64(input, checksum);
 
                     if (checksumFound != -1) break;
@@ -341,7 +343,6 @@ namespace oCryptoBruteForce
                     input.ChecksumOffset = checksumGenerationIndex;
                     input.ChecksumGenerationLength = input.DataArrayBase64.Length - checksumGenerationIndex;
                     input.Checksum = BitConverter.ToString(checksum).Replace("-", string.Empty);
-
                     checksumFound = SearchBase64(input, checksum);
 
                     if (checksumFound != -1) break;

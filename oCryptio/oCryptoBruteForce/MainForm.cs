@@ -40,12 +40,11 @@ namespace oCryptoBruteForce
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
             _fileName = openFileDialog.FileNames[0];
             _fileBuffer = File.ReadAllBytes(_fileName);
-            oDelegateFunctions.SetCheckBoxCheck(convertFromBase64StringCheckBox, false);
-            oDelegateFunctions.SetEnableControl(convertFromBase64StringCheckBox, true);
-
             try
             {
                 _fileBase64Buffer = Convert.FromBase64String(File.ReadAllText(_fileName));
+                oDelegateFunctions.SetCheckBoxCheck(convertFromBase64StringCheckBox, true);
+                oDelegateFunctions.SetEnableControl(convertFromBase64StringCheckBox, true);
             }
             catch (FormatException)
             {
@@ -174,6 +173,9 @@ namespace oCryptoBruteForce
             {
                 //Adding Event Handlers
                 searchInformationObject.OnStatusChange += WorkMonitorStatusChangeEventHandler;
+
+                if (searchInformationObject.LocalEndpoint != null)
+                    SetInformationTextListening("Started Work WorkId: " + searchInformationObject.WorkerId);
 
                 searchInformationObject.IsWorkDone = false;
                 searchInformationObject.FoundChecksum = false;
@@ -483,7 +485,7 @@ namespace oCryptoBruteForce
                 _listOfWorkObjects[_selectedWorkMonitorItemIndex].RemoteEndpoint = endPoint;
                 SetClientInformationText("RemoteEndpoint Set for WorkId: " + 
                     _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId +
-                    " Address: " + endPoint.ToString());
+                    " Address: " + endPoint);
             }
         }
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -501,18 +503,29 @@ namespace oCryptoBruteForce
         }
         private void clientRemoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Remove();
+        }
+
+        private void Remove()
+        {
             for (int i = 0; i < serverMonitorListView.Items.Count; i++)
             {
-                if (serverMonitorListView.Items[i].SubItems.Count > 0)
-                {
-                    //Worker Id
-                    if (serverMonitorListView.Items[i].SubItems[1].Text ==
-                        _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId)
-                    {
-                        serverMonitorListView.Items.RemoveAt(i);
-                        _listOfWorkObjects.RemoveAt(_selectedWorkMonitorItemIndex);
-                    }
-                }
+                if (serverMonitorListView.Items[i].SubItems.Count <= 0) continue;
+                //Worker Id
+                if (serverMonitorListView.Items[i].SubItems[1].Text !=
+                    _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId) continue;
+                serverMonitorListView.Items.RemoveAt(i);
+                _listOfWorkObjects.RemoveAt(_selectedWorkMonitorItemIndex);
+            }
+
+            for (int i = 0; i < workMonitorListView.Items.Count; i++)
+            {
+                if (workMonitorListView.Items[i].SubItems.Count <= 0) continue;
+                //Worker Id
+                if (workMonitorListView.Items[i].SubItems[1].Text !=
+                    _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId) continue;
+                workMonitorListView.Items.RemoveAt(i);
+                _listOfWorkObjects.RemoveAt(_selectedWorkMonitorItemIndex);
             }
         }
         private void clientViewDetailsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -551,6 +564,7 @@ namespace oCryptoBruteForce
                         Array.Copy(sofBuffer, 0, finalBuffer, 0, sofBuffer.Length);
                         Array.Copy(sendBuffer, 0, finalBuffer, sofBuffer.Length, sendBuffer.Length);
                         Array.Copy(eofBuffer, 0, finalBuffer, sofBuffer.Length + sendBuffer.Length, eofBuffer.Length);
+                        SetClientInformationText("Sending WorkId: " + delegateObject.WorkerId);
                         clientSocket.Send(finalBuffer);
                         //==========================================================
                         //Peek into the socket for the data size
@@ -569,6 +583,8 @@ namespace oCryptoBruteForce
                         {
                             SetClientInformationText("Server Request Start was not successful. WorkId: " + delegateObject.WorkerId);
                         }
+
+                        SetClientInformationText("Server Request Waiting: WorkId: " + delegateObject.WorkerId);
                         //==========================================================
                         //Wait For Result
                         //==========================================================
@@ -707,19 +723,7 @@ namespace oCryptoBruteForce
         }
         private void removeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < workMonitorListView.Items.Count; i++)
-            {
-                if (workMonitorListView.Items[i].SubItems.Count > 0)
-                {
-                    //Worker Id
-                    if (workMonitorListView.Items[i].SubItems[1].Text ==
-                        _listOfWorkObjects[_selectedWorkMonitorItemIndex].WorkerId)
-                    {
-                        workMonitorListView.Items.RemoveAt(i);
-                        _listOfWorkObjects.RemoveAt(_selectedWorkMonitorItemIndex);
-                    }
-                }
-            }
+            Remove();
         }
         private void viewDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
