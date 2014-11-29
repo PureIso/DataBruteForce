@@ -18,9 +18,16 @@ namespace oCryptoBruteForce
         public string PossibleChecksumFileLocation { get; set; }
 
         public byte[] DataArray { get; set; }
+        public byte[] DataArrayReversed { get; set; }
+
         public byte[] DataArrayBase64 { get; set; }
+        public byte[] DataArrayBase64Reversed { get; set; }
+
         public byte[] PossibleChecksumsArray { get; set; }
         public byte[] PossibleChecksumsBase64Array { get; set; }
+
+        public byte[] PossibleChecksumsArrayReversed { get; set; }
+        public byte[] PossibleChecksumsBase64ArrayReversed { get; set; }
 
         public string WorkerId { get; set; }
         public string ChecksumType { get; set; }
@@ -51,9 +58,9 @@ namespace oCryptoBruteForce
                 if (OnStatusChange != null) OnStatusChange(this);
             }
         }
-        public bool FoundChecksum { get; set; }
+        public bool ChecksumFound { get; set; }
         public string Checksum { get; set; }
-        public int ChecksumOffset { get; set; }
+        public int ChecksumGeneratedOffset { get; set; }
         public int ChecksumGenerationLength { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

@@ -46,6 +46,12 @@ namespace oCryptoBruteForce
                         skipBytesLabel.Text = input.Checksum.Length.ToString();
                     break;
             }
+            if (input.ChecksumFound)
+            {
+                checksumLabel.Text = input.Checksum;
+                checksumOffsetLabel.Text = input.ChecksumGeneratedOffset.ToString();
+                checksumGeneratedLengthLabel.Text = input.ChecksumGenerationLength.ToString();
+            }
         }
 
         public override sealed string Text

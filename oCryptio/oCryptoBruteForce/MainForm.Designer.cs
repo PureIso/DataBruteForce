@@ -46,7 +46,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.startSearchTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.mainTabControl = new System.Windows.Forms.TabControl();
             this.bruteforceTabPage = new System.Windows.Forms.TabPage();
             this.workMonitorListView = new System.Windows.Forms.ListView();
             this.workMonitorStatusHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -98,8 +98,7 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.exhaustiveSearchCheckBox = new System.Windows.Forms.CheckBox();
             this.convertFromBase64StringCheckBox = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.dragAndDropPanel = new System.Windows.Forms.Panel();
+            this.mainPanel = new System.Windows.Forms.Panel();
             this.clientModeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -121,7 +120,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.workRemoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).BeginInit();
-            this.tabControl1.SuspendLayout();
+            this.mainTabControl.SuspendLayout();
             this.bruteforceTabPage.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -135,7 +134,7 @@
             this.panel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.panel7.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.mainPanel.SuspendLayout();
             this.clientModeContextMenuStrip.SuspendLayout();
             this.mainMenuStrip.SuspendLayout();
             this.workContextMenuStrip.SuspendLayout();
@@ -329,17 +328,19 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Select Checksum Type:";
             // 
-            // tabControl1
+            // mainTabControl
             // 
-            this.tabControl1.Controls.Add(this.bruteforceTabPage);
-            this.tabControl1.Controls.Add(this.serverModeTabPage);
-            this.tabControl1.Controls.Add(this.clientModeTabPage);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl1.Location = new System.Drawing.Point(0, 187);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(853, 397);
-            this.tabControl1.TabIndex = 9;
+            this.mainTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.mainTabControl.Controls.Add(this.bruteforceTabPage);
+            this.mainTabControl.Controls.Add(this.serverModeTabPage);
+            this.mainTabControl.Controls.Add(this.clientModeTabPage);
+            this.mainTabControl.Location = new System.Drawing.Point(1, 127);
+            this.mainTabControl.Name = "mainTabControl";
+            this.mainTabControl.SelectedIndex = 0;
+            this.mainTabControl.Size = new System.Drawing.Size(853, 397);
+            this.mainTabControl.TabIndex = 9;
             // 
             // bruteforceTabPage
             // 
@@ -722,7 +723,7 @@
             this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(91, 8);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(125, 21);
+            this.label19.Size = new System.Drawing.Size(124, 21);
             this.label19.TabIndex = 0;
             this.label19.Text = "Server Monitor";
             // 
@@ -780,7 +781,7 @@
             this.groupBox4.Controls.Add(this.lazyGenerateComboBox);
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox4.Location = new System.Drawing.Point(0, 66);
+            this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(851, 96);
             this.groupBox4.TabIndex = 38;
@@ -817,29 +818,17 @@
             this.convertFromBase64StringCheckBox.Text = "Convert From Base 64 string";
             this.convertFromBase64StringCheckBox.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // mainPanel
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.groupBox4);
-            this.panel1.Controls.Add(this.dragAndDropPanel);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(853, 163);
-            this.panel1.TabIndex = 10;
-            // 
-            // dragAndDropPanel
-            // 
-            this.dragAndDropPanel.AllowDrop = true;
-            this.dragAndDropPanel.BackColor = System.Drawing.Color.DimGray;
-            this.dragAndDropPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.dragAndDropPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dragAndDropPanel.Location = new System.Drawing.Point(0, 0);
-            this.dragAndDropPanel.Name = "dragAndDropPanel";
-            this.dragAndDropPanel.Size = new System.Drawing.Size(851, 66);
-            this.dragAndDropPanel.TabIndex = 11;
-            this.dragAndDropPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragDrop);
-            this.dragAndDropPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragEnter);
+            this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.mainPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mainPanel.Controls.Add(this.groupBox4);
+            this.mainPanel.Location = new System.Drawing.Point(0, 24);
+            this.mainPanel.Name = "mainPanel";
+            this.mainPanel.Size = new System.Drawing.Size(853, 101);
+            this.mainPanel.TabIndex = 10;
             // 
             // clientModeContextMenuStrip
             // 
@@ -853,54 +842,54 @@
             this.toolStripSeparator5,
             this.clientViewDetailsToolStripMenuItem});
             this.clientModeContextMenuStrip.Name = "contextMenuStrip1";
-            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(153, 154);
+            this.clientModeContextMenuStrip.Size = new System.Drawing.Size(151, 132);
             // 
             // selectAddressToolStripMenuItem
             // 
             this.selectAddressToolStripMenuItem.Name = "selectAddressToolStripMenuItem";
-            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.selectAddressToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.selectAddressToolStripMenuItem.Text = "Select Address";
             this.selectAddressToolStripMenuItem.Click += new System.EventHandler(this.selectAddressToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(147, 6);
             // 
             // clientConnectToolStripMenuItem
             // 
             this.clientConnectToolStripMenuItem.Name = "clientConnectToolStripMenuItem";
-            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientConnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.clientConnectToolStripMenuItem.Text = "Connect";
             this.clientConnectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
             // 
             // clientDisconnectToolStripMenuItem
             // 
             this.clientDisconnectToolStripMenuItem.Name = "clientDisconnectToolStripMenuItem";
-            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientDisconnectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.clientDisconnectToolStripMenuItem.Text = "Disconnect";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
             // 
             // clientRemoveToolStripMenuItem
             // 
             this.clientRemoveToolStripMenuItem.Name = "clientRemoveToolStripMenuItem";
-            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientRemoveToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.clientRemoveToolStripMenuItem.Text = "Remove";
             this.clientRemoveToolStripMenuItem.Click += new System.EventHandler(this.clientRemoveToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(147, 6);
             // 
             // clientViewDetailsToolStripMenuItem
             // 
             this.clientViewDetailsToolStripMenuItem.Name = "clientViewDetailsToolStripMenuItem";
-            this.clientViewDetailsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientViewDetailsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.clientViewDetailsToolStripMenuItem.Text = "View Details";
             this.clientViewDetailsToolStripMenuItem.Click += new System.EventHandler(this.clientViewDetailsToolStripMenuItem_Click);
             // 
@@ -993,16 +982,18 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 701);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(853, 523);
+            this.Controls.Add(this.mainTabControl);
+            this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.mainMenuStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Crypto File Brute Force";
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.dragAndDropPanel_DragEnter);
             ((System.ComponentModel.ISupportInitialize)(this.skipBytesNumericUpDown)).EndInit();
-            this.tabControl1.ResumeLayout(false);
+            this.mainTabControl.ResumeLayout(false);
             this.bruteforceTabPage.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
@@ -1026,7 +1017,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.panel7.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
+            this.mainPanel.ResumeLayout(false);
             this.clientModeContextMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
@@ -1054,10 +1045,9 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox byteSkippingCheckBox;
         private System.Windows.Forms.CheckBox tplCheckBox;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.TabPage bruteforceTabPage;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel dragAndDropPanel;
+        private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TabPage serverModeTabPage;
