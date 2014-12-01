@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PortableLib;
 using System.Net.Sockets;
@@ -130,10 +129,10 @@ namespace oCryptoBruteForce
                     workObject.SearchType = SearchTypeEnum.NotLazyGenerateLazySearch;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                Console.WriteLine("---Get Search Enumeration--");
+                Console.WriteLine(ex.ToString());
             }
             return workObject;
         }
@@ -204,58 +203,8 @@ namespace oCryptoBruteForce
                 searchInformationObject.ChecksumFound = false;
 
                 searchInformationObject.StartTime = DateTime.Now;
-                if (searchInformationObject.UseTPL) OnParallelSearchAndGenerate(searchInformationObject);
-                else NormalSearch.OnSearchForwardAndReverse(searchInformationObject);
-
+                Search.OnSearchForwardAndReverse(searchInformationObject);
                 searchInformationObject.IsWorkDone = true;
-            });
-        }
-
-        private void OnParallelSearchAndGenerate(DelegateObject input)
-        {
-            Parallel.For(input.StartGeneratedChecksumFrom, input.StopSearchAt, checksumGenerationIndex =>
-            {
-                if (input.IsWorkDone) return;
-                byte[] checksum = Helper.GenerateChecksum(input.ChecksumType, checksumGenerationIndex, _fileBuffer);
-                for (int i = input.StartSearch; i < input.StopSearchAt - input.ChecksumLength; )
-                {
-                    int checksumFound = -1;
-                    if (input.IsWorkDone) return;
-                    foreach (byte item in checksum)
-                    {
-                        if (input.DataArray[i] == item)
-                        {
-                            checksumFound = i;
-                            i++;
-                        }
-                        else
-                        {
-                            checksumFound = -1;
-                            break;
-                        }
-                    }
-
-                    if (checksumFound != -1) break;
-
-                    #region Search Type to determing next index
-
-                    switch (input.SearchType)
-                    {
-                        case SearchTypeEnum.LazyGenerateLazySearch:
-                            i += checksum.Length;
-                            break;
-                        case SearchTypeEnum.NotLazyGenerateNotLazySearch:
-                            i += input.SkipSearchBytesBy;
-                            break;
-                        case SearchTypeEnum.LazyGenerateNotLazySearch:
-                            i += input.SkipSearchBytesBy;
-                            break;
-                        case SearchTypeEnum.NotLazyGenerateLazySearch:
-                            i += checksum.Length;
-                            break;
-                    }
-                    #endregion
-                }
             });
         }
         #endregion
@@ -532,14 +481,13 @@ namespace oCryptoBruteForce
                         //Wait For Result
                         //==========================================================
                         NetworkStream netStream = new NetworkStream(clientSocket);
-                        byte[] myReadBuffer = new byte[1024];
                         byte[] newBytes = new byte[0];
                         try
                         {
                             do
                             {
                                 if (!netStream.CanRead) break;
-                                myReadBuffer = new byte[1024];
+                                var myReadBuffer = new byte[1024];
                                 int read = netStream.Read(myReadBuffer, 0, myReadBuffer.Length);
                                 if (read == 0) break;
                                 newBytes = CombineBytes(newBytes, myReadBuffer, read);
